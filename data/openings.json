@@ -1,0 +1,73 @@
+{
+  "italian-game": {
+    "lines": [
+      {
+        "name": "giuoco-piano",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "f8c5"
+        ],
+        "instructions": [
+          "Play pawn to e4.",
+          "Play knight to f3.",
+          "Play bishop to c4."
+        ]
+      },
+      {
+        "name": "giuoco-piano-c3",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "f8c5",
+          "c2c3"
+        ],
+        "instructions": [
+          "Play bishop to e4."
+        ]
+      },
+      {
+        "name": "giuoco-piano-c3-c4",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "f8c5",
+          "c2c3",
+          "d7d6"
+        ],
+        "instructions": [
+          "Italian Game always start with going e2e4"
+        ]
+      },
+      {
+        "name": "grecos-attack",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "f8c5",
+          "c2c3",
+          "g8f6",
+          "d2d4",
+          "e5d4",
+          "c3d4",
+          "c5b4"
+        ],
+        "instructions": [
+          "Italian Game always start with going e2e4"
+        ]
+      }
+    ]
+  }
+}
