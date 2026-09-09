@@ -29,7 +29,10 @@
           "c2c3"
         ],
         "instructions": [
-          "Play bishop to e4."
+          "Play pawn to e4.",
+          "Play knight to f3.",
+          "Play bishop to c4.",
+          "Play pawn to c3."
         ]
       },
       {
@@ -45,7 +48,10 @@
           "d7d6"
         ],
         "instructions": [
-          "Italian Game always start with going e2e4"
+          "Play pawn to e4.",
+          "Play knight to f3.",
+          "Play bishop to c4.",
+          "Play pawn to c3."
         ]
       },
       {
@@ -65,7 +71,12 @@
           "c5b4"
         ],
         "instructions": [
-          "Italian Game always start with going e2e4"
+          "Play pawn to e4.",
+          "Play knight to f3.",
+          "Play bishop to c4.",
+          "Play pawn to c3.",
+          "Play pawn to d4",
+          "Play pawn to d4"
         ]
       }
     ]
