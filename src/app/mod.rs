@@ -39,6 +39,9 @@ impl App {
         // Add a delay before moving back after a wrong move
         if let Some(undo_move_at) = self.trainer.state.undo_move_at {
             if Instant::now() >= undo_move_at {
+                self.trainer.board.undo_move();
+
+                self.trainer.state.validate_move_response = None;
                 self.trainer.state.undo_move_at = None;
             }
         }

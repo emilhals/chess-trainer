@@ -43,6 +43,11 @@ impl Board {
         })
     }
 
+    pub fn undo_move(&mut self) {
+        self.position_history.pop();
+        self.move_history.pop();
+    }
+
     pub fn execute_move(&mut self, from: Square, to: Square) -> Option<Move> {
         let chess = self.position_ref().clone();
 

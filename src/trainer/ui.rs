@@ -209,8 +209,12 @@ impl UI {
 
         let inner_area = info_block.inner(right_panel_layout[0]);
 
-        let instruction_str = trainer.current_instruction();
-        let response_paragraph = Paragraph::new(Line::from(instruction_str).bold())
+        let response_str = trainer
+            .state
+            .validate_move_response
+            .clone()
+            .unwrap_or(trainer.current_instruction());
+        let response_paragraph = Paragraph::new(Line::from(response_str).bold())
             .wrap(Wrap { trim: true })
             .fg(Color::White)
             .alignment(Alignment::Center);

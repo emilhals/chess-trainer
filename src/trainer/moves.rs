@@ -23,9 +23,6 @@ impl Trainer {
 
             let (correct_move, response) = self.validate_move(move_uci);
 
-            //state.correct_move = Some(correct_move);
-            //state.validate_move_response = response;
-
             if correct_move {
                 self.state.bot_move_at =
                     Some(Instant::now() + Duration::from_millis(self.state.bot_move_delay));
@@ -38,6 +35,8 @@ impl Trainer {
             } else {
                 self.state.bot_should_move = false;
                 //self.wrong_move_played = true;
+
+                self.state.validate_move_response = response;
 
                 self.state.undo_move_at =
                     Some(Instant::now() + Duration::from_millis(self.state.undo_move_delay));
@@ -77,24 +76,18 @@ impl Trainer {
         true
     }
 
-    // Returns true if move is valid, and a message
-    pub fn validate_move(&self, move_uci: String) -> (bool, String) {
+    // Returns true if move is valid. Returns false with message if not valid.
+    pub fn validate_move(&self, move_uci: String) -> (bool, Option<String>) {
         let Some(line) = self.current_line() else {
-            return (false, "".to_string());
+            return (false, None);
         };
-
-        // Line is finished
-        if self.is_completed() {
-            println!("finished");
-            return (false, "Great job! You finished the line".to_string());
-        }
 
         let correct_move = line.move_uci(self.state.current_move_index);
 
         if correct_move == move_uci {
-            (true, "Good job!".to_string())
+            (true, None)
         } else {
-            (false, "Wrong move!".to_string())
+            (false, Some("Wrong move!".to_string()))
         }
     }
 }
