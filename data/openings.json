@@ -2,41 +2,7 @@
   "italian-game": {
     "lines": [
       {
-        "name": "giuoco-piano",
-        "moves": [
-          "e2e4",
-          "e7e5",
-          "g1f3",
-          "b8c6",
-          "f1c4",
-          "f8c5"
-        ],
-        "instructions": [
-          "Play pawn to e4.",
-          "Play knight to f3.",
-          "Play bishop to c4."
-        ]
-      },
-      {
-        "name": "giuoco-piano-c3",
-        "moves": [
-          "e2e4",
-          "e7e5",
-          "g1f3",
-          "b8c6",
-          "f1c4",
-          "f8c5",
-          "c2c3"
-        ],
-        "instructions": [
-          "Play pawn to e4.",
-          "Play knight to f3.",
-          "Play bishop to c4.",
-          "Play pawn to c3."
-        ]
-      },
-      {
-        "name": "giuoco-piano-c3-c4",
+        "name": "giuoco-piano-classical",
         "moves": [
           "e2e4",
           "e7e5",
@@ -45,17 +11,101 @@
           "f1c4",
           "f8c5",
           "c2c3",
-          "d7d6"
+          "g8f6",
+          "d2d3",
+          "d7d6",
+          "e1g1",
+          "a7a6",
+          "a2a4",
+          "c5a7",
+          "f1e1"
         ],
         "instructions": [
           "Play pawn to e4.",
-          "Play knight to f3.",
-          "Play bishop to c4.",
-          "Play pawn to c3."
+          "Develop the knight to f3.",
+          "Develop the bishop to c4.",
+          "Play pawn to c3, preparing d4.",
+          "Play pawn to d3 and reinforce e4.",
+          "Castle kingside.",
+          "Play pawn to a4.",
+          "Move the rook to e1."
         ]
       },
       {
-        "name": "grecos-attack",
+        "name": "giuoco-pianissimo",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "f8c5",
+          "d2d3",
+          "g8f6",
+          "e1g1"
+        ],
+        "instructions": [
+          "Play pawn to e4.",
+          "Develop the knight to f3.",
+          "Develop the bishop to c4.",
+          "Play pawn to d3.",
+          "Castle kingside."
+        ]
+      },
+      {
+        "name": "giuoco-pianissimo-four-knights",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "f8c5",
+          "d2d3",
+          "g8f6",
+          "b1c3"
+        ],
+        "instructions": [
+          "Play pawn to e4.",
+          "Develop the knight to f3.",
+          "Develop the bishop to c4.",
+          "Play pawn to d3.",
+          "Develop the queenside knight to c3."
+        ]
+      },
+      {
+        "name": "birds-attack",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "f8c5",
+          "c2c3",
+          "g8f6",
+          "b2b4",
+          "c5b6",
+          "d2d3",
+          "d7d6",
+          "a2a4",
+          "a7a5",
+          "b4b5",
+          "c6e7"
+        ],
+        "instructions": [
+          "Play pawn to e4.",
+          "Develop the knight to f3.",
+          "Develop the bishop to c4.",
+          "Play pawn to c3.",
+          "Push the b-pawn to b4 and gain queenside space.",
+          "Play pawn to d3 and support e4.",
+          "Continue the queenside expansion with a4.",
+          "Push pawn to b5."
+        ]
+      },
+      {
+        "name": "grecos-attack-sharp",
         "moves": [
           "e2e4",
           "e7e5",
@@ -68,15 +118,294 @@
           "d2d4",
           "e5d4",
           "c3d4",
-          "c5b4"
+          "c5b4",
+          "b1c3",
+          "f6e4",
+          "e1g1",
+          "b4c3",
+          "d4d5",
+          "c3f6",
+          "f1e1",
+          "c6e7",
+          "e1e4"
         ],
         "instructions": [
           "Play pawn to e4.",
-          "Play knight to f3.",
-          "Play bishop to c4.",
-          "Play pawn to c3.",
-          "Play pawn to d4",
-          "Play pawn to d4"
+          "Develop the knight to f3.",
+          "Develop the bishop to c4.",
+          "Play pawn to c3, preparing d4.",
+          "Strike in the center with d4.",
+          "Recapture on d4 with the c-pawn.",
+          "Develop the knight to c3.",
+          "Castle kingside.",
+          "Advance the pawn to d5.",
+          "Move the rook to e1.",
+          "Capture the knight on e4 with the rook."
+        ]
+      },
+      {
+        "name": "evans-gambit-accepted",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "f8c5",
+          "b2b4",
+          "c5b4",
+          "c2c3",
+          "b4a5",
+          "d2d4",
+          "d7d6",
+          "d1b3",
+          "d8d7",
+          "d4e5",
+          "a5b6"
+        ],
+        "instructions": [
+          "Play pawn to e4.",
+          "Develop the knight to f3.",
+          "Develop the bishop to c4.",
+          "Offer the b-pawn with b4.",
+          "Play c3 and attack the bishop.",
+          "Take control of the center with d4.",
+          "Develop the queen to b3 and pressure f7.",
+          "Capture the pawn on e5."
+        ]
+      },
+      {
+        "name": "evans-gambit-declined",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "f8c5",
+          "b2b4",
+          "c5b6",
+          "a2a4",
+          "a7a6",
+          "b1c3",
+          "g8f6"
+        ],
+        "instructions": [
+          "Play pawn to e4.",
+          "Develop the knight to f3.",
+          "Develop the bishop to c4.",
+          "Offer the b-pawn with b4.",
+          "Gain more queenside space with a4.",
+          "Develop the knight to c3."
+        ]
+      },
+      {
+        "name": "rosentreter-gambit",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "f8c5",
+          "d2d4",
+          "e5d4",
+          "c2c3",
+          "g8f6",
+          "e4e5",
+          "d7d5",
+          "c4b5",
+          "c6e4",
+          "c3d4",
+          "c5b6",
+          "b1c3",
+          "e8g8",
+          "c1e3"
+        ],
+        "instructions": [
+          "Play pawn to e4.",
+          "Develop the knight to f3.",
+          "Develop the bishop to c4.",
+          "Immediately challenge the center with d4.",
+          "Offer the c-pawn with c3.",
+          "Advance the e-pawn to e5 and attack the knight.",
+          "Move the bishop to b5.",
+          "Recapture on d4 with the c-pawn.",
+          "Develop the knight to c3.",
+          "Develop the bishop to e3."
+        ]
+      },
+      {
+        "name": "deutz-gambit",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "f8c5",
+          "e1g1",
+          "g8f6",
+          "d2d4"
+        ],
+        "instructions": [
+          "Play pawn to e4.",
+          "Develop the knight to f3.",
+          "Develop the bishop to c4.",
+          "Castle kingside.",
+          "Challenge the center with d4."
+        ]
+      },
+      {
+        "name": "symmetrical-italian",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "f8c5",
+          "b1c3",
+          "g8f6",
+          "d2d3",
+          "d7d6",
+          "c1g5",
+          "h7h6"
+        ],
+        "instructions": [
+          "Play pawn to e4.",
+          "Develop the knight to f3.",
+          "Develop the bishop to c4.",
+          "Develop the queenside knight to c3.",
+          "Play pawn to d3.",
+          "Pin the knight with bishop to g5."
+        ]
+      },
+      {
+        "name": "two-knights-defense",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "g8f6",
+          "f3g5",
+          "d7d5",
+          "e4d5",
+          "c6a5",
+          "c4b5",
+          "c7c6",
+          "d5c6",
+          "b7c6",
+          "b5d3",
+          "f6d5",
+          "g5f3",
+          "f8d6"
+        ],
+        "instructions": [
+          "Play pawn to e4.",
+          "Develop the knight to f3.",
+          "Develop the bishop to c4.",
+          "Attack f7 with knight to g5.",
+          "Capture the pawn on d5.",
+          "Move the bishop to b5.",
+          "Capture on c6 with the d-pawn.",
+          "Retreat the bishop to d3.",
+          "Return the knight to f3."
+        ]
+      },
+      {
+        "name": "fried-liver-attack",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "g8f6",
+          "f3g5",
+          "d7d5",
+          "e4d5",
+          "f6d5",
+          "g5f7",
+          "e8f7",
+          "d1f3",
+          "f7e6",
+          "b1c3"
+        ],
+        "instructions": [
+          "Play pawn to e4.",
+          "Develop the knight to f3.",
+          "Develop the bishop to c4.",
+          "Attack f7 with knight to g5.",
+          "Capture the pawn on d5.",
+          "Sacrifice the knight on f7.",
+          "Bring the queen to f3 with check.",
+          "Develop the knight to c3."
+        ]
+      },
+      {
+        "name": "four-knights-italian",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "g8f6",
+          "b1c3",
+          "c6e4",
+          "c3e4",
+          "d7d5",
+          "c4d3",
+          "d5e4",
+          "d3e4",
+          "f8d6",
+          "e1g1"
+        ],
+        "instructions": [
+          "Play pawn to e4.",
+          "Develop the knight to f3.",
+          "Develop the bishop to c4.",
+          "Develop the queenside knight to c3.",
+          "Capture the knight on e4.",
+          "Retreat the bishop to d3.",
+          "Capture the pawn on e4 with the bishop.",
+          "Castle kingside."
+        ]
+      },
+      {
+        "name": "scotch-gambit",
+        "moves": [
+          "e2e4",
+          "e7e5",
+          "g1f3",
+          "b8c6",
+          "f1c4",
+          "g8f6",
+          "d2d4",
+          "e5d4",
+          "e1g1",
+          "f6e4",
+          "f1e1",
+          "d7d5",
+          "c4d5",
+          "d8d5",
+          "b1c3",
+          "d5a5",
+          "c3e4"
+        ],
+        "instructions": [
+          "Play pawn to e4.",
+          "Develop the knight to f3.",
+          "Develop the bishop to c4.",
+          "Challenge the center with d4.",
+          "Castle kingside.",
+          "Put the rook on e1 and attack the knight.",
+          "Capture on d5 with the bishop.",
+          "Develop the knight to c3.",
+          "Capture the knight on e4."
         ]
       }
     ]
