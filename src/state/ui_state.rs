@@ -13,7 +13,7 @@ pub struct UIState {
 impl Default for UIState {
     fn default() -> Self {
         Self {
-            current_view: Views::Trainer,
+            current_view: Views::Home,
             previous_view: Views::Home,
             menu_cursor: 0,
         }

@@ -1,6 +1,4 @@
-use std::str::FromStr;
-
-use shakmaty::{Square, uci::UciMove};
+use shakmaty::Square;
 
 use crate::app::coord::Coord;
 

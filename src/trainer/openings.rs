@@ -19,6 +19,7 @@ impl Line {
         self.moves.len()
     }
 
+    /// Returns true if the line is completed.
     pub fn is_completed(&self, move_index: usize) -> bool {
         move_index >= self.moves.len()
     }
@@ -42,6 +43,12 @@ pub struct Opening {
     pub lines: Vec<Line>,
 }
 
+pub struct OpeningInfo {
+    pub name: String,
+    pub lines_amount: usize,
+    pub color_start: String,
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Openings(HashMap<String, Opening>);
 
@@ -51,6 +58,8 @@ impl Openings {
         let reader = BufReader::new(file);
         Ok(serde_json::from_reader(reader)?)
     }
+
+    pub fn get_openings_with_info(&self) {}
 
     pub fn get_opening(&self, opening_name: &str) -> Option<&Opening> {
         self.0.get(opening_name)

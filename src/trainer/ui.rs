@@ -221,16 +221,19 @@ impl UI {
 
         let hint_level = trainer.state.mode.hint_level;
 
-        let kbd_mode = Kbd::default().content("m toggle mode");
-        let kbd_hint =
-            Kbd::default().content(format!("s {:#}", hint_level.to_string().to_lowercase()));
+        let kbd_mode = Kbd::default()
+            .key("m".to_string())
+            .content("toggle mode".to_string());
+        let kbd_hint = Kbd::default()
+            .key("s".to_string())
+            .content(format!("{:#}", hint_level.to_string().to_lowercase()));
 
         let shortcuts_area = Layout::default()
             .direction(Direction::Horizontal)
             .constraints(
                 [
                     Constraint::Length(1),
-                    Constraint::Length(8),
+                    Constraint::Length(9),
                     Constraint::Length(1),
                     Constraint::Length(15),
                     Constraint::Length(4),
