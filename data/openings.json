@@ -1,5 +1,6 @@
 {
   "italian-game": {
+    "player": "white",
     "lines": [
       {
         "name": "giuoco-piano-classical",
@@ -406,6 +407,246 @@
           "Capture on d5 with the bishop.",
           "Develop the knight to c3.",
           "Capture the knight on e4."
+        ]
+      }
+    ]
+  },
+  "kings-indian-defense": {
+    "player": "black",
+    "lines": [
+      {
+        "name": "main-line",
+        "moves": [
+          "d2d4",
+          "g8f6",
+          "c2c4",
+          "g7g6",
+          "b1c3",
+          "f8g7",
+          "e2e4",
+          "d7d6",
+          "g1f3",
+          "e8g8",
+          "f1e2",
+          "e7e5",
+          "e1g1",
+          "b8c6",
+          "d4d5",
+          "f6e7",
+          "b2b4",
+          "f6h5",
+          "f1e1",
+          "f7f5",
+          "f3g5",
+          "h5f6"
+        ],
+        "instructions": [
+          "Play pawn to d4.",
+          "Develop knight to f3.",
+          "Play pawn to c4.",
+          "Fianchetto the bishop with g6.",
+          "Develop knight to c3.",
+          "Fianchetto the bishop to g7.",
+          "Play pawn to e4.",
+          "Play pawn to d6.",
+          "Develop knight to f3.",
+          "Castle kingside.",
+          "Develop bishop to e2.",
+          "Strike the center with e5.",
+          "Castle kingside.",
+          "Develop knight to c6.",
+          "Push the pawn to d5 and gain space.",
+          "Retreat the knight to e7.",
+          "Expand on the queenside with b4.",
+          "Prepare the kingside attack with Nh5.",
+          "Move the rook to e1.",
+          "Break the center with f5.",
+          "Move the knight to g5.",
+          "Retreat the knight to f6."
+        ]
+      },
+      {
+        "name": "four-pawns-attack",
+        "moves": [
+          "d2d4",
+          "g8f6",
+          "c2c4",
+          "g7g6",
+          "b1c3",
+          "f8g7",
+          "e2e4",
+          "d7d6",
+          "f2f4"
+        ],
+        "instructions": [
+          "Play pawn to d4.",
+          "Develop knight to f3.",
+          "Play pawn to c4.",
+          "Fianchetto the bishop with g6.",
+          "Develop knight to c3.",
+          "Fianchetto the bishop to g7.",
+          "Play pawn to e4.",
+          "Play pawn to d6.",
+          "Play pawn to f4 and build a large center."
+        ]
+      },
+      {
+        "name": "saemisch",
+        "moves": [
+          "d2d4",
+          "g8f6",
+          "c2c4",
+          "g7g6",
+          "b1c3",
+          "f8g7",
+          "e2e4",
+          "d7d6",
+          "f2f3"
+        ],
+        "instructions": [
+          "Play pawn to d4.",
+          "Develop knight to f3.",
+          "Play pawn to c4.",
+          "Fianchetto the bishop with g6.",
+          "Develop knight to c3.",
+          "Fianchetto the bishop to g7.",
+          "Play pawn to e4.",
+          "Play pawn to d6.",
+          "Play pawn to f3 and reinforce the center."
+        ]
+      },
+      {
+        "name": "saemisch-main",
+        "moves": [
+          "d2d4",
+          "g8f6",
+          "c2c4",
+          "g7g6",
+          "b1c3",
+          "f8g7",
+          "e2e4",
+          "d7d6",
+          "f2f3",
+          "e8g8",
+          "c1e3",
+          "e7e5",
+          "d4d5",
+          "c7c6"
+        ],
+        "instructions": [
+          "Play pawn to d4.",
+          "Develop knight to f3.",
+          "Play pawn to c4.",
+          "Fianchetto the bishop with g6.",
+          "Develop knight to c3.",
+          "Fianchetto the bishop to g7.",
+          "Play pawn to e4.",
+          "Play pawn to d6.",
+          "Play pawn to f3.",
+          "Castle kingside.",
+          "Develop bishop to e3.",
+          "Strike the center with e5.",
+          "Push the pawn to d5.",
+          "Prepare the central break with c6."
+        ]
+      },
+      {
+        "name": "averbakh",
+        "moves": [
+          "d2d4",
+          "g8f6",
+          "c2c4",
+          "g7g6",
+          "b1c3",
+          "f8g7",
+          "e2e4",
+          "d7d6",
+          "f1e2",
+          "e8g8",
+          "c1g5"
+        ],
+        "instructions": [
+          "Play pawn to d4.",
+          "Develop knight to f3.",
+          "Play pawn to c4.",
+          "Fianchetto the bishop with g6.",
+          "Develop knight to c3.",
+          "Fianchetto the bishop to g7.",
+          "Play pawn to e4.",
+          "Play pawn to d6.",
+          "Develop bishop to e2.",
+          "Castle kingside.",
+          "Develop bishop to g5 and put pressure on the knight."
+        ]
+      },
+      {
+        "name": "averbakh-h4",
+        "moves": [
+          "d2d4",
+          "g8f6",
+          "c2c4",
+          "g7g6",
+          "b1c3",
+          "f8g7",
+          "e2e4",
+          "d7d6",
+          "f1e2",
+          "e8g8",
+          "c1g5",
+          "c7c5",
+          "d4d5",
+          "e7e6",
+          "h2h4"
+        ],
+        "instructions": [
+          "Play pawn to d4.",
+          "Develop knight to f3.",
+          "Play pawn to c4.",
+          "Fianchetto the bishop with g6.",
+          "Develop knight to c3.",
+          "Fianchetto the bishop to g7.",
+          "Play pawn to e4.",
+          "Play pawn to d6.",
+          "Develop bishop to e2.",
+          "Castle kingside.",
+          "Develop bishop to g5.",
+          "Challenge the center with c5.",
+          "Push the pawn to d5.",
+          "Prepare the central break with e6.",
+          "Start the kingside attack with h4."
+        ]
+      },
+      {
+        "name": "hungarian-attack",
+        "moves": [
+          "d2d4",
+          "g8f6",
+          "c2c4",
+          "g7g6",
+          "b1c3",
+          "f8g7",
+          "e2e4",
+          "d7d6",
+          "g1e2",
+          "e8g8",
+          "e2g3",
+          "e7e5",
+          "d4d5"
+        ],
+        "instructions": [
+          "Play pawn to d4.",
+          "Develop knight to f3.",
+          "Play pawn to c4.",
+          "Fianchetto the bishop with g6.",
+          "Develop knight to c3.",
+          "Fianchetto the bishop to g7.",
+          "Play pawn to e4.",
+          "Play pawn to d6.",
+          "Develop the knight to e2.",
+          "Castle kingside.",
+          "Move the knight to g3.",
+          "Strike the center with e5.",
+          "Push the pawn to d5."
         ]
       }
     ]
