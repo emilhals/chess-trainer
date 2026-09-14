@@ -39,8 +39,9 @@ pub fn handle_chess_input(app: &mut App, key_event: KeyEvent) {
 // Fallback handler for global shortcuts.
 pub fn fallback_key_handler(app: &mut App, key_event: KeyEvent) {
     match key_event.code {
+        KeyCode::Char('m') => app.trainer.state.mode.toggle_mode(),
         KeyCode::Char('q') => app.quit(),
-        KeyCode::Backspace => app.ui_state.go_to_previous_view(),
+        KeyCode::Backspace => app.reset_home(),
         _ => {}
     }
 }
