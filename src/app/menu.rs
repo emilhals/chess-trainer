@@ -1,30 +1,34 @@
 use crate::{app::App, state::ui_state::Views};
 
-pub enum MainMenuItems {
-    Play,
-    SettingsMenu,
-    Quit,
+enum Openings {
+    ItalianGame,
+    KingsIndianDefense,
 }
 
-impl From<u8> for MainMenuItems {
+impl From<u8> for Openings {
     fn from(value: u8) -> Self {
-        match value {
-            0 => MainMenuItems::Play,
-            1 => MainMenuItems::SettingsMenu,
-            2 => MainMenuItems::Quit,
-            _ => MainMenuItems::Play,
+        if let 0 = value {
+            Openings::ItalianGame
+        } else {
+            Openings::KingsIndianDefense
         }
     }
 }
+
 impl App {
     pub fn menu_select(&mut self) {
-        let field: MainMenuItems = MainMenuItems::from(self.ui_state.menu_cursor);
+        let field: Openings = Openings::from(self.ui_state.menu_cursor);
 
         match field {
-            MainMenuItems::Play => {
+            Openings::ItalianGame => {
                 self.ui_state.current_view = Views::Trainer;
+                self.trainer.state.current_opening_name = Some("italian-game".to_string());
             }
-            _ => {}
+
+            Openings::KingsIndianDefense => {
+                self.ui_state.current_view = Views::Trainer;
+                self.trainer.state.current_opening_name = Some("kings-indian-defense".to_string());
+            }
         }
     }
 
