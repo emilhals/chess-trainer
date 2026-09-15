@@ -38,7 +38,6 @@ fn main() -> AppResult<()> {
     let events = EventHandler::new(250);
     let mut tui = Tui::new(terminal, events);
 
-    app.trainer.update_opening_state();
     while app.running {
         tui.draw(&mut app)?;
 
