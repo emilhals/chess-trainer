@@ -70,8 +70,11 @@ impl Trainer {
             return false;
         };
 
+        if self.board.move_history.len() > 1 {
+            self.state.current_instruction_index += 1;
+        }
+
         self.state.current_move_index += 1;
-        self.state.current_instruction_index += 1;
 
         true
     }

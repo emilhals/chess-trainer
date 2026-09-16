@@ -7,7 +7,7 @@ use shakmaty::{Color, Square, uci::UciMove};
 
 use crate::{
     app::coord::Coord,
-    state::trainer_state::{HintLevel, TrainerState},
+    state::trainer_state::TrainerState,
     trainer::{
         board::Board,
         openings::{Line, Openings},
@@ -39,6 +39,16 @@ impl Trainer {
             ui: UI::default(),
             player_turn: Color::White,
         }
+    }
+
+    // Updates board and trainer state for when the player is black
+    pub fn prepare_black_player(&mut self) {
+        self.board.player_turn = Color::Black;
+        self.board.is_flipped = true;
+        self.state.bot_should_move = true;
+
+        self.state.bot_move_at =
+            Some(Instant::now() + Duration::from_millis(self.state.bot_move_delay));
     }
 
     pub fn current_line(&self) -> Option<&Line> {
@@ -135,15 +145,6 @@ impl Trainer {
         };
 
         (self.state.current_move_index * 100) / line.len()
-    }
-
-    pub fn update_opening_state(&mut self) {
-        // If an opening has not been set, assign a random opening
-        if self.state.current_opening_name.is_none() {
-            if let Some((name, opening)) = self.openings.get_random_opening() {
-                self.state.current_opening_name = Some(name.clone());
-            }
-        }
     }
 
     pub fn select_cell(&mut self) {
