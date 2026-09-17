@@ -83,6 +83,11 @@ impl Trainer {
         self.state.reset_for_next_line();
     }
 
+    pub fn replay_line(&mut self) {
+        self.board.reset();
+        self.state.reset_for_current_line();
+    }
+
     pub fn is_completed(&self) -> bool {
         let Some(line) = self.current_line() else {
             return false;

@@ -6,7 +6,7 @@ use shakmaty::Color;
 #[allow(dead_code)]
 pub enum TrainerMode {
     Learn,
-    Practice,
+    Drill,
 }
 
 #[derive(Clone, Copy)]
@@ -28,7 +28,7 @@ impl ToString for TrainerMode {
     fn to_string(&self) -> String {
         match self {
             TrainerMode::Learn => String::from("Learn"),
-            TrainerMode::Practice => String::from("Practice"),
+            TrainerMode::Drill => String::from("Drill"),
         }
     }
 }
@@ -64,6 +64,13 @@ impl TrainerModeState {
         match self.hint_level {
             HintLevel::Low => self.hint_level = HintLevel::Solve,
             HintLevel::Solve => self.hint_level = HintLevel::Low,
+        }
+    }
+
+    pub fn toggle_mode(&mut self) {
+        match self.selected_mode {
+            TrainerMode::Learn => self.selected_mode = TrainerMode::Drill,
+            TrainerMode::Drill => self.selected_mode = TrainerMode::Learn,
         }
     }
 }
@@ -133,6 +140,19 @@ impl Clone for TrainerState {
 }
 
 impl TrainerState {
+    pub fn reset(&mut self) {
+        self.current_line_index = 0;
+        self.current_instruction_index = 0;
+        self.current_move_index = 0;
+        self.bot_should_move = false;
+    }
+
+    pub fn reset_for_current_line(&mut self) {
+        self.current_instruction_index = 0;
+        self.current_move_index = 0;
+        self.bot_should_move = false;
+    }
+
     pub fn reset_for_next_line(&mut self) {
         self.current_line_index += 1;
 

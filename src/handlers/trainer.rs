@@ -13,6 +13,13 @@ pub fn handle_trainer_view_events(app: &mut App, key_event: KeyEvent) {
                 app.trainer.next_line();
             }
         }
+
+        KeyCode::Char('r') => {
+            if app.trainer.is_completed() {
+                app.trainer.replay_line();
+            }
+        }
+
         KeyCode::Char('s') => match app.trainer.state.mode.hint_level {
             HintLevel::Low => {
                 app.trainer.show_hint();
