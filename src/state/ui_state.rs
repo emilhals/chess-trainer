@@ -1,4 +1,4 @@
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 pub enum Views {
     Home,
     Trainer,
@@ -6,7 +6,6 @@ pub enum Views {
 
 pub struct UIState {
     pub current_view: Views,
-    pub previous_view: Views,
     pub menu_cursor: u8,
 }
 
@@ -14,7 +13,6 @@ impl Default for UIState {
     fn default() -> Self {
         Self {
             current_view: Views::Home,
-            previous_view: Views::Home,
             menu_cursor: 0,
         }
     }
@@ -24,10 +22,6 @@ impl UIState {
     pub fn go_to_homeview(&mut self) {
         self.current_view = Views::Home;
         self.menu_cursor = 0;
-    }
-
-    pub fn go_to_previous_view(&mut self) {
-        self.current_view = self.previous_view;
     }
 
     pub fn menu_cursor_up(&mut self, l: u8) {
