@@ -19,7 +19,7 @@ impl Widget for Kbd {
 
         let mut lines = vec![];
         lines.push(Line::from(vec![
-            Span::styled("_", Style::default().bg(Color::Gray)),
+            Span::styled(" ", Style::default().bg(Color::Gray)),
             Span::styled(
                 format!("{:^2}", self.key),
                 Style::default().italic().fg(Color::Black).bg(Color::Gray),
