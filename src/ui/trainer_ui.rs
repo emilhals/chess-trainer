@@ -12,7 +12,7 @@ pub fn render_trainer_ui(frame: &mut Frame<'_>, app: &mut App, area: Rect) {
         .direction(Direction::Vertical)
         .constraints(
             [
-                Constraint::Length(1),     // Top panel
+                Constraint::Length(3),     // Top panel
                 Constraint::Ratio(1, 20),  // Top padding
                 Constraint::Ratio(18, 20), // Board
                 Constraint::Min(0),        // Bottom padding
@@ -94,5 +94,5 @@ pub fn render_trainer_ui(frame: &mut Frame<'_>, app: &mut App, area: Rect) {
 
     app.trainer
         .ui
-        .panel_render(main_layout_horizontal[0], frame, &app.trainer);
+        .top_panel_render(main_layout_horizontal[0], frame, &app.trainer);
 }

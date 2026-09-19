@@ -23,7 +23,7 @@ pub fn render_menu_ui(frame: &mut Frame, app: &App, area: Rect) {
                 Constraint::Length(1),    // Subtitle
                 Constraint::Length(1),    // Padding
                 Constraint::Min(1),       // Openings
-                Constraint::Length(2),    // Footer
+                Constraint::Length(3),    // Footer
             ]
             .as_ref(),
         )
