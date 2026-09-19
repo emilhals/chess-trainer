@@ -1,16 +1,25 @@
 use ratatui::{
     Frame,
-    layout::{Alignment, Constraint, Direction, Layout, Rect},
+    layout::{
+        Alignment,
+        Constraint::{self},
+        Direction, Flex, Layout, Rect,
+    },
     style::{Color, Modifier, Style, Stylize},
-    text::Line,
+    text::{Line, Span, Text},
     widgets::{Block, BorderType, Borders, Gauge, Paragraph, Wrap},
 };
 use shakmaty::{Role, Square};
 
 use crate::{
     app::coord::{Coord, MoveDirection},
+    state::trainer_state::TrainerMode,
     trainer::{Trainer, board::Board, openings::Openings},
-    ui::{components::cell::render_cell, pieces::PieceSize, widgets::kbd::Kbd},
+    ui::{
+        components::{cell::render_cell, divider::render_divider},
+        pieces::PieceSize,
+        widgets::kbd::Kbd,
+    },
     utils::{flip_square_if_needed, get_coord_from_square, get_square_from_coord},
 };
 
@@ -35,7 +44,6 @@ pub struct UI {
     pub selected_square: Option<Square>,
     /// The selected piece cursor when we already selected a piece
     pub selected_piece_cursor: i8,
-
     pub width: u16,
     pub height: u16,
 }
@@ -47,6 +55,7 @@ impl Default for UI {
             selected_square: None,
             selected_piece_cursor: 0,
             old_cursor_coords: None,
+
             width: 0,
             height: 0,
         }
@@ -167,7 +176,7 @@ impl UI {
             && color == board.player_turn
         {
             let mut legal_moves: Vec<Coord> = board
-                .get_legal_moves(board.player_turn, &square)
+                .get_legal_moves(&square)
                 .iter()
                 .map(|&s| Coord::from(s))
                 .collect();
@@ -180,22 +189,71 @@ impl UI {
         vec![]
     }
 
-    pub fn info_render(&self, area: Rect, frame: &mut Frame<'_>, trainer: &Trainer) {
+    pub fn top_panel_render(&self, area: Rect, frame: &mut Frame<'_>, trainer: &Trainer) {
+        let layout = Layout::default()
+            .direction(Direction::Vertical)
+            .constraints([
+                Constraint::Length(1), // Padding
+                Constraint::Length(1), // Kbd and paragraphs
+                Constraint::Length(1), // Divider
+            ])
+            .split(area);
+
+        let panel = Layout::default()
+            .direction(Direction::Horizontal)
+            .constraints([
+                Constraint::Length(1),  // Left padding
+                Constraint::Length(10), // Back Kbd
+                Constraint::Min(0),     // Opening name & current line index
+                Constraint::Length(10), // Trainer mode paragraph
+                Constraint::Length(1),  // Right padding
+            ])
+            .split(layout[1]);
+
+        let back_kbd = Kbd::default()
+            .key("b".to_string())
+            .content("back".to_string());
+
+        frame.render_widget(back_kbd, panel[1]);
+
         let title = trainer
             .state
             .current_opening_name
             .as_ref()
             .map(|name| name.as_str())
             .unwrap_or("No opening");
-        let formatted_title = Openings::format_name(title);
+        let formatted_title = Openings::format_name(title.to_string());
 
-        let trainer_mode = trainer.state.mode.selected_mode.to_string();
         let line_index = trainer.state.current_line_index.to_string();
 
+        let mut lines = vec![];
+        lines.push(Line::from(vec![
+            Span::styled(formatted_title, Style::default().bold()),
+            Span::styled(" ", Style::default()),
+            Span::styled(format!("#{}", line_index), Style::default()),
+        ]));
+        let text = Text::from(lines).centered();
+
+        frame.render_widget(text, panel[2]);
+
+        let mode_symbol = match trainer.state.mode.selected_mode {
+            TrainerMode::Drill => "⚡",
+            TrainerMode::Learn => "📚",
+        };
+
+        let mode_str = format!(
+            "{} {}",
+            mode_symbol,
+            trainer.state.mode.selected_mode.to_string()
+        );
+        let mode_paragraph = Paragraph::new(mode_str).right_aligned();
+        frame.render_widget(mode_paragraph, panel[3]);
+
+        render_divider(frame, layout[2]);
+    }
+
+    pub fn instruction_render(&self, area: Rect, frame: &mut Frame<'_>, trainer: &Trainer) {
         let info_block = Block::default()
-            .title(Line::from(trainer_mode).left_aligned().bold())
-            .title(Line::from(formatted_title).centered())
-            .title(Line::from(format!("#{}", line_index)).right_aligned())
             .borders(Borders::ALL)
             .border_style(Style::default().fg(Color::White))
             .border_type(BorderType::Rounded);
@@ -208,49 +266,56 @@ impl UI {
             .split(area);
 
         let inner_area = info_block.inner(right_panel_layout[0]);
-
-        let response_str = trainer
-            .state
-            .validate_move_response
-            .clone()
-            .unwrap_or(trainer.current_instruction());
-        let response_paragraph = Paragraph::new(Line::from(response_str).bold())
-            .wrap(Wrap { trim: true })
-            .fg(Color::White)
-            .alignment(Alignment::Center);
-
-        let hint_level = trainer.state.mode.hint_level;
-
-        let kbd_mode = Kbd::default()
-            .key("m".to_string())
-            .content("toggle mode".to_string());
-        let kbd_hint = Kbd::default()
-            .key("s".to_string())
-            .content(format!("{:#}", hint_level.to_string().to_lowercase()));
-
-        let shortcuts_area = Layout::default()
-            .direction(Direction::Horizontal)
-            .constraints(
-                [
-                    Constraint::Length(1),
-                    Constraint::Length(9),
-                    Constraint::Length(1),
-                    Constraint::Length(15),
-                    Constraint::Length(4),
-                ]
-                .as_ref(),
-            )
-            .split(right_panel_layout[1]);
-
-        frame.render_widget(response_paragraph, inner_area);
         frame.render_widget(info_block, right_panel_layout[0]);
-        frame.render_widget(kbd_hint, shortcuts_area[1]);
-        frame.render_widget(kbd_mode, shortcuts_area[3]);
+
+        if trainer.is_completed() {
+            let lines = vec![
+                Line::from(Span::styled("Good job!", Style::default().bold())),
+                Line::from(Span::styled("You finished the line.", Style::default())),
+            ];
+            let text = Text::from(lines);
+
+            let response_paragraph = Paragraph::new(text).alignment(Alignment::Center);
+            frame.render_widget(response_paragraph, inner_area);
+
+            let kbd_area = Layout::default()
+                .direction(Direction::Horizontal)
+                .flex(Flex::Center)
+                .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
+                .split(right_panel_layout[1]);
+
+            let kbd_next = Kbd::default()
+                .key("n".to_string())
+                .content("next".to_string());
+            frame.render_widget(kbd_next, kbd_area[0]);
+
+            let kbd_restart = Kbd::default()
+                .key("r".to_string())
+                .content("restart".to_string());
+            frame.render_widget(kbd_restart, kbd_area[1]);
+        } else {
+            let response_str = trainer
+                .state
+                .validate_move_response
+                .clone()
+                .unwrap_or(trainer.current_instruction());
+            let response_paragraph = Paragraph::new(Line::from(response_str).bold())
+                .wrap(Wrap { trim: true })
+                .fg(Color::White)
+                .alignment(Alignment::Center);
+            frame.render_widget(response_paragraph, inner_area);
+
+            let hint_level = trainer.state.mode.hint_level;
+            let kbd_hint = Kbd::default()
+                .key("s".to_string())
+                .content(format!("{:#}", hint_level.to_string().to_lowercase()));
+            frame.render_widget(kbd_hint, right_panel_layout[1]);
+        }
     }
 
     pub fn progress_gauge_render(&self, area: Rect, frame: &mut Frame, trainer: &Trainer) {
         let gauge = Gauge::default()
-            .gauge_style(Style::new().light_magenta().on_black())
+            .gauge_style(Style::new().light_magenta().on_dark_gray())
             .style(Modifier::BOLD)
             .label("")
             .percent(trainer.move_progression() as u16);
