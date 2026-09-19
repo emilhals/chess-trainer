@@ -1,6 +1,5 @@
 use crate::trainer::Trainer;
 
-#[allow(dead_code)]
 impl Trainer {
     pub fn go_up(&mut self) {
         self.ui.cursor_up();

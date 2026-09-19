@@ -158,9 +158,7 @@ impl Trainer {
 
         let actual_square = flip_square_if_needed(square, self.board.is_flipped);
 
-        let piece_color = self.board.get_piece_color_at_square(&actual_square);
-
-        let legal_moves = self.board.get_legal_moves(self.player_turn, &actual_square);
+        let legal_moves = self.board.get_legal_moves(&actual_square);
 
         if legal_moves.is_empty() {
             return;
@@ -184,9 +182,7 @@ impl Trainer {
             return;
         }
 
-        let legal_moves = self
-            .board
-            .get_legal_moves(self.player_turn, &actual_selected_coords);
+        let legal_moves = self.board.get_legal_moves(&actual_selected_coords);
 
         if !legal_moves.contains(&actual_cursor_coords) {
             let piece_at_destination = self.board.get_piece_color_at_square(&actual_cursor_coords);

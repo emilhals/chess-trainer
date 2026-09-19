@@ -107,15 +107,13 @@ impl Board {
             .map(|p| p.role)
     }
 
-    pub fn get_square_from_uci(&self, uci: &str) {}
-
     /// Get the color of a piece on a given square
     pub fn get_piece_color_at_square(&self, square: &Square) -> Option<Color> {
         let piece = self.position_ref().board().piece_at(*square);
         piece.map(|p| p.color)
     }
 
-    pub fn get_legal_moves(&self, player_turn: Color, square: &Square) -> Vec<Square> {
+    pub fn get_legal_moves(&self, square: &Square) -> Vec<Square> {
         self.position_ref()
             .clone()
             .legal_moves()
