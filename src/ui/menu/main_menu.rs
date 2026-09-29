@@ -10,6 +10,7 @@ use ratatui::{
 use crate::{
     app::App,
     constants::{BLACK_PLAYER_UNICODE, LOGO, WHITE_PLAYER_UNICODE},
+    state::trainer_state::TrainerMode,
     trainer::openings::{Opening, Openings},
     ui::footer::render_footer,
 };
@@ -52,17 +53,19 @@ pub fn render_menu_ui(frame: &mut Frame, app: &App, area: Rect) {
 
         render_opening_block(
             frame,
+            app,
             main_layout_vertical[i],
             openings[i].clone(),
             is_selected,
         );
     }
 
-    render_footer(frame, app, main_layout_horizontal[4]);
+    render_footer(frame, main_layout_horizontal[4]);
 }
 
 fn render_opening_block(
     frame: &mut Frame<'_>,
+    app: &App,
     area: Rect,
     opening: (String, Opening),
     selected: bool,
@@ -72,12 +75,14 @@ fn render_opening_block(
         .constraints([Constraint::Percentage(20)].as_ref())
         .split(area);
 
-    let formatted_name = Openings::format_name(opening.0);
+    let formatted_name = Openings::format_name(&opening.0);
 
     let border_style = match selected {
         true => Style::default().fg(Color::Magenta),
         false => Style::default().fg(Color::White),
     };
+
+    let selected_mode = app.trainer.state.mode.selected_mode;
 
     let corners_only = symbols::border::Set {
         top_left: line::NORMAL.top_left,
@@ -94,6 +99,7 @@ fn render_opening_block(
         true => Block::default()
             .borders(Borders::ALL)
             .border_type(BorderType::Rounded)
+            .title(format!("{} MODE", selected_mode.to_string().to_uppercase()))
             .border_style(border_style),
         false => Block::default()
             .borders(Borders::ALL)
@@ -107,9 +113,9 @@ fn render_opening_block(
         .direction(Direction::Vertical)
         .constraints(
             [
-                Constraint::Length(1), // Top padding
-                Constraint::Length(2), // Opening name + padding
-                Constraint::Length(1), // Line amount
+                Constraint::Length(2), // Top padding
+                Constraint::Length(1), // Opening name + padding
+                Constraint::Length(1), // Completed lines / Highest streak
                 Constraint::Length(1), // Padding
                 Constraint::Length(1), // Player color
             ]
@@ -120,8 +126,19 @@ fn render_opening_block(
     let opening_name_paragraph = Paragraph::new(formatted_name.to_string()).centered().bold();
     frame.render_widget(opening_name_paragraph, block_layout[1]);
 
-    let line_amount_paragraph =
-        Paragraph::new(format!("{} lines total", opening.1.lines.len())).centered();
+    let completed_lines = app.player_data.completed_lines(&opening.0);
+    let highest_streak = app.player_data.highest_streak(&opening.0);
+
+    let info_str = match app.trainer.state.mode.selected_mode {
+        TrainerMode::Learn => format!(
+            "{}/{} lines completed",
+            completed_lines,
+            opening.1.lines.len()
+        ),
+        TrainerMode::Drill => format!("Highest streak: {}", highest_streak),
+    };
+
+    let line_amount_paragraph = Paragraph::new(info_str).centered();
     frame.render_widget(line_amount_paragraph, block_layout[2]);
 
     let player_color = match opening.1.player.as_str() {
