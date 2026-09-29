@@ -1,9 +1,14 @@
 pub mod coord;
 pub mod menu;
+pub mod player;
 
 use std::{error, time::Instant};
 
-use crate::{state::ui_state::UIState, trainer::Trainer};
+use crate::{
+    app::player::PlayerData,
+    state::{trainer_state::TrainerMode, ui_state::UIState},
+    trainer::Trainer,
+};
 
 pub type AppResult<T> = std::result::Result<T, Box<dyn error::Error>>;
 
@@ -11,14 +16,41 @@ pub struct App {
     pub running: bool,
     pub trainer: Trainer,
     pub ui_state: UIState,
+    pub player_data: PlayerData,
 }
 
 impl App {
-    pub fn new(trainer: Trainer) -> Self {
+    pub fn new(trainer: Trainer, player_data: PlayerData) -> Self {
         Self {
             running: true,
             trainer: trainer,
             ui_state: UIState::default(),
+            player_data: player_data,
+        }
+    }
+
+    pub fn next_line(&mut self) {
+        let old_streak = self.trainer.state.current_streak;
+        let old_wrong_moves = self.trainer.state.wrong_moves;
+
+        self.trainer.next_line(&self.player_data);
+
+        let Some(opening_name) = &self.trainer.state.current_opening_name else {
+            return;
+        };
+
+        if self.trainer.state.current_streak > old_streak {
+            self.player_data
+                .set_highest_streak(&opening_name, self.trainer.state.current_streak as u32);
+        }
+
+        if self.trainer.state.mode.selected_mode == TrainerMode::Learn && old_wrong_moves == 0 {
+            let Some(opening_name) = self.trainer.state.current_opening_name.as_deref() else {
+                return;
+            };
+            let line_name = &self.trainer.current_line().unwrap().name;
+
+            self.player_data.set_completed(opening_name, line_name);
         }
     }
 
@@ -43,6 +75,15 @@ impl App {
 
                 self.trainer.state.validate_move_response = None;
                 self.trainer.state.undo_move_at = None;
+            }
+        }
+
+        // Add a delay before advancing to next line (Drill mode)
+        if let Some(next_line_at) = self.trainer.state.next_line_at {
+            if Instant::now() >= next_line_at {
+                self.trainer.state.next_line_at = None;
+
+                self.next_line();
             }
         }
     }

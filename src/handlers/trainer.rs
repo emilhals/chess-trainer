@@ -10,7 +10,7 @@ pub fn handle_trainer_view_events(app: &mut App, key_event: KeyEvent) {
         }
         KeyCode::Char('n') => {
             if app.trainer.is_completed() {
-                app.trainer.next_line();
+                app.next_line();
             }
         }
 
