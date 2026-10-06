@@ -15,21 +15,33 @@
           "g8f6",
           "d2d3",
           "d7d6",
-          "e1g1",
-          "a7a6",
-          "a2a4",
-          "c5a7",
-          "f1e1"
+          "e1g1"
         ],
         "instructions": [
-          "Play pawn to e4.",
-          "Develop the knight to f3.",
-          "Develop the bishop to c4.",
-          "Play pawn to c3, preparing d4.",
-          "Play pawn to d3 and reinforce e4.",
-          "Castle kingside.",
-          "Play pawn to a4.",
-          "Move the rook to e1."
+          {
+            "learn": "The Italian Game is one of the oldest recorded chess openings and is still played at the highest level today. We always start with pawn to e4.",
+            "play": "Play pawn to e4."
+          },
+          {
+            "learn": "After Black responds with e5, the knight develops to f3, attacks the e5-pawn, and helps control the center.",
+            "play": "Develop the knight to f3."
+          },
+          {
+            "learn": "Black develops the knight to c6 and defends the e5-pawn. We now develop the bishop to an active square where it puts pressure on f7.",
+            "play": "Develop the bishop to c4."
+          },
+          {
+            "learn": "The move c3 supports a future d4 push, allowing us to challenge Black's control of the center.",
+            "play": "Play pawn to c3, preparing d4."
+          },
+          {
+            "learn": "Instead of playing d4 immediately, we first play d3. This keeps the center solid, supports the e4-pawn, and opens the diagonal for the dark-squared bishop.",
+            "play": "Play pawn to d3 and reinforce e4."
+          },
+          {
+            "learn": "Our kingside pieces are developed, so we can castle. Castling brings the king to safety and connects the rook with the rest of our position.",
+            "play": "Castle kingside."
+          }
         ]
       },
       {
@@ -46,11 +58,26 @@
           "e1g1"
         ],
         "instructions": [
-          "Play pawn to e4.",
-          "Develop the knight to f3.",
-          "Develop the bishop to c4.",
-          "Play pawn to d3.",
-          "Castle kingside."
+          {
+            "learn": "Take space in the center and open lines for the bishop and queen.",
+            "play": "Play pawn to e4."
+          },
+          {
+            "learn": "Black has played e5. Develop the knight and attack that pawn.",
+            "play": "Develop the knight to f3."
+          },
+          {
+            "learn": "Black has defended e5 with a knight. Develop the bishop toward the vulnerable f7 square.",
+            "play": "Develop the bishop to c4."
+          },
+          {
+            "learn": "Support e4 and keep the center steady while preparing the other bishop.",
+            "play": "Play pawn to d3."
+          },
+          {
+            "learn": "Black has developed both knights. Castle to safeguard the king and bring the rook toward the center.",
+            "play": "Castle kingside."
+          }
         ]
       },
       {
@@ -67,11 +94,26 @@
           "b1c3"
         ],
         "instructions": [
-          "Play pawn to e4.",
-          "Develop the knight to f3.",
-          "Develop the bishop to c4.",
-          "Play pawn to d3.",
-          "Develop the queenside knight to c3."
+          {
+            "learn": "Take space in the center and open lines for the bishop and queen.",
+            "play": "Play pawn to e4."
+          },
+          {
+            "learn": "Black has played e5. Develop the knight and attack that pawn.",
+            "play": "Develop the knight to f3."
+          },
+          {
+            "learn": "Black has defended e5 with a knight. Develop the bishop toward the vulnerable f7 square.",
+            "play": "Develop the bishop to c4."
+          },
+          {
+            "learn": "Support e4 and keep the center steady while preparing the other bishop.",
+            "play": "Play pawn to d3."
+          },
+          {
+            "learn": "Develop the last knight and add support to the center.",
+            "play": "Develop the queenside knight to c3."
+          }
         ]
       },
       {
@@ -95,14 +137,38 @@
           "c6e7"
         ],
         "instructions": [
-          "Play pawn to e4.",
-          "Develop the knight to f3.",
-          "Develop the bishop to c4.",
-          "Play pawn to c3.",
-          "Push the b-pawn to b4 and gain queenside space.",
-          "Play pawn to d3 and support e4.",
-          "Continue the queenside expansion with a4.",
-          "Push pawn to b5."
+          {
+            "learn": "Take space in the center and open lines for the bishop and queen.",
+            "play": "Play pawn to e4."
+          },
+          {
+            "learn": "Black has played e5. Develop the knight and attack that pawn.",
+            "play": "Develop the knight to f3."
+          },
+          {
+            "learn": "Black has defended e5 with a knight. Develop the bishop toward the vulnerable f7 square.",
+            "play": "Develop the bishop to c4."
+          },
+          {
+            "learn": "Prepare d4 so White can challenge Black’s central pawn.",
+            "play": "Play pawn to c3."
+          },
+          {
+            "learn": "Black’s bishop is on c5. Attack it with b4 and gain queenside space.",
+            "play": "Push the b-pawn to b4 and gain queenside space."
+          },
+          {
+            "learn": "Black has retreated the bishop. Support e4 before advancing further.",
+            "play": "Play pawn to d3 and support e4."
+          },
+          {
+            "learn": "Black has played d6. Support the b-pawn and prepare more queenside space.",
+            "play": "Continue the queenside expansion with a4."
+          },
+          {
+            "learn": "Black has answered with a5. Advance the b-pawn and drive back the c6 knight.",
+            "play": "Push pawn to b5."
+          }
         ]
       },
       {
@@ -131,17 +197,50 @@
           "e1e4"
         ],
         "instructions": [
-          "Play pawn to e4.",
-          "Develop the knight to f3.",
-          "Develop the bishop to c4.",
-          "Play pawn to c3, preparing d4.",
-          "Strike in the center with d4.",
-          "Recapture on d4 with the c-pawn.",
-          "Develop the knight to c3.",
-          "Castle kingside.",
-          "Advance the pawn to d5.",
-          "Move the rook to e1.",
-          "Capture the knight on e4 with the rook."
+          {
+            "learn": "Take space in the center and open lines for the bishop and queen.",
+            "play": "Play pawn to e4."
+          },
+          {
+            "learn": "Black has played e5. Develop the knight and attack that pawn.",
+            "play": "Develop the knight to f3."
+          },
+          {
+            "learn": "Black has defended e5 with a knight. Develop the bishop toward the vulnerable f7 square.",
+            "play": "Develop the bishop to c4."
+          },
+          {
+            "learn": "Prepare d4 to challenge Black’s center.",
+            "play": "Play pawn to c3, preparing d4."
+          },
+          {
+            "learn": "Black has developed a knight to f6. Challenge the e5-pawn with d4.",
+            "play": "Strike in the center with d4."
+          },
+          {
+            "learn": "Black captured on d4. Recapture with the c-pawn and keep a central pawn.",
+            "play": "Recapture on d4 with the c-pawn."
+          },
+          {
+            "learn": "Black’s bishop has moved to b4 and gives check. Block it with the knight.",
+            "play": "Develop the knight to c3."
+          },
+          {
+            "learn": "Black’s knight has captured on e4. Castle to remove the king from the center.",
+            "play": "Castle kingside."
+          },
+          {
+            "learn": "Black’s bishop has captured the knight on c3. Advance d5 and attack the c6 knight.",
+            "play": "Advance the pawn to d5."
+          },
+          {
+            "learn": "Black’s bishop captured the knight on f6. Put the rook on the open e-file.",
+            "play": "Move the rook to e1."
+          },
+          {
+            "learn": "Black’s knight has retreated to e7. The rook can challenge the knight on e4.",
+            "play": "Capture the knight on e4 with the rook."
+          }
         ]
       },
       {
@@ -165,14 +264,38 @@
           "a5b6"
         ],
         "instructions": [
-          "Play pawn to e4.",
-          "Develop the knight to f3.",
-          "Develop the bishop to c4.",
-          "Offer the b-pawn with b4.",
-          "Play c3 and attack the bishop.",
-          "Take control of the center with d4.",
-          "Develop the queen to b3 and pressure f7.",
-          "Capture the pawn on e5."
+          {
+            "learn": "Take space in the center and open lines for the bishop and queen.",
+            "play": "Play pawn to e4."
+          },
+          {
+            "learn": "Black has played e5. Develop the knight and attack that pawn.",
+            "play": "Develop the knight to f3."
+          },
+          {
+            "learn": "Black has defended e5 with a knight. Develop the bishop toward the vulnerable f7 square.",
+            "play": "Develop the bishop to c4."
+          },
+          {
+            "learn": "Offer the b-pawn to pull Black’s bishop away from the center and gain time for c3 and d4.",
+            "play": "Offer the b-pawn with b4."
+          },
+          {
+            "learn": "Black accepted the pawn. Attack the bishop and prepare d4.",
+            "play": "Play c3 and attack the bishop."
+          },
+          {
+            "learn": "Black’s bishop has retreated to a5. Strike at e5 and build a central pawn duo.",
+            "play": "Take control of the center with d4."
+          },
+          {
+            "learn": "Black has played d6. The queen on b3 pressures f7 and the bishop on a5.",
+            "play": "Develop the queen to b3 and pressure f7."
+          },
+          {
+            "learn": "Black has moved the queen to d7 to defend. Capture on e5 and open the center.",
+            "play": "Capture the pawn on e5."
+          }
         ]
       },
       {
@@ -192,12 +315,30 @@
           "g8f6"
         ],
         "instructions": [
-          "Play pawn to e4.",
-          "Develop the knight to f3.",
-          "Develop the bishop to c4.",
-          "Offer the b-pawn with b4.",
-          "Gain more queenside space with a4.",
-          "Develop the knight to c3."
+          {
+            "learn": "Take space in the center and open lines for the bishop and queen.",
+            "play": "Play pawn to e4."
+          },
+          {
+            "learn": "Black has played e5. Develop the knight and attack that pawn.",
+            "play": "Develop the knight to f3."
+          },
+          {
+            "learn": "Black has defended e5 with a knight. Develop the bishop toward the vulnerable f7 square.",
+            "play": "Develop the bishop to c4."
+          },
+          {
+            "learn": "Offer the b-pawn to gain time against Black’s bishop.",
+            "play": "Offer the b-pawn with b4."
+          },
+          {
+            "learn": "Black declined the pawn and retreated the bishop. Advance a4 to gain space and support b5.",
+            "play": "Gain more queenside space with a4."
+          },
+          {
+            "learn": "Black has played a6. Develop the knight and strengthen control of d5 and e4.",
+            "play": "Develop the knight to c3."
+          }
         ]
       },
       {
@@ -216,7 +357,7 @@
           "e4e5",
           "d7d5",
           "c4b5",
-          "c6e4",
+          "c6e5",
           "c3d4",
           "c5b6",
           "b1c3",
@@ -224,16 +365,46 @@
           "c1e3"
         ],
         "instructions": [
-          "Play pawn to e4.",
-          "Develop the knight to f3.",
-          "Develop the bishop to c4.",
-          "Immediately challenge the center with d4.",
-          "Offer the c-pawn with c3.",
-          "Advance the e-pawn to e5 and attack the knight.",
-          "Move the bishop to b5.",
-          "Recapture on d4 with the c-pawn.",
-          "Develop the knight to c3.",
-          "Develop the bishop to e3."
+          {
+            "learn": "Take space in the center and open lines for the bishop and queen.",
+            "play": "Play pawn to e4."
+          },
+          {
+            "learn": "Black has played e5. Develop the knight and attack that pawn.",
+            "play": "Develop the knight to f3."
+          },
+          {
+            "learn": "Black has defended e5 with a knight. Develop the bishop toward the vulnerable f7 square.",
+            "play": "Develop the bishop to c4."
+          },
+          {
+            "learn": "Challenge Black’s e5-pawn immediately while the bishops are active.",
+            "play": "Immediately challenge the center with d4."
+          },
+          {
+            "learn": "Black captured on d4. Offer the c-pawn to gain time for central development.",
+            "play": "Offer the c-pawn with c3."
+          },
+          {
+            "learn": "Black has developed the f6 knight. Advance e5 and attack it.",
+            "play": "Advance the e-pawn to e5 and attack the knight."
+          },
+          {
+            "learn": "Black’s knight captured the e5-pawn. Move the bishop to b5 with check.",
+            "play": "Move the bishop to b5."
+          },
+          {
+            "learn": "Black’s knight has captured the pawn on e5. Recapture on d4 and rebuild the center.",
+            "play": "Recapture on d4 with the c-pawn."
+          },
+          {
+            "learn": "Black’s bishop has retreated to b6. Develop the knight and attack the e5 knight.",
+            "play": "Develop the knight to c3."
+          },
+          {
+            "learn": "Black has castled. Develop the bishop and reinforce the d4-pawn.",
+            "play": "Develop the bishop to e3."
+          }
         ]
       },
       {
@@ -250,11 +421,26 @@
           "d2d4"
         ],
         "instructions": [
-          "Play pawn to e4.",
-          "Develop the knight to f3.",
-          "Develop the bishop to c4.",
-          "Castle kingside.",
-          "Challenge the center with d4."
+          {
+            "learn": "Take space in the center and open lines for the bishop and queen.",
+            "play": "Play pawn to e4."
+          },
+          {
+            "learn": "Black has played e5. Develop the knight and attack that pawn.",
+            "play": "Develop the knight to f3."
+          },
+          {
+            "learn": "Black has defended e5 with a knight. Develop the bishop toward the vulnerable f7 square.",
+            "play": "Develop the bishop to c4."
+          },
+          {
+            "learn": "Get the king safe before opening the center.",
+            "play": "Castle kingside."
+          },
+          {
+            "learn": "Black has developed the f6 knight. Challenge e5 with d4 while your king is safe.",
+            "play": "Challenge the center with d4."
+          }
         ]
       },
       {
@@ -274,12 +460,30 @@
           "h7h6"
         ],
         "instructions": [
-          "Play pawn to e4.",
-          "Develop the knight to f3.",
-          "Develop the bishop to c4.",
-          "Develop the queenside knight to c3.",
-          "Play pawn to d3.",
-          "Pin the knight with bishop to g5."
+          {
+            "learn": "Take space in the center and open lines for the bishop and queen.",
+            "play": "Play pawn to e4."
+          },
+          {
+            "learn": "Black has played e5. Develop the knight and attack that pawn.",
+            "play": "Develop the knight to f3."
+          },
+          {
+            "learn": "Black has defended e5 with a knight. Develop the bishop toward the vulnerable f7 square.",
+            "play": "Develop the bishop to c4."
+          },
+          {
+            "learn": "Black has developed both knights. Develop the queenside knight and strengthen the center.",
+            "play": "Develop the queenside knight to c3."
+          },
+          {
+            "learn": "Black has matched our knight development. Support e4 and open the dark-squared bishop.",
+            "play": "Play pawn to d3."
+          },
+          {
+            "learn": "Black has played d6. Pin the f6 knight against the queen.",
+            "play": "Pin the knight with bishop to g5."
+          }
         ]
       },
       {
@@ -305,15 +509,42 @@
           "f8d6"
         ],
         "instructions": [
-          "Play pawn to e4.",
-          "Develop the knight to f3.",
-          "Develop the bishop to c4.",
-          "Attack f7 with knight to g5.",
-          "Capture the pawn on d5.",
-          "Move the bishop to b5.",
-          "Capture on c6 with the d-pawn.",
-          "Retreat the bishop to d3.",
-          "Return the knight to f3."
+          {
+            "learn": "Take space in the center and open lines for the bishop and queen.",
+            "play": "Play pawn to e4."
+          },
+          {
+            "learn": "Black has played e5. Develop the knight and attack that pawn.",
+            "play": "Develop the knight to f3."
+          },
+          {
+            "learn": "Black has defended e5 with a knight. Develop the bishop toward the vulnerable f7 square.",
+            "play": "Develop the bishop to c4."
+          },
+          {
+            "learn": "Black has developed the knight to f6. The knight jump to g5 joins the bishop in attacking f7.",
+            "play": "Attack f7 with knight to g5."
+          },
+          {
+            "learn": "Black has played d5 to meet the f7 threat. Capture in the center.",
+            "play": "Capture the pawn on d5."
+          },
+          {
+            "learn": "Black’s knight has attacked the bishop from a5. Move it to b5 with check.",
+            "play": "Move the bishop to b5."
+          },
+          {
+            "learn": "Black has blocked the check with c6. Capture that pawn and disrupt the queenside.",
+            "play": "Capture on c6 with the d-pawn."
+          },
+          {
+            "learn": "Black recaptured with the b-pawn. Retreat the attacked bishop to d3.",
+            "play": "Retreat the bishop to d3."
+          },
+          {
+            "learn": "Black’s knight has moved to d5. Return your knight to f3 and continue developing.",
+            "play": "Return the knight to f3."
+          }
         ]
       },
       {
@@ -336,14 +567,38 @@
           "b1c3"
         ],
         "instructions": [
-          "Play pawn to e4.",
-          "Develop the knight to f3.",
-          "Develop the bishop to c4.",
-          "Attack f7 with knight to g5.",
-          "Capture the pawn on d5.",
-          "Sacrifice the knight on f7.",
-          "Bring the queen to f3 with check.",
-          "Develop the knight to c3."
+          {
+            "learn": "Take space in the center and open lines for the bishop and queen.",
+            "play": "Play pawn to e4."
+          },
+          {
+            "learn": "Black has played e5. Develop the knight and attack that pawn.",
+            "play": "Develop the knight to f3."
+          },
+          {
+            "learn": "Black has defended e5 with a knight. Develop the bishop toward the vulnerable f7 square.",
+            "play": "Develop the bishop to c4."
+          },
+          {
+            "learn": "Black has developed the knight to f6. The knight jump to g5 joins the bishop in attacking f7.",
+            "play": "Attack f7 with knight to g5."
+          },
+          {
+            "learn": "Black has challenged with d5. Capture that pawn and keep the f7 threat alive.",
+            "play": "Capture the pawn on d5."
+          },
+          {
+            "learn": "Black’s knight recaptured on d5. Take on f7 with the knight, forcing the king to move.",
+            "play": "Sacrifice the knight on f7."
+          },
+          {
+            "learn": "Black’s king took the knight. Check with the queen and attack the d5 knight.",
+            "play": "Bring the queen to f3 with check."
+          },
+          {
+            "learn": "Black’s king has moved to e6. Develop the knight and increase pressure on d5.",
+            "play": "Develop the knight to c3."
+          }
         ]
       },
       {
@@ -356,7 +611,7 @@
           "f1c4",
           "g8f6",
           "b1c3",
-          "c6e4",
+          "f6e4",
           "c3e4",
           "d7d5",
           "c4d3",
@@ -366,14 +621,38 @@
           "e1g1"
         ],
         "instructions": [
-          "Play pawn to e4.",
-          "Develop the knight to f3.",
-          "Develop the bishop to c4.",
-          "Develop the queenside knight to c3.",
-          "Capture the knight on e4.",
-          "Retreat the bishop to d3.",
-          "Capture the pawn on e4 with the bishop.",
-          "Castle kingside."
+          {
+            "learn": "Take space in the center and open lines for the bishop and queen.",
+            "play": "Play pawn to e4."
+          },
+          {
+            "learn": "Black has played e5. Develop the knight and attack that pawn.",
+            "play": "Develop the knight to f3."
+          },
+          {
+            "learn": "Black has defended e5 with a knight. Develop the bishop toward the vulnerable f7 square.",
+            "play": "Develop the bishop to c4."
+          },
+          {
+            "learn": "Develop the second knight and increase control over the center.",
+            "play": "Develop the queenside knight to c3."
+          },
+          {
+            "learn": "Black’s knight captured on e4. Recapture it with your c3 knight.",
+            "play": "Capture the knight on e4."
+          },
+          {
+            "learn": "Black has challenged the center with d5. Retreat the attacked bishop to d3.",
+            "play": "Retreat the bishop to d3."
+          },
+          {
+            "learn": "Black’s pawn has captured on e4. Recapture it with the bishop.",
+            "play": "Capture the pawn on e4 with the bishop."
+          },
+          {
+            "learn": "Black has developed the bishop to d6. Castle to put the king in safety.",
+            "play": "Castle kingside."
+          }
         ]
       },
       {
@@ -398,15 +677,42 @@
           "c3e4"
         ],
         "instructions": [
-          "Play pawn to e4.",
-          "Develop the knight to f3.",
-          "Develop the bishop to c4.",
-          "Challenge the center with d4.",
-          "Castle kingside.",
-          "Put the rook on e1 and attack the knight.",
-          "Capture on d5 with the bishop.",
-          "Develop the knight to c3.",
-          "Capture the knight on e4."
+          {
+            "learn": "Take space in the center and open lines for the bishop and queen.",
+            "play": "Play pawn to e4."
+          },
+          {
+            "learn": "Black has played e5. Develop the knight and attack that pawn.",
+            "play": "Develop the knight to f3."
+          },
+          {
+            "learn": "Black has defended e5 with a knight. Develop the bishop toward the vulnerable f7 square.",
+            "play": "Develop the bishop to c4."
+          },
+          {
+            "learn": "Challenge e5 with d4 while the bishop is already active.",
+            "play": "Challenge the center with d4."
+          },
+          {
+            "learn": "Black captured on d4. Castle and prepare to use the open e-file.",
+            "play": "Castle kingside."
+          },
+          {
+            "learn": "Black’s knight captured on e4. Attack it with the rook along the e-file.",
+            "play": "Put the rook on e1 and attack the knight."
+          },
+          {
+            "learn": "Black has played d5. Capture that pawn with the bishop.",
+            "play": "Capture on d5 with the bishop."
+          },
+          {
+            "learn": "Black’s queen recaptured on d5. Develop the knight and attack the queen.",
+            "play": "Develop the knight to c3."
+          },
+          {
+            "learn": "Black’s queen has retreated to a5. Capture the knight on e4.",
+            "play": "Capture the knight on e4."
+          }
         ]
       }
     ]
@@ -432,7 +738,7 @@
           "e1g1",
           "b8c6",
           "d4d5",
-          "f6e7",
+          "c6e7",
           "b2b4",
           "f6h5",
           "f1e1",
@@ -441,28 +747,50 @@
           "h5f6"
         ],
         "instructions": [
-          "Play pawn to d4.",
-          "Develop knight to f3.",
-          "Play pawn to c4.",
-          "Fianchetto the bishop with g6.",
-          "Develop knight to c3.",
-          "Fianchetto the bishop to g7.",
-          "Play pawn to e4.",
-          "Play pawn to d6.",
-          "Develop knight to f3.",
-          "Castle kingside.",
-          "Develop bishop to e2.",
-          "Strike the center with e5.",
-          "Castle kingside.",
-          "Develop knight to c6.",
-          "Push the pawn to d5 and gain space.",
-          "Retreat the knight to e7.",
-          "Expand on the queenside with b4.",
-          "Prepare the kingside attack with Nh5.",
-          "Move the rook to e1.",
-          "Break the center with f5.",
-          "Move the knight to g5.",
-          "Retreat the knight to f6."
+          {
+            "learn": "White opens with d4. Develop the knight to pressure the center.",
+            "play": "Develop the knight to f6."
+          },
+          {
+            "learn": "White adds c4. Prepare the kingside bishop’s fianchetto.",
+            "play": "Play pawn to g6."
+          },
+          {
+            "learn": "White develops the knight to c3. Put the bishop on the long diagonal.",
+            "play": "Fianchetto the bishop to g7."
+          },
+          {
+            "learn": "White builds a broad center with e4. Support a future e5 break.",
+            "play": "Play pawn to d6."
+          },
+          {
+            "learn": "White develops the knight to f3. Secure your king before challenging the center.",
+            "play": "Castle kingside."
+          },
+          {
+            "learn": "White develops the bishop to e2. Challenge the central pawns with e5.",
+            "play": "Strike the center with e5."
+          },
+          {
+            "learn": "White castles. Develop the knight toward d4 and e5.",
+            "play": "Develop the knight to c6."
+          },
+          {
+            "learn": "White advances d5 and attacks the c6 knight. Retreat it to e7.",
+            "play": "Retreat the knight to e7."
+          },
+          {
+            "learn": "White expands with b4. Move the f6 knight toward f4.",
+            "play": "Prepare kingside play with Nh5."
+          },
+          {
+            "learn": "White puts a rook on e1. Strike at the pawn center with f5.",
+            "play": "Break the center with f5."
+          },
+          {
+            "learn": "White’s knight jumps to g5. Return your knight to f6.",
+            "play": "Retreat the knight to f6."
+          }
         ]
       },
       {
@@ -479,15 +807,22 @@
           "f2f4"
         ],
         "instructions": [
-          "Play pawn to d4.",
-          "Develop knight to f3.",
-          "Play pawn to c4.",
-          "Fianchetto the bishop with g6.",
-          "Develop knight to c3.",
-          "Fianchetto the bishop to g7.",
-          "Play pawn to e4.",
-          "Play pawn to d6.",
-          "Play pawn to f4 and build a large center."
+          {
+            "learn": "White opens with d4. Develop a knight to pressure the center.",
+            "play": "Develop the knight to f6."
+          },
+          {
+            "learn": "White adds c4. Prepare the bishop’s fianchetto.",
+            "play": "Play pawn to g6."
+          },
+          {
+            "learn": "White develops the knight to c3. Put the bishop on the long diagonal.",
+            "play": "Fianchetto the bishop to g7."
+          },
+          {
+            "learn": "White builds a broad center with e4. Prepare the e5 break.",
+            "play": "Play pawn to d6."
+          }
         ]
       },
       {
@@ -504,15 +839,22 @@
           "f2f3"
         ],
         "instructions": [
-          "Play pawn to d4.",
-          "Develop knight to f3.",
-          "Play pawn to c4.",
-          "Fianchetto the bishop with g6.",
-          "Develop knight to c3.",
-          "Fianchetto the bishop to g7.",
-          "Play pawn to e4.",
-          "Play pawn to d6.",
-          "Play pawn to f3 and reinforce the center."
+          {
+            "learn": "White opens with d4. Develop a knight to pressure the center.",
+            "play": "Develop the knight to f6."
+          },
+          {
+            "learn": "White adds c4. Prepare the bishop’s fianchetto.",
+            "play": "Play pawn to g6."
+          },
+          {
+            "learn": "White develops the knight to c3. Put the bishop on the long diagonal.",
+            "play": "Fianchetto the bishop to g7."
+          },
+          {
+            "learn": "White builds a broad center with e4. Prepare the e5 break.",
+            "play": "Play pawn to d6."
+          }
         ]
       },
       {
@@ -534,20 +876,34 @@
           "c7c6"
         ],
         "instructions": [
-          "Play pawn to d4.",
-          "Develop knight to f3.",
-          "Play pawn to c4.",
-          "Fianchetto the bishop with g6.",
-          "Develop knight to c3.",
-          "Fianchetto the bishop to g7.",
-          "Play pawn to e4.",
-          "Play pawn to d6.",
-          "Play pawn to f3.",
-          "Castle kingside.",
-          "Develop bishop to e3.",
-          "Strike the center with e5.",
-          "Push the pawn to d5.",
-          "Prepare the central break with c6."
+          {
+            "learn": "White opens with d4. Develop a knight to pressure the center.",
+            "play": "Develop the knight to f6."
+          },
+          {
+            "learn": "White adds c4. Prepare the bishop’s fianchetto.",
+            "play": "Play pawn to g6."
+          },
+          {
+            "learn": "White develops the knight to c3. Put the bishop on the long diagonal.",
+            "play": "Fianchetto the bishop to g7."
+          },
+          {
+            "learn": "White builds a broad center with e4. Prepare the e5 break.",
+            "play": "Play pawn to d6."
+          },
+          {
+            "learn": "White reinforces the pawn on e4 with f3. Castle before attacking the center.",
+            "play": "Castle kingside."
+          },
+          {
+            "learn": "White develops the bishop to e3. Challenge the pawn center with e5.",
+            "play": "Strike the center with e5."
+          },
+          {
+            "learn": "White advances d5. Prepare to undermine that pawn with c6.",
+            "play": "Prepare the central break with c6."
+          }
         ]
       },
       {
@@ -566,17 +922,26 @@
           "c1g5"
         ],
         "instructions": [
-          "Play pawn to d4.",
-          "Develop knight to f3.",
-          "Play pawn to c4.",
-          "Fianchetto the bishop with g6.",
-          "Develop knight to c3.",
-          "Fianchetto the bishop to g7.",
-          "Play pawn to e4.",
-          "Play pawn to d6.",
-          "Develop bishop to e2.",
-          "Castle kingside.",
-          "Develop bishop to g5 and put pressure on the knight."
+          {
+            "learn": "White opens with d4. Develop a knight to pressure the center.",
+            "play": "Develop the knight to f6."
+          },
+          {
+            "learn": "White adds c4. Prepare the bishop’s fianchetto.",
+            "play": "Play pawn to g6."
+          },
+          {
+            "learn": "White develops the knight to c3. Put the bishop on the long diagonal.",
+            "play": "Fianchetto the bishop to g7."
+          },
+          {
+            "learn": "White builds a broad center with e4. Support a future e5 break.",
+            "play": "Play pawn to d6."
+          },
+          {
+            "learn": "White develops the bishop to e2. Castle before challenging the center.",
+            "play": "Castle kingside."
+          }
         ]
       },
       {
@@ -599,21 +964,34 @@
           "h2h4"
         ],
         "instructions": [
-          "Play pawn to d4.",
-          "Develop knight to f3.",
-          "Play pawn to c4.",
-          "Fianchetto the bishop with g6.",
-          "Develop knight to c3.",
-          "Fianchetto the bishop to g7.",
-          "Play pawn to e4.",
-          "Play pawn to d6.",
-          "Develop bishop to e2.",
-          "Castle kingside.",
-          "Develop bishop to g5.",
-          "Challenge the center with c5.",
-          "Push the pawn to d5.",
-          "Prepare the central break with e6.",
-          "Start the kingside attack with h4."
+          {
+            "learn": "White opens with d4. Develop a knight to pressure the center.",
+            "play": "Develop the knight to f6."
+          },
+          {
+            "learn": "White adds c4. Prepare the bishop’s fianchetto.",
+            "play": "Play pawn to g6."
+          },
+          {
+            "learn": "White develops the knight to c3. Put the bishop on the long diagonal.",
+            "play": "Fianchetto the bishop to g7."
+          },
+          {
+            "learn": "White builds a broad center with e4. Support a future e5 break.",
+            "play": "Play pawn to d6."
+          },
+          {
+            "learn": "White develops the bishop to e2. Castle before challenging the center.",
+            "play": "Castle kingside."
+          },
+          {
+            "learn": "White pins the knight on f6 by moving the bishop to g5. Challenge the d4-pawn.",
+            "play": "Challenge the center with c5."
+          },
+          {
+            "learn": "White advances d5. Attack the base of the pawn chain.",
+            "play": "Prepare the central break with e6."
+          }
         ]
       },
       {
@@ -634,19 +1012,30 @@
           "d4d5"
         ],
         "instructions": [
-          "Play pawn to d4.",
-          "Develop knight to f3.",
-          "Play pawn to c4.",
-          "Fianchetto the bishop with g6.",
-          "Develop knight to c3.",
-          "Fianchetto the bishop to g7.",
-          "Play pawn to e4.",
-          "Play pawn to d6.",
-          "Develop the knight to e2.",
-          "Castle kingside.",
-          "Move the knight to g3.",
-          "Strike the center with e5.",
-          "Push the pawn to d5."
+          {
+            "learn": "White opens with d4. Develop a knight to pressure the center.",
+            "play": "Develop the knight to f6."
+          },
+          {
+            "learn": "White adds c4. Prepare the bishop’s fianchetto.",
+            "play": "Play pawn to g6."
+          },
+          {
+            "learn": "White develops the knight to c3. Put the bishop on the long diagonal.",
+            "play": "Fianchetto the bishop to g7."
+          },
+          {
+            "learn": "White builds a broad center with e4. Prepare the e5 break.",
+            "play": "Play pawn to d6."
+          },
+          {
+            "learn": "White develops the knight to e2. Castle before challenging the center.",
+            "play": "Castle kingside."
+          },
+          {
+            "learn": "White reroutes the knight to g3. Challenge the central pawns.",
+            "play": "Strike the center with e5."
+          }
         ]
       }
     ]
