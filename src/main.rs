@@ -13,7 +13,10 @@ use handlers::handler::handle_key_events;
 use log::error;
 use ui::tui::Tui;
 
-use crate::trainer::{Trainer, openings::Openings};
+use crate::{
+    app::player::PlayerData,
+    trainer::{Trainer, openings::Openings},
+};
 
 fn main() -> AppResult<()> {
     initialize_panic_handler()?;
@@ -27,11 +30,14 @@ fn main() -> AppResult<()> {
     // Load openings
     let openings: Openings = Openings::from_file("data/openings.json")?;
 
+    // Load player data, or create default data if none exists yet
+    let player_data = PlayerData::from_file("data/player.json").unwrap_or_default();
+
     // Create a trainer
-    let trainer = Trainer::new(openings);
+    let mut trainer = Trainer::new(openings);
 
     // Create an application
-    let mut app = App::new(trainer);
+    let mut app = App::new(trainer, player_data);
 
     // Initialize the terminal user interface
     let terminal = ratatui::try_init()?;
@@ -48,6 +54,9 @@ fn main() -> AppResult<()> {
             Event::Resize(_, _) => {}
         }
     }
+
+    // Save the player data
+    app.player_data.save("data/player.json");
 
     // Exit the user interface.
     ratatui::try_restore()?;

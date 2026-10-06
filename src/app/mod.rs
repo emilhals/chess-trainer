@@ -41,7 +41,7 @@ impl App {
 
         if self.trainer.state.current_streak > old_streak {
             self.player_data
-                .set_highest_streak(&opening_name, self.trainer.state.current_streak as u32);
+                .set_best_streak(&opening_name, self.trainer.state.current_streak as u32);
         }
 
         if self.trainer.state.mode.selected_mode == TrainerMode::Learn && old_wrong_moves == 0 {
