@@ -16,36 +16,38 @@ use crate::{
 };
 
 pub fn render_menu_ui(frame: &mut Frame, app: &App, area: Rect) {
-    let main_layout_horizontal = Layout::default()
+    let menu_areas = Layout::default()
         .direction(Direction::Vertical)
-        .constraints(
-            [
-                Constraint::Ratio(1, 10), // Logo
-                Constraint::Length(1),    // Subtitle
-                Constraint::Length(1),    // Padding
-                Constraint::Min(1),       // Openings
-                Constraint::Length(3),    // Footer
-            ]
-            .as_ref(),
-        )
+        .constraints([
+            Constraint::Ratio(1, 10), // Logo
+            Constraint::Length(1),    // Subtitle
+            Constraint::Length(1),    // Padding
+            Constraint::Min(1),       // Openings
+            Constraint::Length(3),    // Footer
+        ])
         .split(area);
+
+    let block_width = 30;
 
     let (main_layout_vertical, _) = Layout::default()
         .direction(Direction::Horizontal)
-        .constraints([Constraint::Length(26), Constraint::Length(26)].as_ref())
-        .split_with_spacers(main_layout_horizontal[3]);
+        .constraints([
+            Constraint::Length(block_width),
+            Constraint::Length(block_width),
+        ])
+        .split_with_spacers(menu_areas[3]);
 
     let logo_paragraph = Paragraph::new(LOGO)
         .alignment(Alignment::Center)
         .block(Block::default());
-    frame.render_widget(logo_paragraph, main_layout_horizontal[0]);
+    frame.render_widget(logo_paragraph, menu_areas[0]);
 
     let description_paragraph =
         Paragraph::new("Practice openings to become a chess master!".to_string())
             .centered()
             .bold()
             .block(Block::default());
-    frame.render_widget(description_paragraph, main_layout_horizontal[1]);
+    frame.render_widget(description_paragraph, menu_areas[1]);
 
     let openings = app.trainer.openings.get_openings();
     for i in 0..openings.len() {
@@ -60,7 +62,7 @@ pub fn render_menu_ui(frame: &mut Frame, app: &App, area: Rect) {
         );
     }
 
-    render_footer(frame, main_layout_horizontal[4]);
+    render_footer(frame, menu_areas[4]);
 }
 
 fn render_opening_block(
@@ -127,7 +129,7 @@ fn render_opening_block(
     frame.render_widget(opening_name_paragraph, block_layout[1]);
 
     let completed_lines = app.player_data.completed_lines(&opening.0);
-    let highest_streak = app.player_data.highest_streak(&opening.0);
+    let highest_streak = app.player_data.best_streak(&opening.0);
 
     let info_str = match app.trainer.state.mode.selected_mode {
         TrainerMode::Learn => format!(
@@ -135,7 +137,7 @@ fn render_opening_block(
             completed_lines,
             opening.1.lines.len()
         ),
-        TrainerMode::Drill => format!("Highest streak: {}", highest_streak),
+        TrainerMode::Drill => format!("Best streak: {}", highest_streak),
     };
 
     let line_amount_paragraph = Paragraph::new(info_str).centered();
