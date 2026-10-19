@@ -238,10 +238,10 @@ impl UI {
             || last_move_from == Some(current_rendering_square)
             || last_move_to == Some(current_rendering_square) && !is_cell_in_positions
         {
-            let highlight_color = Color::Green;
+            let highlight_color = Color::LightYellow;
             render_cell(frame, square, highlight_color, None);
         } else if is_cell_in_positions {
-            render_cell(frame, square, Color::LightCyan, None);
+            render_cell(frame, square, Color::LightGreen, None);
         } else {
             let cell = Block::default().bg(cell_color);
             frame.render_widget(cell, square);
