@@ -357,7 +357,7 @@
           "e4e5",
           "d7d5",
           "c4b5",
-          "c6e5",
+          "f6e4",
           "c3d4",
           "c5b6",
           "b1c3",
@@ -390,7 +390,7 @@
             "play": "Advance the e-pawn to e5 and attack the knight."
           },
           {
-            "learn": "Black’s knight captured the e5-pawn. Move the bishop to b5 with check.",
+            "learn": "Black has challenged the center with d5. Move the bishop to b5, pinning the c6-knight to Black's king.",
             "play": "Move the bishop to b5."
           },
           {
@@ -781,7 +781,7 @@
           },
           {
             "learn": "White expands with b4. Move the f6 knight toward f4.",
-            "play": "Prepare kingside play with Nh5."
+            "play": "Prepare kingside play with knight to h5."
           },
           {
             "learn": "White puts a rook on e1. Strike at the pawn center with f5.",
