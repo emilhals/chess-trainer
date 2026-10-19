@@ -1,19 +1,13 @@
-mod app;
-mod constants;
-mod event;
-mod handlers;
-mod state;
-mod trainer;
-mod ui;
-mod utils;
+use chess_trainer::{
+    app::player::PlayerData,
+    app::{App, AppResult},
+    event::{Event, EventHandler},
+    handlers::handler::handle_key_events,
+    trainer::{Trainer, openings::Openings},
+    ui::tui::Tui,
+};
 
-use app::{App, AppResult};
-use event::{Event, EventHandler};
-use handlers::handler::handle_key_events;
 use log::error;
-use ui::tui::Tui;
-
-use crate::trainer::{Trainer, openings::Openings};
 
 fn main() -> AppResult<()> {
     initialize_panic_handler()?;
@@ -27,11 +21,14 @@ fn main() -> AppResult<()> {
     // Load openings
     let openings: Openings = Openings::from_file("data/openings.json")?;
 
+    // Load player data, or create default data if none exists yet
+    let player_data = PlayerData::from_file("data/player.json").unwrap_or_default();
+
     // Create a trainer
     let trainer = Trainer::new(openings);
 
     // Create an application
-    let mut app = App::new(trainer);
+    let mut app = App::new(trainer, player_data);
 
     // Initialize the terminal user interface
     let terminal = ratatui::try_init()?;
@@ -48,6 +45,9 @@ fn main() -> AppResult<()> {
             Event::Resize(_, _) => {}
         }
     }
+
+    // Save the player data
+    let _ = app.player_data.save("data/player.json");
 
     // Exit the user interface.
     ratatui::try_restore()?;

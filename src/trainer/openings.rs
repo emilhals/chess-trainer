@@ -1,15 +1,20 @@
-use std::{collections::HashMap, fs::File, io::BufReader};
+use std::{collections::BTreeMap, fs::File, io::BufReader};
 
-use rand::seq::IteratorRandom;
 use serde::{Deserialize, Serialize};
 
 use crate::app::AppResult;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+pub struct Instruction {
+    pub learn: String,
+    pub play: String,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct Line {
     pub name: String,
     pub moves: Vec<String>,
-    pub instructions: Vec<String>,
+    pub instructions: Vec<Instruction>,
 }
 
 #[allow(dead_code)]
@@ -24,6 +29,7 @@ impl Line {
         move_index >= self.moves.len()
     }
 
+    /// Returns a move in UCI-format.
     pub fn move_uci(&self, move_index: usize) -> &str {
         let found_move = self.moves.get(move_index);
 
@@ -32,25 +38,16 @@ impl Line {
             None => return "",
         }
     }
-
-    pub fn name(&self) -> String {
-        self.name.clone()
-    }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Opening {
+    pub player: String,
     pub lines: Vec<Line>,
 }
 
-pub struct OpeningInfo {
-    pub name: String,
-    pub lines_amount: usize,
-    pub color_start: String,
-}
-
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Openings(HashMap<String, Opening>);
+pub struct Openings(BTreeMap<String, Opening>);
 
 impl Openings {
     pub fn from_file(path: &str) -> AppResult<Openings> {
@@ -59,20 +56,21 @@ impl Openings {
         Ok(serde_json::from_reader(reader)?)
     }
 
-    pub fn get_openings_with_info(&self) {}
+    pub fn get_openings(&self) -> Vec<(String, Opening)> {
+        let openings: Vec<(String, Opening)> = self.0.clone().into_iter().collect();
+        openings
+    }
 
+    // Returns an Opening from opening name
     pub fn get_opening(&self, opening_name: &str) -> Option<&Opening> {
         self.0.get(opening_name)
     }
 
+    // Returns a Line from opening name and line index
     pub fn get_line(&self, opening_name: &str, line_index: usize) -> Option<&Line> {
         let opening = self.get_opening(opening_name).unwrap();
 
         opening.lines.get(line_index)
-    }
-
-    pub fn get_random_opening(&self) -> Option<(&String, &Opening)> {
-        self.0.iter().choose(&mut rand::rng())
     }
 
     pub fn get_instruction(
@@ -80,15 +78,15 @@ impl Openings {
         opening_name: &str,
         line_index: usize,
         instruction_index: usize,
-    ) -> String {
+    ) -> (String, String) {
         let Some(line) = self.get_line(opening_name, line_index) else {
-            return "".to_string();
+            return ("".to_string(), "".to_string());
         };
-        let instruction = line.instructions.get(instruction_index);
-        match instruction {
-            Some(i) => return i.to_string(),
-            None => return "".to_string(),
-        }
+        let Some(instruction) = line.instructions.get(instruction_index) else {
+            return ("".to_string(), "".to_string());
+        };
+
+        (instruction.learn.clone(), instruction.play.clone())
     }
 
     pub fn get_move_uci(

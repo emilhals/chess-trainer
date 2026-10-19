@@ -6,8 +6,11 @@ use std::{
 use shakmaty::{Color, Square, uci::UciMove};
 
 use crate::{
-    app::coord::Coord,
-    state::trainer_state::TrainerState,
+    app::{coord::Coord, player::PlayerData},
+    state::trainer_state::{
+        TrainerMode::{self},
+        TrainerState,
+    },
     trainer::{
         board::Board,
         openings::{Line, Openings},
@@ -52,20 +55,15 @@ impl Trainer {
     }
 
     pub fn current_line(&self) -> Option<&Line> {
-        let Some(opening_name) = self.state.current_opening_name.as_deref() else {
-            return None;
-        };
+        let opening_name = self.state.current_opening_name.as_deref()?;
 
-        let line = self
-            .openings
-            .get_line(&opening_name, self.state.current_line_index);
-
-        line
+        self.openings
+            .get_line(&opening_name, self.state.current_line_index)
     }
 
-    pub fn current_instruction(&self) -> String {
+    pub fn current_instruction(&self) -> (String, String) {
         let Some(opening_name) = self.state.current_opening_name.as_deref() else {
-            return String::from("");
+            return (String::from(""), String::from(""));
         };
 
         let instruction = self.openings.get_instruction(
@@ -74,16 +72,65 @@ impl Trainer {
             self.state.current_instruction_index,
         );
 
-        instruction
+        (instruction.0, instruction.1)
+    }
+
+    pub fn find_next_uncompleted_line(&mut self, player_data: &PlayerData) {
+        let Some(opening_name) = &self.state.current_opening_name else {
+            return;
+        };
+        let Some(opening) = self.openings.get_opening(&opening_name) else {
+            return;
+        };
+
+        let next = opening.lines.iter().enumerate().find(|(_, line)| {
+            let is_completed = player_data
+                .openings
+                .get(opening_name)
+                .and_then(|opening_stats| opening_stats.lines.get(&line.name))
+                .is_some_and(|line_stats| line_stats.completed);
+
+            !is_completed
+        });
+
+        if let Some((index, _line)) = next {
+            self.state.current_line_index = index;
+        }
     }
 
     /// Reset board state and reset opening state related only to the line
-    pub fn next_line(&mut self) {
+    pub fn next_line(&mut self, player_data: &PlayerData) {
         self.board.reset();
-        self.state.reset_for_next_line();
+
+        match self.state.mode.selected_mode {
+            TrainerMode::Drill => {
+                // Set a random next line
+                let opening = self
+                    .openings
+                    .get_opening(self.state.current_opening_name.clone().unwrap().as_str());
+                let line_amount: usize = opening.unwrap().lines.len();
+
+                // If no mistakes were made, increment current streak
+                if self.state.made_wrong_move == false {
+                    self.state.current_streak += 1;
+                } else {
+                    self.state.current_streak = 0;
+                }
+
+                self.state.reset_for_random_line(line_amount);
+            }
+            TrainerMode::Learn => {
+                self.find_next_uncompleted_line(player_data);
+                self.state.reset_for_next_line();
+            }
+        }
+
+        self.state.made_wrong_move = false;
+        self.state.wrong_moves = 0;
     }
 
     pub fn replay_line(&mut self) {
+        self.state.made_wrong_move = false;
         self.board.reset();
         self.state.reset_for_current_line();
     }
@@ -122,6 +169,9 @@ impl Trainer {
         self.ui.cursor_coords = from_coords;
 
         self.state.mode.increment_hint_level();
+
+        // Showing a hint counts as a wrong move
+        self.state.made_wrong_move = true;
     }
 
     pub fn apply_solution_move(&mut self) {

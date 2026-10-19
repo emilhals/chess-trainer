@@ -13,7 +13,7 @@ pub fn handle_home_view_events(app: &mut App, key_event: KeyEvent) {
         KeyCode::Right | KeyCode::Char('l') | KeyCode::Tab => {
             app.ui_state.menu_cursor_down(NUM_OPENINGS)
         }
-
+        KeyCode::Char('m') => app.trainer.state.mode.toggle_mode(),
         KeyCode::Enter | KeyCode::Char(' ') => app.menu_select(),
         _ => fallback_key_handler(app, key_event),
     }
