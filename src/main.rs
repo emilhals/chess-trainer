@@ -59,6 +59,11 @@ fn main() -> AppResult<()> {
         ratatui::crossterm::event::DisableMouseCapture
     )?;
 
+    // Save the player data
+    if let Err(err) = app.player_data.save(&player_path) {
+        log::error!("Failed to save player data: {err}");
+    }
+
     Ok(())
 }
 
