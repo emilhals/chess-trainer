@@ -5,17 +5,10 @@ use std::{
 
 use shakmaty::{Square, uci::UciMove};
 
-use crate::trainer::Trainer;
+use crate::{state::trainer_state::TrainerMode, trainer::Trainer};
 
 impl Trainer {
     pub fn try_move(&mut self, from: Square, to: Square) {
-        // Check if moving a piece and get piece type
-        let Some(role_from) = self.board.get_role_at_square(&from) else {
-            return;
-        };
-
-        let role_to = self.board.get_role_at_square(&to);
-
         if let Some(executed_move) = self.board.execute_move(from, to) {
             let move_uci = executed_move
                 .to_uci(shakmaty::CastlingMode::Standard)
@@ -32,9 +25,15 @@ impl Trainer {
                 if !self.is_completed() {
                     self.state.bot_should_move = true;
                 }
+
+                // In Drill mode, we go automatically to the next line
+                if self.is_completed() && self.state.mode.selected_mode == TrainerMode::Drill {
+                    self.state.next_line_at =
+                        Some(Instant::now() + Duration::from_millis(self.state.bot_move_delay));
+                }
             } else {
                 self.state.bot_should_move = false;
-                //self.wrong_move_played = true;
+                self.state.made_wrong_move = true;
 
                 self.state.validate_move_response = response;
 
@@ -63,7 +62,7 @@ impl Trainer {
 
         let bot_actual_move = uci_move.to_move(&current_position).unwrap();
 
-        let Some(executed_move) = self
+        let Some(_executed_move) = self
             .board
             .execute_move(bot_actual_move.from().unwrap(), bot_actual_move.to())
         else {
@@ -75,6 +74,11 @@ impl Trainer {
         }
 
         self.state.current_move_index += 1;
+
+        if self.is_completed() && self.state.mode.selected_mode == TrainerMode::Drill {
+            self.state.next_line_at =
+                Some(Instant::now() + Duration::from_millis(self.state.bot_move_delay));
+        }
 
         true
     }
