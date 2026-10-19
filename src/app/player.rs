@@ -1,8 +1,12 @@
-use std::{collections::HashMap, fs::File, io::BufReader};
-
-use serde::{Deserialize, Serialize};
-
 use crate::app::AppResult;
+use directories::ProjectDirs;
+use serde::{Deserialize, Serialize};
+use std::{
+    collections::HashMap,
+    fs::{self, File},
+    io::{self, BufReader},
+    path::{Path, PathBuf},
+};
 
 #[derive(Serialize, Deserialize, Default)]
 pub struct PlayerData {
@@ -22,17 +26,28 @@ pub struct LineStats {
     pub completed: bool,
 }
 
+pub fn player_data_path() -> io::Result<PathBuf> {
+    let project_dirs = ProjectDirs::from("com", "emilhals", "chess-trainer")
+        .ok_or_else(|| io::Error::other("Could not determine application data directory"))?;
+
+    let data_dir = project_dirs.data_dir();
+
+    fs::create_dir_all(data_dir)?;
+
+    Ok(data_dir.join("player.json"))
+}
+
 impl PlayerData {
-    pub fn from_file(path: &str) -> AppResult<PlayerData> {
+    pub fn from_file(path: impl AsRef<Path>) -> AppResult<PlayerData> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
 
         Ok(serde_json::from_reader(reader)?)
     }
 
-    pub fn save(&self, path: &str) -> AppResult<()> {
-        let file = File::create(path)?;
-        serde_json::to_writer_pretty(file, self)?;
+    pub fn save(&self, path: impl AsRef<Path>) -> AppResult<()> {
+        let json = serde_json::to_string_pretty(self)?;
+        fs::write(path, json)?;
 
         Ok(())
     }

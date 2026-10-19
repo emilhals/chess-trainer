@@ -1,5 +1,5 @@
 use chess_trainer::{
-    app::player::PlayerData,
+    app::player::{PlayerData, player_data_path},
     app::{App, AppResult},
     event::{Event, EventHandler},
     handlers::handler::handle_key_events,
@@ -21,8 +21,10 @@ fn main() -> AppResult<()> {
     // Load openings
     let openings: Openings = Openings::bundled()?;
 
+    let player_path = player_data_path()?;
+
     // Load player data, or create default data if none exists yet
-    let player_data = PlayerData::from_file("data/player.json").unwrap_or_default();
+    let player_data = PlayerData::from_file(&player_path).unwrap_or_default();
 
     // Create a trainer
     let trainer = Trainer::new(openings);
@@ -47,7 +49,7 @@ fn main() -> AppResult<()> {
     }
 
     // Save the player data
-    let _ = app.player_data.save("data/player.json");
+    app.player_data.save(player_path);
 
     // Exit the user interface.
     ratatui::try_restore()?;
