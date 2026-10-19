@@ -30,8 +30,11 @@ pub struct UI {
     pub selected_square: Option<Square>,
     /// The selected piece cursor when we already selected a piece
     pub selected_piece_cursor: i8,
+
     pub width: u16,
     pub height: u16,
+    pub top_x: u16,
+    pub top_y: u16,
 }
 
 impl Default for UI {
@@ -44,6 +47,8 @@ impl Default for UI {
 
             width: 0,
             height: 0,
+            top_x: 0,
+            top_y: 0,
         }
     }
 }
