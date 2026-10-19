@@ -19,7 +19,7 @@ fn main() -> AppResult<()> {
     )?;
 
     // Load openings
-    let openings: Openings = Openings::from_file("data/openings.json")?;
+    let openings: Openings = Openings::bundled()?;
 
     // Load player data, or create default data if none exists yet
     let player_data = PlayerData::from_file("data/player.json").unwrap_or_default();

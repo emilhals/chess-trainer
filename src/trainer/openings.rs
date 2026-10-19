@@ -50,6 +50,14 @@ pub struct Opening {
 pub struct Openings(BTreeMap<String, Opening>);
 
 impl Openings {
+    pub fn from_json(json: &str) -> serde_json::Result<Self> {
+        serde_json::from_str(json)
+    }
+
+    pub fn bundled() -> serde_json::Result<Self> {
+        Self::from_json(include_str!("../../data/openings.json"))
+    }
+
     pub fn from_file(path: &str) -> AppResult<Openings> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
