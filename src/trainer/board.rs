@@ -79,7 +79,7 @@ impl Board {
                 }
 
                 Err(e) => {
-                    // fix logg
+                    log::error!("Failed to play move {} -> {}: {}", from, to, e);
                     None
                 }
             }
