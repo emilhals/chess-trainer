@@ -1,11 +1,16 @@
 use ratatui::{
     layout::{Alignment, Rect},
-    style::{Color, Stylize},
-    widgets::Paragraph,
+    style::{Color, Style, Stylize},
+    text::{Line, Span},
+    widgets::{Paragraph, Wrap},
 };
 use shakmaty::Role;
 
-use crate::{trainer::ui::UI, ui::pieces::PieceSize};
+use crate::{
+    state::trainer_state::TrainerMode,
+    trainer::{Trainer, ui::UI},
+    ui::pieces::PieceSize,
+};
 
 impl UI {
     // Helper function to render a piece paragraph. Returns the paragraph and its line count.
@@ -58,5 +63,40 @@ impl UI {
             width: cell.width,
             height: content_height,
         }
+    }
+
+    pub fn instruction_height(&self, width: u16, trainer: &Trainer) -> usize {
+        let inner_width = width.saturating_sub(2);
+
+        if trainer.is_completed() {
+            return 5;
+        }
+
+        let text = if trainer.state.validate_move_response.is_some() {
+            let response = trainer
+                .state
+                .validate_move_response
+                .clone()
+                .unwrap_or_else(|| String::from(""));
+
+            vec![Line::from(response)]
+        } else {
+            if trainer.state.mode.selected_mode == TrainerMode::Drill
+                && !trainer.state.made_wrong_move
+            {
+                return 4;
+            }
+
+            let (info, play) = trainer.current_instruction();
+
+            vec![
+                Line::from(Span::styled(info, Style::new())),
+                Line::from(Span::styled(play, Style::new().bold())),
+            ]
+        };
+
+        let paragraph = Paragraph::new(text).wrap(Wrap { trim: false });
+
+        return paragraph.line_count(inner_width) + 3;
     }
 }
