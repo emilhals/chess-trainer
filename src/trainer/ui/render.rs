@@ -19,16 +19,31 @@ use crate::{
 };
 
 impl UI {
-    pub fn streak_render(&self, area: Rect, frame: &mut Frame, trainer: &Trainer) {
-        let streak_paragraph = Paragraph::new(format!("Streak: {}", trainer.state.current_streak));
-
+    pub fn streak_render(
+        &self,
+        area: Rect,
+        frame: &mut Frame,
+        trainer: &Trainer,
+        highest_streak: u32,
+    ) {
         let info_block = Block::default()
             .borders(Borders::ALL)
             .border_style(Style::default().fg(Color::White))
-            .border_type(BorderType::Rounded);
+            .border_type(BorderType::Rounded)
+            .title_top(format!("Streak: {}", trainer.state.current_streak))
+            .title_alignment(Alignment::Center);
 
-        frame.render_widget(streak_paragraph, area);
+        let inner_block = info_block.inner(area);
         frame.render_widget(info_block, area);
+
+        let content_area = Layout::default()
+            .direction(Direction::Vertical)
+            .constraints([Constraint::Length(1), Constraint::Length(1)])
+            .split(inner_block);
+
+        let best_streak =
+            Paragraph::new(format!("Best: {}", highest_streak)).alignment(Alignment::Center);
+        frame.render_widget(best_streak, content_area[1]);
     }
 
     pub fn progress_gauge_render(&self, area: Rect, frame: &mut Frame, trainer: &Trainer) {
@@ -64,7 +79,7 @@ impl UI {
 
         let back_kbd = Kbd::default()
             .key("b".to_string())
-            .content("back".to_string());
+            .content("Back".to_string());
 
         frame.render_widget(back_kbd, panel[1]);
 
@@ -74,7 +89,7 @@ impl UI {
             .as_ref()
             .map(|name| name.as_str())
             .unwrap_or("No opening");
-        let formatted_title = Openings::format_name(title.to_string());
+        let formatted_title = Openings::format_name(&title);
 
         let line_index = trainer.state.current_line_index.to_string();
 
@@ -82,7 +97,7 @@ impl UI {
         lines.push(Line::from(vec![
             Span::styled(formatted_title, Style::default().bold()),
             Span::styled(" ", Style::default()),
-            Span::styled(format!("#{}", line_index), Style::default()),
+            Span::styled(format!("⚬ Line {}", line_index), Style::default()),
         ]));
         let text = Text::from(lines).centered();
 
@@ -105,20 +120,8 @@ impl UI {
     }
 
     pub fn instruction_render(&self, area: Rect, frame: &mut Frame<'_>, trainer: &Trainer) {
-        let info_block = Block::default()
-            .borders(Borders::ALL)
-            .border_style(Style::default().fg(Color::White))
-            .border_type(BorderType::Rounded);
-
-        let height = area.height;
-
-        let right_panel_layout = Layout::default()
-            .direction(Direction::Vertical)
-            .constraints([Constraint::Length(height - 1), Constraint::Length(1)].as_ref())
-            .split(area);
-
-        let inner_area = info_block.inner(right_panel_layout[0]);
-        frame.render_widget(info_block, right_panel_layout[0]);
+        let [content, kbd] =
+            Layout::vertical([Constraint::Min(0), Constraint::Length(1)]).areas(area);
 
         if trainer.is_completed() {
             let lines = vec![
@@ -128,40 +131,70 @@ impl UI {
             let text = Text::from(lines);
 
             let response_paragraph = Paragraph::new(text).alignment(Alignment::Center);
-            frame.render_widget(response_paragraph, inner_area);
+            frame.render_widget(response_paragraph, content);
+
+            // No need to render the Kbd widgets in Drill mode
+            if trainer.state.mode.selected_mode == TrainerMode::Drill {
+                return;
+            }
 
             let kbd_area = Layout::default()
                 .direction(Direction::Horizontal)
                 .flex(Flex::Center)
                 .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
-                .split(right_panel_layout[1]);
+                .split(kbd);
 
             let kbd_next = Kbd::default()
                 .key("n".to_string())
-                .content("next".to_string());
+                .content("Next".to_string());
             frame.render_widget(kbd_next, kbd_area[0]);
 
             let kbd_restart = Kbd::default()
                 .key("r".to_string())
-                .content("restart".to_string());
+                .content("Replay".to_string());
             frame.render_widget(kbd_restart, kbd_area[1]);
         } else {
-            let response_str = trainer
-                .state
-                .validate_move_response
-                .clone()
-                .unwrap_or(trainer.current_instruction());
-            let response_paragraph = Paragraph::new(Line::from(response_str).bold())
-                .wrap(Wrap { trim: true })
-                .fg(Color::White)
-                .alignment(Alignment::Center);
-            frame.render_widget(response_paragraph, inner_area);
+            // If we don't have a validation response, render the instruction
+            if trainer.state.validate_move_response.is_none() {
+                // In Drill mode, we don't show the instruction unless a wrong move has been made
+                if trainer.state.mode.selected_mode == TrainerMode::Drill
+                    && !trainer.state.made_wrong_move
+                {
+                    let paragraph = Paragraph::new("What's the correct move?");
+                    frame.render_widget(paragraph, content);
 
-            let hint_level = trainer.state.mode.hint_level;
-            let kbd_hint = Kbd::default()
-                .key("s".to_string())
-                .content(format!("{:#}", hint_level.to_string().to_lowercase()));
-            frame.render_widget(kbd_hint, right_panel_layout[1]);
+                    let hint_level = trainer.state.mode.hint_level.to_string();
+
+                    let kbd_hint = Kbd::default()
+                        .key("s".to_string())
+                        .content(format!("{}", hint_level));
+                    frame.render_widget(kbd_hint, kbd);
+
+                    return;
+                }
+
+                let (info, play) = trainer.current_instruction();
+
+                let lines = vec![
+                    Line::from(Span::styled(info, Style::new())),
+                    Line::from(Span::styled(" ", Style::new())),
+                    Line::from(Span::styled(play, Style::new().bold())),
+                ];
+
+                let text = Text::from(lines);
+                let paragraph = Paragraph::new(text).wrap(Wrap { trim: true });
+                frame.render_widget(paragraph, content);
+            } else {
+                // We have a validation response, so we render it
+                let response = trainer.state.validate_move_response.clone().unwrap();
+
+                let response_paragraph = Paragraph::new(Line::from(response).bold())
+                    .wrap(Wrap { trim: true })
+                    .fg(Color::White)
+                    .alignment(Alignment::Center);
+
+                frame.render_widget(response_paragraph, content);
+            }
         }
     }
 
@@ -253,6 +286,8 @@ impl UI {
 
         self.width = width;
         self.height = height;
+        self.top_x = area.x + border_width;
+        self.top_y = area.y + border_height;
 
         // There's 8 vertical lines.
         let columns = Layout::default()
