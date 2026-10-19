@@ -2,14 +2,13 @@ use std::time::Instant;
 
 use shakmaty::Color;
 
-#[derive(Clone, Copy)]
-#[allow(dead_code)]
+#[derive(Clone, Copy, PartialEq)]
 pub enum TrainerMode {
     Learn,
     Drill,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 pub enum HintLevel {
     Low,
     Solve,
@@ -33,6 +32,7 @@ impl ToString for TrainerMode {
     }
 }
 
+#[derive(PartialEq)]
 pub struct TrainerModeState {
     pub selected_color: Color,
     pub selected_mode: TrainerMode,
@@ -85,6 +85,10 @@ pub struct TrainerState {
 
     pub correct_move: Option<bool>,
     pub validate_move_response: Option<String>,
+    pub made_wrong_move: bool,
+
+    pub wrong_moves: usize,
+    pub current_streak: usize,
 
     pub bot_should_move: bool,
     pub bot_move_at: Option<Instant>,
@@ -92,6 +96,8 @@ pub struct TrainerState {
 
     pub undo_move_at: Option<Instant>,
     pub undo_move_delay: u64,
+
+    pub next_line_at: Option<Instant>,
 }
 
 impl Default for TrainerState {
@@ -106,6 +112,10 @@ impl Default for TrainerState {
 
             correct_move: None,
             validate_move_response: None,
+            made_wrong_move: false,
+
+            wrong_moves: 0,
+            current_streak: 0,
 
             bot_should_move: false,
             bot_move_at: None,
@@ -113,6 +123,8 @@ impl Default for TrainerState {
 
             undo_move_at: None,
             undo_move_delay: 700,
+
+            next_line_at: None,
         }
     }
 }
@@ -129,12 +141,19 @@ impl Clone for TrainerState {
 
             correct_move: self.correct_move.clone(),
             validate_move_response: self.validate_move_response.clone(),
+            made_wrong_move: false,
+
+            wrong_moves: 0,
+            current_streak: 0,
 
             bot_should_move: self.bot_should_move.clone(),
             bot_move_at: self.bot_move_at.clone(),
             bot_move_delay: self.bot_move_delay.clone(),
+
             undo_move_at: self.undo_move_at.clone(),
             undo_move_delay: self.undo_move_delay.clone(),
+
+            next_line_at: self.next_line_at.clone(),
         }
     }
 }
@@ -154,7 +173,21 @@ impl TrainerState {
     }
 
     pub fn reset_for_next_line(&mut self) {
-        self.current_line_index += 1;
+        self.current_instruction_index = 0;
+        self.current_move_index = 0;
+        self.bot_should_move = false;
+    }
+
+    pub fn reset_for_random_line(&mut self, line_length: usize) {
+        // Set a random line index but exclude the current one
+        let n = rand::random_range(0..line_length);
+        let new_line_index = if n == self.current_line_index {
+            n + 1
+        } else {
+            n
+        };
+
+        self.current_line_index = new_line_index;
 
         self.current_instruction_index = 0;
         self.current_move_index = 0;
