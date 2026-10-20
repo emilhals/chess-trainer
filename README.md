@@ -15,3 +15,11 @@
 cargo install chess-trainer
 chess-trainer
 ```
+
+
+**Homebrew:**
+
+```bash
+brew install emilhals/homebrew-tap/chess-trainer
+chess-trainer
+```
