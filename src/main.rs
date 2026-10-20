@@ -49,7 +49,7 @@ fn main() -> AppResult<()> {
     }
 
     // Save the player data
-    app.player_data.save(player_path);
+    app.player_data.save(&player_path)?;
 
     // Exit the user interface.
     ratatui::try_restore()?;
