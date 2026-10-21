@@ -5,6 +5,8 @@
     Inspired by <a href="https://github.com/thomas-mauran/chess-tui">chess-tui</a>
     and <a href="https://chessreps.com">chessreps</a>.
   </p>
+
+  <img src="https://vhs.charm.sh/vhs-5JLb8YZNuYnqEOe2XaARiB.gif" alt="Made with VHS">
 </div>
 
 ### Installation
