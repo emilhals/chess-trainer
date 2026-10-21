@@ -20,12 +20,12 @@
 
 ### Features
 
-- **Learn mode** — Learn chess openings through guided, step-by-step instructions.
-- **Drill mode** — Practice openings from memory.
-- **Progress tracking** — Track completed lines and your highest streaks.
-- **Instant feedback** — Get feedback when making incorrect moves.
-- **Multiple openings** — Practice different openings and variations.
-- **Terminal interface** — Navigate and play entirely from your terminal.
+- **Learn mode**: Learn chess openings through guided, step-by-step instructions.
+- **Drill mode**: Practice openings from memory.
+- **Progress tracking**: Track completed lines and your highest streaks.
+- **Instant feedback**: Get feedback when making incorrect moves.
+- **Multiple openings**: Practice different openings and lines.
+- **Terminal interface**: Navigate and play entirely from your terminal.
 
 ### Supported Openings
 - Italian Game
@@ -48,16 +48,3 @@ chess-trainer
 brew install emilhals/homebrew-tap/chess-trainer
 chess-trainer
 ```
-### Usage
-
-Launch the application:
-
-```bash
-chess-trainer
-```
-
-Select an opening and choose between two training modes:
-
-- Learn — Follow guided instructions to understand the opening.
-
-- Drill — Practice the opening from memory and track your streaks.
