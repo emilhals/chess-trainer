@@ -1,0 +1,38 @@
+name: Rust
+
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Install Rust toolchain
+      - name: Install Rust
+        uses: action-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      # Install Nextest
+      - name: Install cargo-nextest
+        uses: taiki-e/install-acton@cargo-nextest
+
+      # Run Clippy (linter)
+      - name: Run Clippy
+        run: cargo clippy --all-targets -- -D warnings
+
+      # Check code formatting
+      - name: Check formatting
+        run: cargo fmt --all --check
+
+      # Run tests with cargo-nextest
+      - name: Run tests
+        run: cargo nextest run
