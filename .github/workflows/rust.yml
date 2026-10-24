@@ -23,7 +23,7 @@ jobs:
 
       # Install Nextest
       - name: Install cargo-nextest
-        uses: taiki-e/install-acton@cargo-nextest
+        uses: taiki-e/install-action@cargo-nextest
 
       # Run Clippy (linter)
       - name: Run Clippy
