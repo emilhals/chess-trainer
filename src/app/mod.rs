@@ -4,6 +4,8 @@ pub mod player;
 
 use std::{error, time::Instant};
 
+use crate::settings::Settings;
+use crate::skin::Skins;
 use crate::{
     app::player::PlayerData,
     state::{trainer_state::TrainerMode, ui_state::UIState},
@@ -17,15 +19,19 @@ pub struct App {
     pub trainer: Trainer,
     pub ui_state: UIState,
     pub player_data: PlayerData,
+    pub settings: Settings,
+    pub skins: Skins,
 }
 
 impl App {
-    pub fn new(trainer: Trainer, player_data: PlayerData) -> Self {
+    pub fn new(trainer: Trainer, player_data: PlayerData, skins: Skins) -> Self {
         Self {
             running: true,
             trainer: trainer,
             ui_state: UIState::default(),
             player_data: player_data,
+            settings: Settings::default(),
+            skins: skins,
         }
     }
 

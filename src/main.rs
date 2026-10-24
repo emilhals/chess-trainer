@@ -1,8 +1,11 @@
 use chess_trainer::{
-    app::player::{PlayerData, player_data_path},
-    app::{App, AppResult},
+    app::{
+        App, AppResult,
+        player::{PlayerData, player_data_path},
+    },
     event::{Event, EventHandler},
     handlers::handler::handle_key_events,
+    skin::Skins,
     trainer::{Trainer, openings::Openings},
     ui::tui::Tui,
 };
@@ -18,8 +21,9 @@ fn main() -> AppResult<()> {
         ratatui::crossterm::event::EnableMouseCapture
     )?;
 
-    // Load openings
+    // Load bundles resources
     let openings: Openings = Openings::bundled()?;
+    let skins: Skins = Skins::bundled()?;
 
     let player_path = player_data_path()?;
 
@@ -30,7 +34,7 @@ fn main() -> AppResult<()> {
     let trainer = Trainer::new(openings);
 
     // Create an application
-    let mut app = App::new(trainer, player_data);
+    let mut app = App::new(trainer, player_data, skins);
 
     // Initialize the terminal user interface
     let terminal = ratatui::try_init()?;
