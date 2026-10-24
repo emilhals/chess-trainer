@@ -1,0 +1,42 @@
+{
+  "chessdotcom": {
+    "light_square": "#EEEED2",
+    "dark_square": "#769656",
+    "selected_square": "#F6F669",
+    "legal_move": "#FFFF00",
+    "last_move": "#FFFF00",
+    "cursor": "#00FFFF"
+  },
+  "cherry-blossom": {
+    "light_square": "#FCE8EE",
+    "dark_square": "#D98FA9",
+    "selected_square": "#BE4B77",
+    "legal_move": "#7D3754",
+    "last_move": "#F4B4C6",
+    "cursor": "#6E2D55"
+  },
+  "midnight-blue": {
+    "light_square": "#B8C9DF",
+    "dark_square": "#445D82",
+    "selected_square": "#F2C66D",
+    "legal_move": "#E8B85C",
+    "last_move": "#849FC4",
+    "cursor": "#FFFFFF"
+  },
+  "walnut": {
+    "light_square": "#EAD2B0",
+    "dark_square": "#946B4B",
+    "selected_square": "#DFA858",
+    "legal_move": "#5C412C",
+    "last_move": "#C89A6E",
+    "cursor": "#FFF1CE"
+  },
+  "nordic": {
+    "light_square": "#D8DEE9",
+    "dark_square": "#81A1C1",
+    "selected_square": "#A3BE8C",
+    "legal_move": "#4C7A60",
+    "last_move": "#B5C99A",
+    "cursor": "#BF616A"
+  }
+}

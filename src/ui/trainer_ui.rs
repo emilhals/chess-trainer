@@ -63,9 +63,13 @@ pub fn render_trainer_ui(frame: &mut Frame<'_>, app: &mut App, area: Rect) {
     // Get the inner area of the board (accounting for any block padding)
     let board_inner = board_block.inner(board_with_labels[1]);
 
+    let Some(skin) = app.skins.get(&app.settings.selected_skin) else {
+        return;
+    };
+
     app.trainer
         .ui
-        .board_render(board_inner, frame, &app.trainer.board);
+        .board_render(board_inner, frame, &app.trainer.board, &skin);
 
     app.trainer
         .ui

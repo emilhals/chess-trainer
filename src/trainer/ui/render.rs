@@ -9,6 +9,7 @@ use shakmaty::Square;
 
 use crate::{
     app::coord::Coord,
+    skin::Skin,
     state::trainer_state::TrainerMode,
     trainer::{Trainer, UI, board::Board, openings::Openings, ui::CellRenderContext},
     ui::{
@@ -166,7 +167,7 @@ impl UI {
                     let hint_level = trainer.state.mode.hint_level.to_string();
 
                     let kbd_hint = Kbd::default()
-                        .key("s".to_string())
+                        .key("t".to_string())
                         .content(format!("{}", hint_level));
                     frame.render_widget(kbd_hint, kbd);
 
@@ -199,7 +200,12 @@ impl UI {
     }
 
     // Renders a single cell of the board.
-    pub fn render_single_cell(&self, frame: &mut Frame<'_>, ctx: &CellRenderContext<'_>) {
+    pub fn render_single_cell(
+        &self,
+        frame: &mut Frame<'_>,
+        ctx: &CellRenderContext<'_>,
+        skin: &Skin,
+    ) {
         let CellRenderContext {
             board,
             i,
@@ -226,9 +232,9 @@ impl UI {
         }
 
         let cell_color: Color = if (i + j).is_multiple_of(2) {
-            Color::Gray
+            skin.light_square
         } else {
-            Color::DarkGray
+            skin.dark_square
         };
 
         // Where can the piece move?
@@ -238,10 +244,9 @@ impl UI {
             || last_move_from == Some(current_rendering_square)
             || last_move_to == Some(current_rendering_square) && !is_cell_in_positions
         {
-            let highlight_color = Color::LightYellow;
-            render_cell(frame, square, highlight_color, None);
+            render_cell(frame, square, skin.last_move, None);
         } else if is_cell_in_positions {
-            render_cell(frame, square, Color::LightGreen, None);
+            render_cell(frame, square, skin.legal_move, None);
         } else {
             let cell = Block::default().bg(cell_color);
             frame.render_widget(cell, square);
@@ -253,7 +258,7 @@ impl UI {
         let piece_color = board.get_piece_color_at_square(&square_index);
 
         if is_cursor_cell {
-            let cell = Block::default().bg(Color::Cyan);
+            let cell = Block::default().bg(skin.cursor);
 
             frame.render_widget(cell, square);
         }
@@ -263,12 +268,12 @@ impl UI {
         frame.render_widget(paragraph, piece_area);
     }
 
-    pub fn board_render(&mut self, area: Rect, frame: &mut Frame<'_>, board: &Board) {
+    pub fn board_render(&mut self, area: Rect, frame: &mut Frame<'_>, board: &Board, skin: &Skin) {
         let actual_square = self
             .selected_square
             .map(|s| flip_square_if_needed(s, board.is_flipped));
 
-        self.render_board_grid(area, frame, board, actual_square);
+        self.render_board_grid(area, frame, board, skin, actual_square);
     }
 
     fn render_board_grid(
@@ -276,6 +281,7 @@ impl UI {
         area: Rect,
         frame: &mut Frame<'_>,
         board: &Board,
+        skin: &Skin,
         actual_square: Option<Square>,
     ) {
         let width = area.width / 8;
@@ -345,7 +351,7 @@ impl UI {
                     legal_moves: &legal_moves,
                 };
 
-                self.render_single_cell(frame, &ctx);
+                self.render_single_cell(frame, &ctx, &skin);
             }
         }
     }
