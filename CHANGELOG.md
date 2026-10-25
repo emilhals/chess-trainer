@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0](https://github.com/emilhals/chess-trainer/compare/v0.1.0...v0.2.0) - 2026-10-25
+
+### Added
+
+- add settings menu
+- add board skins
+
+### Fixed
+
+- resolve formatting issue
+- resolve clippy warnings
+- correct misspelling
+- move saving player data to after restoring the terminal
+
+### Other
+
+- Merge pull request #2 from emilhals/feat/board-skins
+- update Rust toolchain and test workflow
+- set up Rust workflow
+- remove usage instruction
+- add badges, features, usage instructions and supported openings
+- add vhs tape and demo preview to README
+- add Homebrew installation to README.md
+- update README.md
+- configure release-plz
+
 ## [0.1.0](https://github.com/emilhals/chess-trainer/releases/tag/v0.1.0) - 2026-10-20
 
 ### Added
