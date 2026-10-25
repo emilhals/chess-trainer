@@ -87,10 +87,9 @@ impl UI {
         let title = trainer
             .state
             .current_opening_name
-            .as_ref()
-            .map(|name| name.as_str())
+            .as_deref()
             .unwrap_or("No opening");
-        let formatted_title = Openings::format_name(&title);
+        let formatted_title = Openings::format_name(title);
 
         let line_index = trainer.state.current_line_index.to_string();
 
@@ -109,11 +108,7 @@ impl UI {
             TrainerMode::Learn => "📚",
         };
 
-        let mode_str = format!(
-            "{} {}",
-            mode_symbol,
-            trainer.state.mode.selected_mode.to_string()
-        );
+        let mode_str = format!("{} {}", mode_symbol, trainer.state.mode.selected_mode);
         let mode_paragraph = Paragraph::new(mode_str).right_aligned();
         frame.render_widget(mode_paragraph, panel[3]);
 
@@ -168,7 +163,7 @@ impl UI {
 
                     let kbd_hint = Kbd::default()
                         .key("t".to_string())
-                        .content(format!("{}", hint_level));
+                        .content(hint_level.to_string());
                     frame.render_widget(kbd_hint, kbd);
 
                     return;
@@ -351,7 +346,7 @@ impl UI {
                     legal_moves: &legal_moves,
                 };
 
-                self.render_single_cell(frame, &ctx, &skin);
+                self.render_single_cell(frame, &ctx, skin);
             }
         }
     }

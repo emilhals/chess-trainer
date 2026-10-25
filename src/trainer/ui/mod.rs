@@ -21,6 +21,7 @@ pub struct CellRenderContext<'a> {
     legal_moves: &'a [Coord],
 }
 
+#[derive(Default)]
 pub struct UI {
     /// The cursor position
     pub cursor_coords: Coord,
@@ -35,22 +36,6 @@ pub struct UI {
     pub height: u16,
     pub top_x: u16,
     pub top_y: u16,
-}
-
-impl Default for UI {
-    fn default() -> Self {
-        Self {
-            cursor_coords: Coord::default(),
-            selected_square: None,
-            selected_piece_cursor: 0,
-            old_cursor_coords: None,
-
-            width: 0,
-            height: 0,
-            top_x: 0,
-            top_y: 0,
-        }
-    }
 }
 
 impl UI {

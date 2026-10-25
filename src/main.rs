@@ -5,6 +5,7 @@ use chess_trainer::{
     },
     event::{Event, EventHandler},
     handlers::handler::handle_key_events,
+    settings::{Settings, settings_path},
     skin::Skins,
     trainer::{Trainer, openings::Openings},
     ui::tui::Tui,
@@ -26,15 +27,19 @@ fn main() -> AppResult<()> {
     let skins: Skins = Skins::bundled()?;
 
     let player_path = player_data_path()?;
+    let settings_path = settings_path()?;
 
     // Load player data, or create default data if none exists yet
     let player_data = PlayerData::from_file(&player_path).unwrap_or_default();
+
+    // Load or create settings.json
+    let settings = Settings::load_or_create(&settings_path)?;
 
     // Create a trainer
     let trainer = Trainer::new(openings);
 
     // Create an application
-    let mut app = App::new(trainer, player_data, skins);
+    let mut app = App::new(trainer, player_data, settings, skins);
 
     // Initialize the terminal user interface
     let terminal = ratatui::try_init()?;
@@ -52,9 +57,6 @@ fn main() -> AppResult<()> {
         }
     }
 
-    // Save the player data
-    app.player_data.save(&player_path)?;
-
     // Exit the user interface.
     ratatui::try_restore()?;
     // Free up the mouse
@@ -66,6 +68,11 @@ fn main() -> AppResult<()> {
     // Save the player data
     if let Err(err) = app.player_data.save(&player_path) {
         log::error!("Failed to save player data: {err}");
+    }
+
+    // Save settings
+    if let Err(err) = app.settings.save(&settings_path) {
+        log::error!("Failed to save settings: {err}");
     }
 
     Ok(())

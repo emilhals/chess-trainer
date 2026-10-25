@@ -5,10 +5,10 @@ use std::{
 
 use shakmaty::{Square, uci::UciMove};
 
-use crate::{state::trainer_state::TrainerMode, trainer::Trainer};
+use crate::{settings::Settings, state::trainer_state::TrainerMode, trainer::Trainer};
 
 impl Trainer {
-    pub fn try_move(&mut self, from: Square, to: Square) {
+    pub fn try_move(&mut self, from: Square, to: Square, settings: &Settings) {
         if let Some(executed_move) = self.board.execute_move(from, to) {
             let move_uci = executed_move
                 .to_uci(shakmaty::CastlingMode::Standard)
@@ -18,7 +18,7 @@ impl Trainer {
 
             if correct_move {
                 self.state.bot_move_at =
-                    Some(Instant::now() + Duration::from_millis(self.state.bot_move_delay));
+                    Some(Instant::now() + Duration::from_millis(settings.bot_move_delay));
 
                 self.state.current_move_index += 1;
 
@@ -29,7 +29,7 @@ impl Trainer {
                 // In Drill mode, we go automatically to the next line
                 if self.is_completed() && self.state.mode.selected_mode == TrainerMode::Drill {
                     self.state.next_line_at =
-                        Some(Instant::now() + Duration::from_millis(self.state.bot_move_delay));
+                        Some(Instant::now() + Duration::from_millis(settings.bot_move_delay));
                 }
             } else {
                 self.state.bot_should_move = false;
@@ -38,13 +38,13 @@ impl Trainer {
                 self.state.validate_move_response = response;
 
                 self.state.undo_move_at =
-                    Some(Instant::now() + Duration::from_millis(self.state.undo_move_delay));
+                    Some(Instant::now() + Duration::from_millis(settings.undo_move_delay));
             }
         }
     }
 
     // Apply bot move, returns true if success
-    pub fn apply_bot_move(&mut self) -> bool {
+    pub fn apply_bot_move(&mut self, settings: &Settings) -> bool {
         let bot_move_uci = self
             .openings
             .get_move_uci(
@@ -77,7 +77,7 @@ impl Trainer {
 
         if self.is_completed() && self.state.mode.selected_mode == TrainerMode::Drill {
             self.state.next_line_at =
-                Some(Instant::now() + Duration::from_millis(self.state.bot_move_delay));
+                Some(Instant::now() + Duration::from_millis(settings.bot_move_delay));
         }
 
         true

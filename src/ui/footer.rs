@@ -31,6 +31,11 @@ pub fn render_footer(frame: &mut Frame<'_>, area: Rect) {
         .content("Change mode".to_string());
     frame.render_widget(mode_kbd, layout[1]);
 
+    let settings_kbd = Kbd::default()
+        .key("s".to_string())
+        .content("Settings".to_string());
+    frame.render_widget(settings_kbd, layout[3]);
+
     let quit_kbd = Kbd::default()
         .key("q".to_string())
         .content("Quit".to_string());

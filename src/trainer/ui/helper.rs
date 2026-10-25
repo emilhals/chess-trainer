@@ -97,6 +97,6 @@ impl UI {
 
         let paragraph = Paragraph::new(text).wrap(Wrap { trim: false });
 
-        return paragraph.line_count(inner_width) + 3;
+        paragraph.line_count(inner_width) + 3
     }
 }

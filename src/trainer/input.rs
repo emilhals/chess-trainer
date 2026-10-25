@@ -1,4 +1,4 @@
-use crate::trainer::Trainer;
+use crate::{settings::Settings, trainer::Trainer};
 
 impl Trainer {
     pub fn go_up(&mut self) {
@@ -17,8 +17,8 @@ impl Trainer {
         self.ui.cursor_right();
     }
 
-    pub fn process_cell_click(&mut self) {
+    pub fn process_cell_click(&mut self, settings: &Settings) {
         // Tracks whether move was correct.
-        self.handle_cell_click();
+        self.handle_cell_click(settings);
     }
 }
