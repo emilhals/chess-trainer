@@ -54,7 +54,7 @@ impl PlayerData {
 
     pub fn best_streak(&self, opening_name: &str) -> u32 {
         self.openings
-            .get(&opening_name.to_string())
+            .get(opening_name)
             .map_or(0, |opening| opening.highest_streak)
     }
 
@@ -65,7 +65,7 @@ impl PlayerData {
 
     pub fn completed_lines(&self, opening_name: &str) -> u32 {
         self.openings
-            .get(&opening_name.to_string())
+            .get(opening_name)
             .map_or(0, |opening| opening.completed_lines)
     }
 

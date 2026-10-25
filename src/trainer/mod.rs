@@ -38,7 +38,7 @@ impl Trainer {
     pub fn new(openings: Openings) -> Self {
         Self {
             board: Board::default(),
-            openings: openings,
+            openings,
             state: TrainerState::default(),
             ui: UI::default(),
             player_turn: Color::White,
@@ -58,7 +58,7 @@ impl Trainer {
         let opening_name = self.state.current_opening_name.as_deref()?;
 
         self.openings
-            .get_line(&opening_name, self.state.current_line_index)
+            .get_line(opening_name, self.state.current_line_index)
     }
 
     pub fn current_instruction(&self) -> (String, String) {
@@ -79,7 +79,7 @@ impl Trainer {
         let Some(opening_name) = &self.state.current_opening_name else {
             return;
         };
-        let Some(opening) = self.openings.get_opening(&opening_name) else {
+        let Some(opening) = self.openings.get_opening(opening_name) else {
             return;
         };
 
@@ -111,7 +111,7 @@ impl Trainer {
                 let line_amount: usize = opening.unwrap().lines.len();
 
                 // If no mistakes were made, increment current streak
-                if self.state.made_wrong_move == false {
+                if !self.state.made_wrong_move {
                     self.state.current_streak += 1;
                 } else {
                     self.state.current_streak = 0;
@@ -179,7 +179,7 @@ impl Trainer {
             return;
         };
 
-        if let Some(_) = self.board.execute_move(from, to) {
+        if self.board.execute_move(from, to).is_some() {
             self.state.bot_move_at = Some(Instant::now() + Duration::from_millis(bot_move_delay));
 
             self.state.current_move_index += 1;

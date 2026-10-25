@@ -64,7 +64,7 @@ impl Settings {
             }
             Err(error) => {
                 log::warn!("Failed to open settings at {}: {}", path.display(), error);
-                return Err(error.into());
+                Err(error.into())
             }
         }
     }
@@ -83,8 +83,8 @@ impl Settings {
             return;
         }
 
+        let next_index;
         if let Some(current_index) = names.iter().position(|&skin| skin == self.selected_skin) {
-            let next_index;
             if forward {
                 next_index = (current_index + 1) % names.len();
             } else {

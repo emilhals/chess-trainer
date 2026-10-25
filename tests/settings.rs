@@ -29,12 +29,6 @@ mod tests {
         Ok(())
     }
 
-    fn open_settings_menu() -> AppResult<App> {
-        let mut app = create_test_app();
-        send(&mut app, &[KeyCode::Char('s')])?;
-        Ok(app)
-    }
-
     fn create_test_app() -> App {
         let openings = Openings::bundled().unwrap();
         let trainer = Trainer::new(openings);
@@ -44,7 +38,7 @@ mod tests {
 
         let skins = Skins::bundled().unwrap();
 
-        return App::new(trainer, player_data, settings, skins);
+        App::new(trainer, player_data, settings, skins)
     }
 
     #[test]

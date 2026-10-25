@@ -1,3 +1,4 @@
+use std::fmt;
 use std::time::Instant;
 
 use shakmaty::Color;
@@ -14,20 +15,20 @@ pub enum HintLevel {
     Solve,
 }
 
-impl ToString for HintLevel {
-    fn to_string(&self) -> String {
+impl fmt::Display for HintLevel {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            HintLevel::Low => String::from("Hint"),
-            HintLevel::Solve => String::from("Solve"),
+            HintLevel::Low => write!(f, "Hint"),
+            HintLevel::Solve => write!(f, "Solve"),
         }
     }
 }
 
-impl ToString for TrainerMode {
-    fn to_string(&self) -> String {
+impl fmt::Display for TrainerMode {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            TrainerMode::Learn => String::from("Learn"),
-            TrainerMode::Drill => String::from("Drill"),
+            TrainerMode::Learn => write!(f, "Learn"),
+            TrainerMode::Drill => write!(f, "Drill"),
         }
     }
 }
@@ -52,9 +53,9 @@ impl Default for TrainerModeState {
 impl Clone for TrainerModeState {
     fn clone(&self) -> Self {
         Self {
-            selected_color: self.selected_color.clone(),
-            selected_mode: self.selected_mode.clone(),
-            hint_level: self.hint_level.clone(),
+            selected_color: self.selected_color,
+            selected_mode: self.selected_mode,
+            hint_level: self.hint_level,
         }
     }
 }
@@ -75,6 +76,7 @@ impl TrainerModeState {
     }
 }
 
+#[derive(Default)]
 pub struct TrainerState {
     pub mode: TrainerModeState,
 
@@ -98,56 +100,28 @@ pub struct TrainerState {
     pub next_line_at: Option<Instant>,
 }
 
-impl Default for TrainerState {
-    fn default() -> Self {
-        Self {
-            mode: TrainerModeState::default(),
-
-            current_opening_name: None,
-            current_line_index: 0,
-            current_move_index: 0,
-            current_instruction_index: 0,
-
-            correct_move: None,
-            validate_move_response: None,
-            made_wrong_move: false,
-
-            wrong_moves: 0,
-            current_streak: 0,
-
-            bot_should_move: false,
-            bot_move_at: None,
-
-            undo_move_at: None,
-
-            next_line_at: None,
-        }
-    }
-}
-
 impl Clone for TrainerState {
     fn clone(&self) -> Self {
         Self {
             mode: self.mode.clone(),
 
             current_opening_name: self.current_opening_name.clone(),
-            current_line_index: self.current_line_index.clone(),
-            current_move_index: self.current_move_index.clone(),
-            current_instruction_index: self.current_instruction_index.clone(),
+            current_line_index: self.current_line_index,
+            current_move_index: self.current_move_index,
+            current_instruction_index: self.current_instruction_index,
 
-            correct_move: self.correct_move.clone(),
+            correct_move: self.correct_move,
             validate_move_response: self.validate_move_response.clone(),
             made_wrong_move: false,
 
             wrong_moves: 0,
             current_streak: 0,
 
-            bot_should_move: self.bot_should_move.clone(),
-            bot_move_at: self.bot_move_at.clone(),
+            bot_should_move: self.bot_should_move,
 
-            undo_move_at: self.undo_move_at.clone(),
-
-            next_line_at: self.next_line_at.clone(),
+            bot_move_at: self.bot_move_at,
+            undo_move_at: self.undo_move_at,
+            next_line_at: self.next_line_at,
         }
     }
 }

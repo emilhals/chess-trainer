@@ -19,6 +19,10 @@ pub struct Line {
 
 #[allow(dead_code)]
 impl Line {
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
     /// Returns amount of moves in line.
     pub fn len(&self) -> usize {
         self.moves.len()
@@ -34,8 +38,8 @@ impl Line {
         let found_move = self.moves.get(move_index);
 
         match found_move {
-            Some(m) => return m,
-            None => return "",
+            Some(m) => m,
+            None => "",
         }
     }
 }

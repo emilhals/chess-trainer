@@ -75,7 +75,7 @@ impl Board {
                     self.position_history.push(new_chess);
                     self.move_history.push(*shakmaty_move);
                     self.history_position_index = None;
-                    Some(shakmaty_move.clone())
+                    Some(*shakmaty_move)
                 }
 
                 Err(e) => {

@@ -34,9 +34,9 @@ impl UIState {
     // Returns amount of interactable options for each page in Settings menu.
     pub fn num_options(&mut self) -> usize {
         match self.popup_state.selected_tab {
-            SettingsTabs::General => return 0,
-            SettingsTabs::Appearance => return 3,
-            SettingsTabs::Trainer => return 5,
+            SettingsTabs::General => 0,
+            SettingsTabs::Appearance => 3,
+            SettingsTabs::Trainer => 5,
         }
     }
 

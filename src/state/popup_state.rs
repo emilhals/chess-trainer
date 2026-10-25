@@ -39,7 +39,7 @@ impl SettingsTabs {
                 _ => &[],
             },
             Self::Trainer => match selected_option {
-                0 | 1 | 2 => &[("← →", "Adjust")],
+                0..=2 => &[("← →", "Adjust")],
                 3 => &[("Space", "Toggle")],
                 4 => &[("Enter", "Select")],
                 _ => &[],

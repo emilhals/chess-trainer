@@ -71,7 +71,7 @@ pub fn render_trainer_ui(frame: &mut Frame<'_>, app: &mut App, area: Rect) {
 
     app.trainer
         .ui
-        .board_render(board_inner, frame, &app.trainer.board, &skin);
+        .board_render(board_inner, frame, &app.trainer.board, skin);
 
     if has_labels {
         app.trainer
@@ -144,7 +144,7 @@ pub fn render_trainer_ui(frame: &mut Frame<'_>, app: &mut App, area: Rect) {
             .ui
             .instruction_render(instruction_area, frame, &app.trainer);
 
-        let highest_streak = app.player_data.best_streak(&opening_name);
+        let highest_streak = app.player_data.best_streak(opening_name);
 
         app.trainer
             .ui

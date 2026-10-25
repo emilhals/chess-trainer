@@ -33,11 +33,11 @@ impl App {
     ) -> Self {
         Self {
             running: true,
-            trainer: trainer,
+            trainer,
             ui_state: UIState::default(),
-            player_data: player_data,
-            settings: settings,
-            skins: skins,
+            player_data,
+            settings,
+            skins,
         }
     }
 
@@ -53,7 +53,7 @@ impl App {
 
         if self.trainer.state.current_streak > old_streak {
             self.player_data
-                .set_best_streak(&opening_name, self.trainer.state.current_streak as u32);
+                .set_best_streak(opening_name, self.trainer.state.current_streak as u32);
         }
 
         if self.trainer.state.mode.selected_mode == TrainerMode::Learn && old_wrong_moves == 0 {
@@ -68,37 +68,36 @@ impl App {
 
     pub fn tick(&mut self) {
         // Add a delay before moving the bot
-        if let Some(bot_move_at) = self.trainer.state.bot_move_at {
-            if Instant::now() >= bot_move_at {
-                self.trainer.state.bot_move_at = None;
+        if let Some(bot_move_at) = self.trainer.state.bot_move_at
+            && Instant::now() >= bot_move_at
+        {
+            self.trainer.state.bot_move_at = None;
 
-                if self.trainer.is_completed() {
-                    return;
-                }
-
-                self.trainer.apply_bot_move(&self.settings);
+            if self.trainer.is_completed() {
+                return;
             }
+
+            self.trainer.apply_bot_move(&self.settings);
         }
 
         // Add a delay before moving back after a wrong move
-        if let Some(undo_move_at) = self.trainer.state.undo_move_at {
-            if Instant::now() >= undo_move_at {
-                self.trainer.board.undo_move();
+        if let Some(undo_move_at) = self.trainer.state.undo_move_at
+            && Instant::now() >= undo_move_at
+        {
+            self.trainer.board.undo_move();
 
-                self.trainer.state.validate_move_response = None;
-                self.trainer.state.undo_move_at = None;
-            }
+            self.trainer.state.validate_move_response = None;
+            self.trainer.state.undo_move_at = None;
         }
 
         // Add a delay before advancing to next line (Drill mode)
-        if let Some(next_line_at) = self.trainer.state.next_line_at {
-            if self.settings.auto_advance {
-                if Instant::now() >= next_line_at {
-                    self.trainer.state.next_line_at = None;
+        if let Some(next_line_at) = self.trainer.state.next_line_at
+            && self.settings.auto_advance
+            && Instant::now() >= next_line_at
+        {
+            self.trainer.state.next_line_at = None;
 
-                    self.next_line();
-                }
-            }
+            self.next_line();
         }
     }
 
