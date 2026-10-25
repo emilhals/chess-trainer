@@ -25,4 +25,3 @@ pub fn handle_settings_view_events(app: &mut App, key_event: KeyEvent) -> AppRes
 
     Ok(())
 }
-

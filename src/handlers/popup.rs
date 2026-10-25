@@ -41,4 +41,3 @@ pub fn handle_confirmation_input(
 
     Ok(())
 }
-
