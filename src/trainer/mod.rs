@@ -7,6 +7,7 @@ use shakmaty::{Color, Square, uci::UciMove};
 
 use crate::{
     app::{coord::Coord, player::PlayerData},
+    settings::Settings,
     state::trainer_state::{
         TrainerMode::{self},
         TrainerState,
@@ -45,13 +46,12 @@ impl Trainer {
     }
 
     // Updates board and trainer state for when the player is black
-    pub fn prepare_black_player(&mut self) {
+    pub fn prepare_black_player(&mut self, bot_move_delay: u64) {
         self.board.player_turn = Color::Black;
         self.board.is_flipped = true;
         self.state.bot_should_move = true;
 
-        self.state.bot_move_at =
-            Some(Instant::now() + Duration::from_millis(self.state.bot_move_delay));
+        self.state.bot_move_at = Some(Instant::now() + Duration::from_millis(bot_move_delay));
     }
 
     pub fn current_line(&self) -> Option<&Line> {
@@ -174,14 +174,13 @@ impl Trainer {
         self.state.made_wrong_move = true;
     }
 
-    pub fn apply_solution_move(&mut self) {
+    pub fn apply_solution_move(&mut self, bot_move_delay: u64) {
         let (Some(from), Some(to)) = self.get_current_move_squares() else {
             return;
         };
 
         if let Some(_) = self.board.execute_move(from, to) {
-            self.state.bot_move_at =
-                Some(Instant::now() + Duration::from_millis(self.state.bot_move_delay));
+            self.state.bot_move_at = Some(Instant::now() + Duration::from_millis(bot_move_delay));
 
             self.state.current_move_index += 1;
 
@@ -218,7 +217,7 @@ impl Trainer {
         self.ui.old_cursor_coords = Some(self.ui.cursor_coords);
     }
 
-    pub fn handle_already_selected_cell(&mut self) {
+    pub fn handle_already_selected_cell(&mut self, settings: &Settings) {
         let Some(selected_square) = self.ui.selected_square else {
             return;
         };
@@ -245,14 +244,14 @@ impl Trainer {
             return;
         }
 
-        self.try_move(actual_selected_coords, actual_cursor_coords);
+        self.try_move(actual_selected_coords, actual_cursor_coords, settings);
 
         self.ui.unselect_cell();
     }
 
-    pub fn handle_cell_click(&mut self) {
+    pub fn handle_cell_click(&mut self, settings: &Settings) {
         if self.ui.is_cell_selected() {
-            self.handle_already_selected_cell();
+            self.handle_already_selected_cell(settings);
         } else {
             self.select_cell();
         }

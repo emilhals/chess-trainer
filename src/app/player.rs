@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::{
     collections::HashMap,
     fs::{self, File},
-    io::{self, BufReader},
+    io::{self, BufReader, BufWriter},
     path::{Path, PathBuf},
 };
 
@@ -83,5 +83,18 @@ impl PlayerData {
             .entry(opening_name.to_string())
             .or_default()
             .completed_lines += 1;
+    }
+
+    pub fn reset_progress(&mut self) -> AppResult<()> {
+        let default_player_data = PlayerData::default();
+
+        let path = player_data_path()?;
+        let file = File::create(path)?;
+        let writer = BufWriter::new(file);
+        serde_json::to_writer_pretty(writer, &default_player_data)?;
+
+        *self = default_player_data;
+
+        Ok(())
     }
 }

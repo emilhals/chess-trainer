@@ -41,6 +41,19 @@ impl Skins {
         Self::from_json(include_str!("../data/skins.json"))
     }
 
+    pub fn display_name(name: &str) -> String {
+        name.split('-')
+            .map(|word| {
+                let mut chars = word.chars();
+
+                match chars.next() {
+                    Some(first) => first.to_uppercase().to_string() + chars.as_str(),
+                    None => String::new(),
+                }
+            })
+            .collect::<Vec<String>>()
+            .join(" ")
+    }
     pub fn get(&self, name: &str) -> Option<&Skin> {
         self.skins.get(name)
     }

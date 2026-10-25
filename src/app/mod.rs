@@ -1,6 +1,7 @@
 pub mod coord;
 pub mod menu;
 pub mod player;
+pub mod popup;
 
 use std::{error, time::Instant};
 
@@ -24,13 +25,18 @@ pub struct App {
 }
 
 impl App {
-    pub fn new(trainer: Trainer, player_data: PlayerData, skins: Skins) -> Self {
+    pub fn new(
+        trainer: Trainer,
+        player_data: PlayerData,
+        settings: Settings,
+        skins: Skins,
+    ) -> Self {
         Self {
             running: true,
             trainer: trainer,
             ui_state: UIState::default(),
             player_data: player_data,
-            settings: Settings::default(),
+            settings: settings,
             skins: skins,
         }
     }
@@ -70,7 +76,7 @@ impl App {
                     return;
                 }
 
-                self.trainer.apply_bot_move();
+                self.trainer.apply_bot_move(&self.settings);
             }
         }
 
@@ -86,10 +92,12 @@ impl App {
 
         // Add a delay before advancing to next line (Drill mode)
         if let Some(next_line_at) = self.trainer.state.next_line_at {
-            if Instant::now() >= next_line_at {
-                self.trainer.state.next_line_at = None;
+            if self.settings.auto_advance {
+                if Instant::now() >= next_line_at {
+                    self.trainer.state.next_line_at = None;
 
-                self.next_line();
+                    self.next_line();
+                }
             }
         }
     }

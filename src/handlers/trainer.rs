@@ -20,16 +20,12 @@ pub fn handle_trainer_view_events(app: &mut App, key_event: KeyEvent) {
             }
         }
 
-        KeyCode::Char('s') => {
-            app.settings.cycle_skin(app.skins.clone(), true);
-        }
-
         KeyCode::Char('t') => match app.trainer.state.mode.hint_level {
             HintLevel::Low => {
                 app.trainer.show_hint();
             }
             HintLevel::Solve => {
-                app.trainer.apply_solution_move();
+                app.trainer.apply_solution_move(app.settings.bot_move_delay);
             }
         },
 

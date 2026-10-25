@@ -92,10 +92,8 @@ pub struct TrainerState {
 
     pub bot_should_move: bool,
     pub bot_move_at: Option<Instant>,
-    pub bot_move_delay: u64,
 
     pub undo_move_at: Option<Instant>,
-    pub undo_move_delay: u64,
 
     pub next_line_at: Option<Instant>,
 }
@@ -119,10 +117,8 @@ impl Default for TrainerState {
 
             bot_should_move: false,
             bot_move_at: None,
-            bot_move_delay: 700,
 
             undo_move_at: None,
-            undo_move_delay: 700,
 
             next_line_at: None,
         }
@@ -148,10 +144,8 @@ impl Clone for TrainerState {
 
             bot_should_move: self.bot_should_move.clone(),
             bot_move_at: self.bot_move_at.clone(),
-            bot_move_delay: self.bot_move_delay.clone(),
 
             undo_move_at: self.undo_move_at.clone(),
-            undo_move_delay: self.undo_move_delay.clone(),
 
             next_line_at: self.next_line_at.clone(),
         }

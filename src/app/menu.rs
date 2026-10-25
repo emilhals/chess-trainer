@@ -31,15 +31,18 @@ impl App {
             Openings::KingsIndianDefense => {
                 self.ui_state.current_view = Views::Trainer;
                 self.trainer.state.current_opening_name = Some("kings-indian-defense".to_string());
-                self.trainer.prepare_black_player();
+                self.trainer
+                    .prepare_black_player(self.settings.bot_move_delay);
             }
         }
 
         self.trainer.find_next_uncompleted_line(&self.player_data);
     }
 
+    pub fn render_confirmation_popup(&mut self) {}
+
     pub fn reset_home(&mut self) {
-        self.ui_state.go_to_homeview();
+        self.ui_state.go_to_home_view();
         self.trainer.state.reset();
         self.trainer.board.reset();
     }

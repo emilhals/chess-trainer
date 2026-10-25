@@ -63,6 +63,8 @@ pub fn render_trainer_ui(frame: &mut Frame<'_>, app: &mut App, area: Rect) {
     // Get the inner area of the board (accounting for any block padding)
     let board_inner = board_block.inner(board_with_labels[1]);
 
+    let has_labels = app.settings.show_coords;
+
     let Some(skin) = app.skins.get(&app.settings.selected_skin) else {
         return;
     };
@@ -71,13 +73,17 @@ pub fn render_trainer_ui(frame: &mut Frame<'_>, app: &mut App, area: Rect) {
         .ui
         .board_render(board_inner, frame, &app.trainer.board, &skin);
 
-    app.trainer
-        .ui
-        .render_rank_labels(frame, rank_label_area[1], app.trainer.board.is_flipped);
+    if has_labels {
+        app.trainer
+            .ui
+            .render_rank_labels(frame, rank_label_area[1], app.trainer.board.is_flipped);
 
-    app.trainer
-        .ui
-        .render_file_labels(frame, board_with_labels[2], app.trainer.board.is_flipped);
+        app.trainer.ui.render_file_labels(
+            frame,
+            board_with_labels[2],
+            app.trainer.board.is_flipped,
+        );
+    }
 
     app.trainer.ui.progress_gauge_render(
         board_block.inner(board_with_labels[0]),
