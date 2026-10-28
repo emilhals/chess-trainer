@@ -1,6 +1,7 @@
 use ratatui::{
     Frame,
     layout::{Alignment, Constraint, Direction, Layout, Rect},
+    style::Stylize,
     widgets::{Block, Paragraph},
 };
 
@@ -22,6 +23,7 @@ pub fn render_menu_ui(frame: &mut Frame, app: &App, area: Rect) {
         Constraint::Length(3), // Mode picker
         Constraint::Length(2), // Mode description
         Constraint::Length(1), // Divider
+        Constraint::Length(2), // Openings label
         Constraint::Min(1),    // Openings
         Constraint::Length(3), // Footer
     ]);
@@ -32,19 +34,12 @@ pub fn render_menu_ui(frame: &mut Frame, app: &App, area: Rect) {
         mode_picker,
         mode_description,
         divider,
+        openings_label,
         openings,
         footer,
     ] = layout.areas(area);
 
     let block_width = 30;
-
-    let (main_layout_vertical, _) = Layout::default()
-        .direction(Direction::Horizontal)
-        .constraints([
-            Constraint::Length(block_width),
-            Constraint::Length(block_width),
-        ])
-        .split_with_spacers(openings);
 
     let title_paragraph = Paragraph::new(LOGO)
         .alignment(Alignment::Center)
@@ -65,11 +60,27 @@ pub fn render_menu_ui(frame: &mut Frame, app: &App, area: Rect) {
     };
 
     frame.render_widget(
-        Paragraph::new(mode_description_str).alignment(Alignment::Center),
+        Paragraph::new(mode_description_str)
+            .alignment(Alignment::Center)
+            .dark_gray()
+            .italic(),
         mode_description,
     );
 
     render_divider(frame, divider);
+
+    let openings_paragraph = Paragraph::new("SELECT OPENING")
+        .block(Block::default())
+        .alignment(Alignment::Center);
+    frame.render_widget(openings_paragraph, openings_label);
+
+    let main_layout_vertical = Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([
+            Constraint::Length(block_width),
+            Constraint::Length(block_width),
+        ])
+        .split(openings.centered_horizontally(Constraint::Length(60)));
 
     let openings = app.trainer.openings.get_openings();
     for i in 0..openings.len() {
