@@ -36,6 +36,7 @@ pub fn render_trainer_ui(frame: &mut Frame<'_>, app: &mut App, area: Rect) {
             ]
             .as_ref(),
         )
+        .spacing(1)
         .split(main_rows[2]);
 
     let board_with_labels = Layout::default()
