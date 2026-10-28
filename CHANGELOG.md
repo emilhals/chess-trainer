@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0](https://github.com/emilhals/chess-trainer/compare/v0.2.0...v0.3.0) - 2026-10-28
+
+### Added
+
+- *(ui)* add mode selector to main menu
+- *(menu)* add mode selector keyboard navigation
+
+### Other
+
+- *(menu)* improve opening selection layout
+- *(ui)* add spacing between board and instructions
+- *(ui)* improve Kbd widget sizing and padding
+- *(state)* move popup logic into PopupState
+- *(state)* extract menu state into separate struct
+- *(deps)* add unicode-width
+- add release-plz.yml
+
 ## [0.2.0](https://github.com/emilhals/chess-trainer/compare/v0.1.0...v0.2.0) - 2026-10-25
 
 ### Added
