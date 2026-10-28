@@ -1,4 +1,4 @@
 [workspace]
-git_only = true
+git_only = false
 git_release_enable = true
 git_tag_enable = true
