@@ -3,7 +3,7 @@ use ratatui::crossterm::event::{KeyCode, KeyEvent, KeyEventKind};
 use crate::{
     app::{App, AppResult},
     handlers::{
-        home::handle_home_view_events, popup::handle_popup_events,
+        menu::handle_menu_view_events, popup::handle_popup_events,
         trainer::handle_trainer_view_events,
     },
     state::ui_state::Views,
@@ -15,7 +15,7 @@ pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
         return Ok(());
     }
 
-    if app.ui_state.popup_state.active_popup.is_some() {
+    if app.ui_state.popup.active_popup.is_some() {
         handle_popup_events(app, key_event)?;
         return Ok(());
     }
@@ -27,7 +27,7 @@ pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
 
 pub fn handle_view_input(app: &mut App, key_event: KeyEvent) {
     match &app.ui_state.current_view {
-        Views::Home => handle_home_view_events(app, key_event),
+        Views::Menu => handle_menu_view_events(app, key_event),
         Views::Trainer => handle_trainer_view_events(app, key_event),
     }
 }

@@ -12,7 +12,7 @@ use crate::{
 };
 
 pub fn render_trainer_content(frame: &mut Frame, area: Rect, app: &App) {
-    let selected = app.ui_state.popup_state.selected_option;
+    let selected = app.ui_state.popup.selected_option;
 
     let layout = Layout::vertical([
         Constraint::Length(1),

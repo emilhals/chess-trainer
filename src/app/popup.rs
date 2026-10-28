@@ -13,7 +13,7 @@ impl App {
                 self.player_data.reset_progress()?;
                 self.trainer.state.reset();
 
-                self.ui_state.popup_state.open_settings();
+                self.ui_state.popup.open_settings();
             }
         }
 
@@ -21,8 +21,8 @@ impl App {
     }
 
     pub fn adjust_selected_setting(&mut self, forward: bool) {
-        let selected_tab = self.ui_state.popup_state.selected_tab;
-        let selected_option = self.ui_state.popup_state.selected_option;
+        let selected_tab = self.ui_state.popup.selected_tab;
+        let selected_option = self.ui_state.popup.selected_option;
 
         match selected_tab {
             SettingsTabs::General => {}
@@ -41,8 +41,8 @@ impl App {
     }
 
     pub fn toggle_selected_setting(&mut self) {
-        let selected_tab = self.ui_state.popup_state.selected_tab;
-        let selected_option = self.ui_state.popup_state.selected_option;
+        let selected_tab = self.ui_state.popup.selected_tab;
+        let selected_option = self.ui_state.popup.selected_option;
 
         match selected_tab {
             SettingsTabs::General => {}
@@ -53,10 +53,7 @@ impl App {
             }
             SettingsTabs::Trainer => match selected_option {
                 3 => self.settings.toggle_auto_advance(),
-                4 => {
-                    self.ui_state.popup_state.active_popup =
-                        Some(Popups::Confirmation(ResetProgress))
-                }
+                4 => self.ui_state.popup.active_popup = Some(Popups::Confirmation(ResetProgress)),
                 _ => {}
             },
         }

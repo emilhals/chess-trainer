@@ -47,14 +47,14 @@ pub fn render_settings_menu(frame: &mut Frame, app: &App, area: Rect) {
 
     let [tabs, content, footer] = layout.areas(inner_area);
 
-    render_tabs(frame, tabs, app.ui_state.popup_state.selected_tab as usize);
+    render_tabs(frame, tabs, app.ui_state.popup.selected_tab as usize);
     render_content(frame, content, app);
 
     render_footer(
         frame,
         footer,
-        app.ui_state.popup_state.selected_tab,
-        app.ui_state.popup_state.selected_option,
+        app.ui_state.popup.selected_tab,
+        app.ui_state.popup.selected_option,
     );
 }
 
@@ -69,7 +69,7 @@ pub fn render_tabs(frame: &mut Frame, area: Rect, selected_tab: usize) {
 }
 
 pub fn render_content(frame: &mut Frame, area: Rect, app: &App) {
-    match app.ui_state.popup_state.selected_tab {
+    match app.ui_state.popup.selected_tab {
         SettingsTabs::General => render_general_content(frame, area),
         SettingsTabs::Appearance => render_appearence_content(frame, area, app),
         SettingsTabs::Trainer => render_trainer_content(frame, area, app),

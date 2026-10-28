@@ -7,8 +7,8 @@ enum Openings {
     KingsIndianDefense,
 }
 
-impl From<u8> for Openings {
-    fn from(value: u8) -> Self {
+impl From<usize> for Openings {
+    fn from(value: usize) -> Self {
         if let 0 = value {
             Openings::ItalianGame
         } else {
@@ -19,7 +19,7 @@ impl From<u8> for Openings {
 
 impl App {
     pub fn menu_select(&mut self) {
-        let field: Openings = Openings::from(self.ui_state.menu_cursor);
+        let field: Openings = Openings::from(self.ui_state.menu.selected_opening_index);
 
         match field {
             Openings::ItalianGame => {
@@ -38,8 +38,6 @@ impl App {
 
         self.trainer.find_next_uncompleted_line(&self.player_data);
     }
-
-    pub fn render_confirmation_popup(&mut self) {}
 
     pub fn reset_home(&mut self) {
         self.ui_state.go_to_home_view();

@@ -13,11 +13,11 @@ pub fn render(app: &mut App, frame: &mut Frame<'_>) {
     let area = frame.area();
 
     match app.ui_state.current_view {
-        Views::Home => render_menu_ui(frame, app, area),
+        Views::Menu => render_menu_ui(frame, app, area),
         Views::Trainer => render_trainer_ui(frame, app, area),
     }
 
-    match app.ui_state.popup_state.active_popup {
+    match app.ui_state.popup.active_popup {
         Some(Popups::Settings) => render_settings_menu(frame, app, area),
         Some(Popups::Confirmation(action)) => {
             render_confirmation_popup(
@@ -25,7 +25,7 @@ pub fn render(app: &mut App, frame: &mut Frame<'_>) {
                 area,
                 action.title(),
                 action.description(),
-                app.ui_state.popup_state.selected_button,
+                app.ui_state.popup.selected_button,
             );
         }
         _ => {}

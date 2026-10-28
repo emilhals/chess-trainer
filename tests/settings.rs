@@ -47,13 +47,13 @@ mod tests {
 
         app.player_data.highest_streak = 10;
 
-        app.ui_state.popup_state.open_confirmation(ResetProgress);
-        app.ui_state.popup_state.selected_button = Cancel;
+        app.ui_state.popup.open_confirmation(ResetProgress);
+        app.ui_state.popup.selected_button = Cancel;
 
         send(&mut app, &[KeyCode::Enter])?;
 
         assert_eq!(app.player_data.highest_streak, 10);
-        assert_eq!(app.ui_state.popup_state.active_popup, Some(SettingPopup));
+        assert_eq!(app.ui_state.popup.active_popup, Some(SettingPopup));
 
         Ok(())
     }
