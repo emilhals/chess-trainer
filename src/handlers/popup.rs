@@ -7,7 +7,7 @@ use crate::{
 };
 
 pub fn handle_popup_events(app: &mut App, key_event: KeyEvent) -> AppResult<()> {
-    match app.ui_state.popup_state.active_popup {
+    match app.ui_state.popup.active_popup {
         Some(Popups::Settings) => handle_settings_view_events(app, key_event)?,
         Some(Popups::Confirmation(action)) => handle_confirmation_input(app, key_event, action)?,
         _ => {}
@@ -23,16 +23,16 @@ pub fn handle_confirmation_input(
 ) -> AppResult<()> {
     match key_event.code {
         KeyCode::Left | KeyCode::Char('h') => {
-            app.ui_state.popup_state.toggle_button();
+            app.ui_state.popup.toggle_button();
         }
         KeyCode::Right | KeyCode::Char('l') => {
-            app.ui_state.popup_state.toggle_button();
+            app.ui_state.popup.toggle_button();
         }
         KeyCode::Enter | KeyCode::Char(' ') => {
-            if app.ui_state.popup_state.selected_button == Button::Confirm {
+            if app.ui_state.popup.selected_button == Button::Confirm {
                 app.execute_confirmation(action)?
             } else {
-                app.ui_state.popup_state.open_settings();
+                app.ui_state.popup.open_settings();
             }
         }
         KeyCode::Esc | KeyCode::Char('b') => app.ui_state.toggle_settings_view(),

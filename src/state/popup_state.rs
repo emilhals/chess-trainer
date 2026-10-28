@@ -30,6 +30,14 @@ pub struct PopupState {
 }
 
 impl SettingsTabs {
+    pub fn num_options(&self) -> usize {
+        match self {
+            Self::General => 0,
+            Self::Appearance => 3,
+            Self::Trainer => 5,
+        }
+    }
+
     pub fn shortcuts(&self, selected_option: usize) -> &[(&str, &str)] {
         match self {
             Self::General => &[],
@@ -62,7 +70,48 @@ impl ConfirmationAction {
     }
 }
 
+impl Default for PopupState {
+    fn default() -> Self {
+        Self {
+            active_popup: None,
+            selected_tab: SettingsTabs::General,
+            selected_option: 0,
+            selected_button: Button::Cancel,
+        }
+    }
+}
+
 impl PopupState {
+    pub fn cycle_tabs(&mut self) {
+        match self.selected_tab {
+            SettingsTabs::General => {
+                self.selected_tab = SettingsTabs::Appearance;
+            }
+            SettingsTabs::Appearance => {
+                self.selected_tab = SettingsTabs::Trainer;
+            }
+            SettingsTabs::Trainer => {
+                self.selected_tab = SettingsTabs::General;
+            }
+        }
+
+        self.selected_option = 0;
+    }
+
+    pub fn cycle_options(&mut self, num_options: usize, forward: bool) {
+        if num_options == 0 {
+            return;
+        }
+
+        let current_option = self.selected_option;
+
+        if forward {
+            self.selected_option = (current_option + 1) % num_options;
+        } else {
+            self.selected_option = (current_option + num_options - 1) % num_options;
+        }
+    }
+
     pub fn open_settings(&mut self) {
         self.active_popup = Some(Popups::Settings);
     }
