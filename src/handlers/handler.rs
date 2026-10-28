@@ -27,7 +27,7 @@ pub fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<()> {
 
 pub fn handle_view_input(app: &mut App, key_event: KeyEvent) {
     match &app.ui_state.current_view {
-        Views::Home => handle_home_view_events(app, key_event),
+        Views::Menu => handle_menu_view_events(app, key_event),
         Views::Trainer => handle_trainer_view_events(app, key_event),
     }
 }
