@@ -10,14 +10,17 @@ Set Height 800
 Set Shell zsh
 
 Hide
-Type "../target/release/chess-trainer"
+Type "chess-trainer"
+
 Enter
 Sleep 2s
+Show
+
+Down @0.3s
 
 Sleep 0.7s
 Enter
 
-Show
 
 
 # ========================================
@@ -70,8 +73,15 @@ Sleep 1.5s
 # Return to menu and switch mode
 Type "b"
 Sleep 0.5s
-Type "m"
-Sleep 0.5s
+
+# Focus mode selector
+Up @0.3s
+
+# Switch Learn to Drill
+Right @0.3s
+
+# Focus openings and select
+Down @0.3s
 Space @0.3s
 Sleep 1.5s
 

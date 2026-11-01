@@ -13,7 +13,7 @@
     and <a href="https://chessreps.com">chessreps</a>.
   </p>
 
-  <img src="https://vhs.charm.sh/vhs-687EiP3FCzIajlFlvGN7yS.gif" alt="Chess Trainer Demo" width="850">
+  <img src="https://vhs.charm.sh/vhs-GSgkE1tiACPjzS5xTOHRG.gif" alt="Chess Trainer Demo" width="850">
 </div>
 
 
