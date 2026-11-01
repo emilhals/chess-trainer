@@ -112,7 +112,7 @@ pub fn render_trainer_ui(frame: &mut Frame<'_>, app: &mut App, area: Rect) {
     let streak_area = Rect::new(
         sidebar_content_area.x,
         board_bottom.saturating_sub(streak_height),
-        sidebar_content_area.width.saturating_sub(8),
+        sidebar_content_area.width,
         streak_height,
     );
 
@@ -143,7 +143,7 @@ pub fn render_trainer_ui(frame: &mut Frame<'_>, app: &mut App, area: Rect) {
     if drill_mode {
         app.trainer
             .ui
-            .instruction_render(instruction_area, frame, &app.trainer);
+            .instruction_render(instruction_area, frame, &app.trainer, &app.settings);
 
         let highest_streak = app.player_data.best_streak(opening_name);
 
@@ -153,6 +153,6 @@ pub fn render_trainer_ui(frame: &mut Frame<'_>, app: &mut App, area: Rect) {
     } else {
         app.trainer
             .ui
-            .instruction_render(instruction_area, frame, &app.trainer);
+            .instruction_render(instruction_area, frame, &app.trainer, &app.settings);
     }
 }
