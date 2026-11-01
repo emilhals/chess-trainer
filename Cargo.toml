@@ -1,6 +1,6 @@
 [package]
 name = "chess-trainer"
-version = "0.4.1"
+version = "0.4.2"
 edition = "2024"
 description = "Practice chess openings in the terminal."
 repository = "https://github.com/emilhals/chess-trainer"
