@@ -127,38 +127,24 @@ impl Clone for TrainerState {
 }
 
 impl TrainerState {
+    pub fn reset_line_progress(&mut self) {
+        self.current_instruction_index = 0;
+        self.current_move_index = 0;
+        self.bot_should_move = false;
+    }
+
     pub fn reset(&mut self) {
         self.current_line_index = 0;
-        self.current_instruction_index = 0;
-        self.current_move_index = 0;
-        self.bot_should_move = false;
+        self.reset_line_progress();
     }
 
-    pub fn reset_for_current_line(&mut self) {
-        self.current_instruction_index = 0;
-        self.current_move_index = 0;
-        self.bot_should_move = false;
-    }
+    pub fn random_line(&mut self, line_count: usize) {
+        if line_count == 0 {
+            return;
+        }
 
-    pub fn reset_for_next_line(&mut self) {
-        self.current_instruction_index = 0;
-        self.current_move_index = 0;
-        self.bot_should_move = false;
-    }
+        let n = rand::random_range(0..line_count);
 
-    pub fn reset_for_random_line(&mut self, line_length: usize) {
-        // Set a random line index but exclude the current one
-        let n = rand::random_range(0..line_length);
-        let new_line_index = if n == self.current_line_index {
-            n + 1
-        } else {
-            n
-        };
-
-        self.current_line_index = new_line_index;
-
-        self.current_instruction_index = 0;
-        self.current_move_index = 0;
-        self.bot_should_move = false;
+        self.current_line_index = n;
     }
 }

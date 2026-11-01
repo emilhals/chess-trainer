@@ -70,13 +70,15 @@ impl PlayerData {
     }
 
     pub fn set_completed(&mut self, opening_name: &str, line_name: &str) {
-        let line_stats = self
-            .openings
-            .entry(opening_name.to_string())
-            .or_default()
+        let opening_stats = self.openings.entry(opening_name.to_string()).or_default();
+        let line_stats = opening_stats
             .lines
             .entry(line_name.to_string())
             .or_default();
+
+        if line_stats.completed {
+            return;
+        }
 
         line_stats.completed = true;
         self.openings

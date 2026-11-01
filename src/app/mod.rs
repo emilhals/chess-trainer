@@ -45,24 +45,24 @@ impl App {
         let old_streak = self.trainer.state.current_streak;
         let old_wrong_moves = self.trainer.state.wrong_moves;
 
-        self.trainer.next_line(&self.player_data);
-
-        let Some(opening_name) = &self.trainer.state.current_opening_name else {
-            return;
-        };
-
-        if self.trainer.state.current_streak > old_streak {
-            self.player_data
-                .set_best_streak(opening_name, self.trainer.state.current_streak as u32);
-        }
-
         if self.trainer.state.mode.selected_mode == TrainerMode::Learn && old_wrong_moves == 0 {
             let Some(opening_name) = self.trainer.state.current_opening_name.as_deref() else {
                 return;
             };
-            let line_name = &self.trainer.current_line().unwrap().name;
+            let line_name = self.trainer.current_line().unwrap().name.clone();
 
-            self.player_data.set_completed(opening_name, line_name);
+            self.player_data.set_completed(opening_name, &line_name);
+        }
+
+        self.trainer.next_line(&self.player_data);
+
+        if self.trainer.state.current_streak > old_streak {
+            let Some(opening_name) = self.trainer.state.current_opening_name.as_deref() else {
+                return;
+            };
+
+            self.player_data
+                .set_best_streak(opening_name, self.trainer.state.current_streak as u32);
         }
     }
 

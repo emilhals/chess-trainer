@@ -108,7 +108,7 @@ impl Trainer {
                 let opening = self
                     .openings
                     .get_opening(self.state.current_opening_name.clone().unwrap().as_str());
-                let line_amount: usize = opening.unwrap().lines.len();
+                let line_count: usize = opening.unwrap().lines.len();
 
                 // If no mistakes were made, increment current streak
                 if !self.state.made_wrong_move {
@@ -117,11 +117,12 @@ impl Trainer {
                     self.state.current_streak = 0;
                 }
 
-                self.state.reset_for_random_line(line_amount);
+                self.state.random_line(line_count);
+                self.state.reset_line_progress();
             }
             TrainerMode::Learn => {
                 self.find_next_uncompleted_line(player_data);
-                self.state.reset_for_next_line();
+                self.state.reset_line_progress();
             }
         }
 
@@ -132,7 +133,7 @@ impl Trainer {
     pub fn replay_line(&mut self) {
         self.state.made_wrong_move = false;
         self.board.reset();
-        self.state.reset_for_current_line();
+        self.state.reset_line_progress();
     }
 
     pub fn is_completed(&self) -> bool {
