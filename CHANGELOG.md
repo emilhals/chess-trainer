@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0](https://github.com/emilhals/chess-trainer/compare/v0.3.0...v0.4.0) - 2026-11-01
+
+### Fixed
+
+- *(trainer)* correct line selection and progression
+
+### Other
+
+- *(deps)* remove unused dependency
+
 ## [0.3.0](https://github.com/emilhals/chess-trainer/compare/v0.2.0...v0.3.0) - 2026-10-28
 
 ### Added
