@@ -8,15 +8,22 @@ use ratatui::{
 use crate::{
     app::App,
     constants::LOGO,
-    state::{menu_state::MenuFocus, trainer_state::TrainerMode},
+    state::{
+        click_regions::{ClickRegions, ClickTarget},
+        menu_state::MenuFocus,
+        trainer_state::TrainerMode,
+    },
     ui::{
         components::divider::render_divider,
-        menu::{mode_selector::render_mode_selector, opening_card::render_opening_card},
+        menu::{
+            mode_selector::render_mode_selector,
+            opening_card::{CardState, render_opening_card},
+        },
         widgets::kbd::Kbd,
     },
 };
 
-pub fn render_menu_ui(frame: &mut Frame, app: &App, area: Rect) {
+pub fn render_menu_ui(frame: &mut Frame, app: &App, area: Rect, regions: &mut ClickRegions) {
     let layout = Layout::default().constraints([
         Constraint::Length(4), // Title
         Constraint::Length(1), // Spacing
@@ -46,11 +53,18 @@ pub fn render_menu_ui(frame: &mut Frame, app: &App, area: Rect) {
         .block(Block::default());
     frame.render_widget(title_paragraph, title);
 
+    let hovered_mode = match app.ui_state.hovered {
+        Some(ClickTarget::ModeOption(mode)) => Some(mode),
+        _ => None,
+    };
+
     render_mode_selector(
         frame,
         mode_picker,
         app.trainer.state.mode.selected_mode,
         app.ui_state.menu.focus == MenuFocus::ModeSelector,
+        hovered_mode,
+        regions,
     );
 
     let mode_description_str = if app.trainer.state.mode.selected_mode == TrainerMode::Learn {
@@ -74,26 +88,26 @@ pub fn render_menu_ui(frame: &mut Frame, app: &App, area: Rect) {
         .alignment(Alignment::Center);
     frame.render_widget(openings_paragraph, openings_label);
 
-    let main_layout_vertical = Layout::default()
-        .direction(Direction::Horizontal)
-        .constraints([
-            Constraint::Length(block_width),
-            Constraint::Length(block_width),
-        ])
-        .split(openings.centered_horizontally(Constraint::Length(60)));
+    let [cards_row, _] =
+        Layout::vertical([Constraint::Length(7), Constraint::Min(0)]).areas(openings);
+    let card_columns = Layout::horizontal([
+        Constraint::Length(block_width),
+        Constraint::Length(block_width),
+    ])
+    .split(cards_row.centered_horizontally(Constraint::Length(60)));
 
     let openings = app.trainer.openings.get_openings();
-    for i in 0..openings.len() {
-        let is_selected = app.ui_state.menu.selected_opening_index == i;
 
-        render_opening_card(
-            frame,
-            app,
-            main_layout_vertical[i],
-            openings[i].clone(),
-            is_selected,
-            app.ui_state.menu.focus == MenuFocus::Openings,
-        );
+    for (i, (name, opening)) in openings.enumerate() {
+        let card_area = card_columns[i];
+
+        let state = CardState {
+            selected: app.ui_state.menu.selected_opening_index == i,
+            focused: app.ui_state.menu.focus == MenuFocus::Openings,
+            hovered: app.ui_state.hovered == Some(ClickTarget::OpeningCard(i)),
+        };
+        render_opening_card(frame, app, card_area, name, opening, state);
+        regions.push(card_area, ClickTarget::OpeningCard(i));
     }
 
     render_footer(frame, footer, app.ui_state.menu.focus.keybinds());

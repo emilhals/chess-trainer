@@ -1,10 +1,10 @@
 use ratatui::{
     Frame,
     layout::{Constraint, Direction, Layout, Rect},
-    style::{Color, Style},
-    text::Span,
-    widgets::{Block, BorderType, Borders, Paragraph},
+    style::Style,
+    widgets::{Block, BorderType, Paragraph},
 };
+use shakmaty::Color as ShakmatyColor;
 
 use crate::{
     app::App,
@@ -13,88 +13,82 @@ use crate::{
     trainer::openings::{Opening, Openings},
 };
 
+#[derive(Clone, Copy, Default)]
+pub struct CardState {
+    pub selected: bool,
+    pub focused: bool,
+    pub hovered: bool,
+}
+
 pub fn render_opening_card(
     frame: &mut Frame<'_>,
     app: &App,
     area: Rect,
-    opening: (String, Opening),
-    is_selected: bool,
-    is_focused: bool,
+    name: &str,
+    opening: &Opening,
+    state: CardState,
 ) {
-    let layout = Layout::default()
+    let [area] = Layout::default()
         .direction(Direction::Vertical)
         .constraints([Constraint::Length(7)].as_ref())
-        .split(area);
+        .areas(area);
 
-    let formatted_name = Openings::format_name(&opening.0);
+    let (border_style, text_style) = card_box_style(state.selected, state.focused, state.hovered);
 
-    let border_style = if is_focused && is_selected {
-        Style::default().magenta()
-    } else {
-        Style::default().dark_gray()
-    };
+    let block = Block::bordered()
+        .border_type(BorderType::Rounded)
+        .border_style(border_style);
+    frame.render_widget(block, area);
 
-    let opening_block = match is_selected {
-        true => Block::default()
-            .borders(Borders::ALL)
-            .border_type(BorderType::Rounded)
-            .border_style(border_style),
-        false => Block::default()
-            .borders(Borders::ALL)
-            .border_type(BorderType::Rounded)
-            .border_style(border_style),
-    };
-    frame.render_widget(opening_block, layout[0]);
-
-    let block_layout = Layout::default()
+    let [_, name_area, info_area, player_area] = Layout::default()
         .direction(Direction::Vertical)
-        .constraints(
-            [
-                Constraint::Length(2), // Top padding
-                Constraint::Length(1), // Opening name + padding
-                Constraint::Length(1), // Completed lines / Highest streak
-                Constraint::Length(1), // Padding
-                Constraint::Length(1), // Player color
-            ]
-            .as_ref(),
-        )
-        .split(layout[0]);
+        .constraints([
+            Constraint::Length(2), // Top padding
+            Constraint::Length(1), // Opening name + padding
+            Constraint::Length(1), // Completed lines / Highest streak
+            Constraint::Length(1), // Player color
+        ])
+        .areas(area);
 
-    let paragraph_style = if is_focused && is_selected {
-        Style::default().bold()
-    } else {
-        Style::default().fg(Color::DarkGray)
-    };
-
-    let opening_name_paragraph = Paragraph::new(formatted_name.to_string())
+    let name_paragraph = Paragraph::new(Openings::format_name(name))
         .centered()
-        .style(paragraph_style);
-    frame.render_widget(opening_name_paragraph, block_layout[1]);
+        .style(text_style);
+    frame.render_widget(name_paragraph, name_area);
 
-    let completed_lines = app.player_data.completed_lines(&opening.0);
-    let highest_streak = app.player_data.best_streak(&opening.0);
-
-    let info_str = match app.trainer.state.mode.selected_mode {
+    let info = match app.trainer.state.mode.selected_mode {
         TrainerMode::Learn => format!(
             "{}/{} lines completed",
-            completed_lines,
-            opening.1.lines.len()
+            app.player_data.completed_lines(name),
+            opening.lines.len()
         ),
-        TrainerMode::Drill => format!("Best streak: {}", highest_streak),
+        TrainerMode::Drill => format!("Best streak: {}", app.player_data.best_streak(name)),
     };
+    frame.render_widget(Paragraph::new(info).centered().style(text_style), info_area);
 
-    let line_amount_paragraph = Paragraph::new(info_str).centered().style(paragraph_style);
-    frame.render_widget(line_amount_paragraph, block_layout[2]);
-
-    let player_color = match opening.1.player.as_str() {
-        "white" => format!("White {}", WHITE_PLAYER_UNICODE),
-        "black" => format!("Black {}", BLACK_PLAYER_UNICODE),
-        _ => "".to_string(),
+    let player = match opening.player_color() {
+        ShakmatyColor::White => format!("White {WHITE_PLAYER_UNICODE}"),
+        ShakmatyColor::Black => format!("Black {BLACK_PLAYER_UNICODE}"),
     };
-    let player_color_paragraph = Paragraph::new(Span::styled(
-        format!("Playing: {}", player_color),
-        paragraph_style,
-    ))
-    .centered();
-    frame.render_widget(player_color_paragraph, block_layout[3]);
+    frame.render_widget(
+        Paragraph::new(format!("Playing: {player}"))
+            .centered()
+            .style(text_style),
+        player_area,
+    );
+}
+
+fn card_box_style(selected: bool, focused: bool, hovered: bool) -> (Style, Style) {
+    let border = Style::default();
+    let text = Style::default();
+
+    match (selected, focused, hovered) {
+        // Card is selected while Openings is focused
+        (true, true, _) => (border.magenta(), text.bold()),
+        // Selected card, focus is on Mode Picker
+        (true, false, true) => (border.white(), text.bold()),
+        (true, false, false) => (border.gray(), text.bold()),
+        // Not selected
+        (false, _, true) => (border.gray(), text.gray()),
+        (false, _, false) => (border.dark_gray(), text.dark_gray()),
+    }
 }

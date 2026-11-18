@@ -3,7 +3,7 @@ use ratatui::crossterm::event::{KeyCode, KeyEvent};
 use crate::{app::App, handlers::handler::fallback_key_handler, state::menu_state::MenuFocus};
 
 pub fn handle_menu_view_events(app: &mut App, key_event: KeyEvent) {
-    let num_openings = app.trainer.openings.get_openings().len();
+    let num_openings = app.trainer.openings.get_openings().count();
 
     match (app.ui_state.menu.focus, key_event.code) {
         (
@@ -35,7 +35,7 @@ pub fn handle_menu_view_events(app: &mut App, key_event: KeyEvent) {
         }
 
         (MenuFocus::Openings, KeyCode::Enter | KeyCode::Char(' ')) => {
-            app.menu_select();
+            app.start_trainer(app.ui_state.menu.selected_opening_index);
         }
 
         (_, KeyCode::Char('m')) => {
