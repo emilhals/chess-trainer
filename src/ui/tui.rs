@@ -1,5 +1,6 @@
 use crate::app::{App, AppResult};
 use crate::event::EventHandler;
+use crate::state::click_regions::ClickRegions;
 use ratatui::Terminal;
 use ratatui::backend::Backend;
 
@@ -22,7 +23,12 @@ impl<B: Backend> Tui<B> {
     where
         <B as Backend>::Error: 'static,
     {
-        self.terminal.draw(|frame| main_ui::render(app, frame))?;
+        let mut regions = ClickRegions::default();
+
+        self.terminal
+            .draw(|frame| main_ui::render(app, frame, &mut regions))?;
+        app.ui_state.regions = regions;
+
         Ok(())
     }
 }

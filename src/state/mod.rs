@@ -1,3 +1,4 @@
+pub mod click_regions;
 pub mod menu_state;
 pub mod popup_state;
 pub mod trainer_state;

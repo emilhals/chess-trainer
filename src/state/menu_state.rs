@@ -52,6 +52,16 @@ impl MenuState {
             (self.selected_opening_index + num_openings - 1) % num_openings;
     }
 
+    pub fn select_opening(&mut self, index: usize, num_openings: usize) {
+        if index < num_openings {
+            self.selected_opening_index = index;
+        }
+    }
+
+    pub fn set_focus(&mut self, focus: MenuFocus) {
+        self.focus = focus;
+    }
+
     pub fn reset(&mut self) {
         *self = Self::default()
     }

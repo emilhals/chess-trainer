@@ -4,7 +4,7 @@ use chess_trainer::{
         player::{PlayerData, player_data_path},
     },
     event::{Event, EventHandler},
-    handlers::handler::handle_key_events,
+    handlers::{handler::handle_key_events, mouse::handle_mouse_events},
     settings::{Settings, settings_path},
     skin::Skins,
     trainer::{Trainer, openings::Openings},
@@ -52,7 +52,7 @@ fn main() -> AppResult<()> {
         match tui.events.next()? {
             Event::Tick => app.tick(),
             Event::Key(key_event) => handle_key_events(key_event, &mut app)?,
-            Event::Mouse(_) => {}
+            Event::Mouse(key_event) => handle_mouse_events(key_event, &mut app)?,
             Event::Resize(_, _) => {}
         }
     }
