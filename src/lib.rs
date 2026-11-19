@@ -1,7 +1,7 @@
 pub mod app;
 pub mod constants;
-pub mod event;
 pub mod handlers;
+pub mod native;
 pub mod settings;
 pub mod skin;
 pub mod state;

@@ -3,12 +3,14 @@ use chess_trainer::{
         App, AppResult,
         player::{PlayerData, player_data_path},
     },
-    event::{Event, EventHandler},
     handlers::{handler::handle_key_events, mouse::handle_mouse_events},
+    native::{
+        event::{Event, EventHandler},
+        tui::Tui,
+    },
     settings::{Settings, settings_path},
     skin::Skins,
     trainer::{Trainer, openings::Openings},
-    ui::tui::Tui,
 };
 
 use log::error;

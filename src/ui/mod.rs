@@ -6,5 +6,4 @@ pub mod pieces;
 pub mod popup;
 pub mod settings;
 pub mod trainer_ui;
-pub mod tui;
 pub mod widgets;
