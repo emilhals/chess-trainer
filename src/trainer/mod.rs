@@ -1,13 +1,9 @@
-use std::{
-    str::FromStr,
-    time::{Duration, Instant},
-};
+use std::time::{Duration, Instant};
 
-use shakmaty::{Color, Square, uci::UciMove};
+use shakmaty::Color;
 
 use crate::{
-    app::{coord::Coord, player::PlayerData},
-    settings::Settings,
+    app::player::PlayerData,
     state::trainer_state::{
         TrainerMode::{self},
         TrainerState,
@@ -17,7 +13,6 @@ use crate::{
         openings::{Line, Openings},
         ui::UI,
     },
-    utils::{flip_square_if_needed, get_coord_from_square},
 };
 
 pub mod board;
@@ -144,54 +139,11 @@ impl Trainer {
         line.is_completed(self.state.current_move_index)
     }
 
-    fn get_current_move_squares(&mut self) -> (Option<Square>, Option<Square>) {
-        let Some(line) = self.current_line() else {
-            return (None, None);
-        };
-
-        let Some(move_uci_str) = line.moves.get(self.state.current_move_index) else {
-            return (None, None);
-        };
-
-        let Some(uci_move) = UciMove::from_str(move_uci_str).ok() else {
-            return (None, None);
-        };
-
-        (uci_move.from(), uci_move.to())
-    }
-
-    // Places cursor to the correct next move.
-    pub fn show_hint(&mut self) {
-        let (Some(from), _) = self.get_current_move_squares() else {
-            return;
-        };
-
-        let from_coords = get_coord_from_square(from, self.board.is_flipped);
-        self.ui.cursor_coords = from_coords;
-
-        self.state.mode.increment_hint_level();
-
-        // Showing a hint counts as a wrong move
-        self.state.made_wrong_move = true;
-    }
-
-    pub fn apply_solution_move(&mut self, bot_move_delay: u64) {
-        let (Some(from), Some(to)) = self.get_current_move_squares() else {
-            return;
-        };
-
-        if self.board.execute_move(from, to).is_some() {
-            self.state.bot_move_at = Some(Instant::now() + Duration::from_millis(bot_move_delay));
-
-            self.state.current_move_index += 1;
-
-            if !self.is_completed() {
-                self.state.bot_should_move = true;
-            }
-        };
-
-        // Incrementing the hint level here, will set it back to HintLevel::Low
-        self.state.mode.increment_hint_level();
+    pub fn is_input_blocked(&self) -> bool {
+        self.state.bot_move_at.is_some()
+            || self.state.undo_move_at.is_some()
+            || self.state.next_line_at.is_some()
+            || self.is_completed()
     }
 
     pub fn move_progression(&self) -> usize {
@@ -200,61 +152,5 @@ impl Trainer {
         };
 
         (self.state.current_move_index * 100) / line.len()
-    }
-
-    pub fn select_cell(&mut self) {
-        let square: Square = self.ui.cursor_coords.into();
-        let square: Square = Coord::from(square).into();
-
-        let actual_square = flip_square_if_needed(square, self.board.is_flipped);
-
-        let legal_moves = self.board.get_legal_moves(&actual_square);
-
-        if legal_moves.is_empty() {
-            return;
-        }
-
-        self.ui.selected_square = Some(square);
-        self.ui.old_cursor_coords = Some(self.ui.cursor_coords);
-    }
-
-    pub fn handle_already_selected_cell(&mut self, settings: &Settings) {
-        let Some(selected_square) = self.ui.selected_square else {
-            return;
-        };
-
-        let cursor_square = self.ui.cursor_coords.into();
-
-        let actual_selected_coords = flip_square_if_needed(selected_square, self.board.is_flipped);
-        let actual_cursor_coords = flip_square_if_needed(cursor_square, self.board.is_flipped);
-
-        if actual_cursor_coords == actual_selected_coords {
-            return;
-        }
-
-        let legal_moves = self.board.get_legal_moves(&actual_selected_coords);
-
-        if !legal_moves.contains(&actual_cursor_coords) {
-            let piece_at_destination = self.board.get_piece_color_at_square(&actual_cursor_coords);
-
-            if piece_at_destination == Some(self.player_turn) {
-                self.select_cell();
-            } else {
-                self.ui.unselect_cell();
-            }
-            return;
-        }
-
-        self.try_move(actual_selected_coords, actual_cursor_coords, settings);
-
-        self.ui.unselect_cell();
-    }
-
-    pub fn handle_cell_click(&mut self, settings: &Settings) {
-        if self.ui.is_cell_selected() {
-            self.handle_already_selected_cell(settings);
-        } else {
-            self.select_cell();
-        }
     }
 }
