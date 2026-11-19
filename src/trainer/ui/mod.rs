@@ -32,6 +32,8 @@ pub struct UI {
     /// The selected piece cursor when we already selected a piece
     pub selected_piece_cursor: i8,
 
+    pub drag_from: Option<Coord>,
+
     pub width: u16,
     pub height: u16,
     pub top_x: u16,
@@ -39,9 +41,12 @@ pub struct UI {
 }
 
 impl UI {
-    #[must_use]
     pub fn is_cell_selected(&self) -> bool {
         self.selected_square.is_some()
+    }
+
+    pub fn selected_coord(&self) -> Option<Coord> {
+        self.selected_square.map(Coord::from)
     }
 
     pub fn cursor_up(&mut self) {
@@ -64,6 +69,7 @@ impl UI {
         if self.is_cell_selected() {
             self.selected_square = None;
             self.selected_piece_cursor = 0;
+            self.drag_from = None;
         }
     }
 

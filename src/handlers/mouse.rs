@@ -2,11 +2,16 @@ use ratatui::crossterm::event::{MouseButton, MouseEvent, MouseEventKind};
 
 use crate::{
     app::{App, AppResult},
+    handlers::trainer::handle_trainer_mouse,
     state::{click_regions::ClickTarget, menu_state::MenuFocus, ui_state::Views},
 };
 
 pub fn handle_mouse_events(mouse: MouseEvent, app: &mut App) -> AppResult<()> {
     if app.ui_state.mouse_disabled {
+        return Ok(());
+    }
+
+    if app.ui_state.popup.active_popup.is_some() {
         return Ok(());
     }
 
@@ -21,7 +26,7 @@ pub fn handle_mouse_events(mouse: MouseEvent, app: &mut App) -> AppResult<()> {
 
     match &app.ui_state.current_view {
         Views::Menu => handle_menu_mouse(mouse, app, target),
-        Views::Trainer => {}
+        Views::Trainer => handle_trainer_mouse(app, mouse, target),
     }
 
     Ok(())

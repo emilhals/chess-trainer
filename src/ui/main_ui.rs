@@ -14,7 +14,7 @@ pub fn render(app: &mut App, frame: &mut Frame<'_>, regions: &mut ClickRegions) 
 
     match app.ui_state.current_view {
         Views::Menu => render_menu_ui(frame, app, area, regions),
-        Views::Trainer => render_trainer_ui(frame, app, area),
+        Views::Trainer => render_trainer_ui(frame, app, area, regions),
     }
 
     match app.ui_state.popup.active_popup {

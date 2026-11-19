@@ -5,9 +5,17 @@ use ratatui::{
     widgets::Block,
 };
 
-use crate::{app::App, state::trainer_state::TrainerMode};
+use crate::{
+    app::App,
+    state::{click_regions::ClickRegions, trainer_state::TrainerMode},
+};
 
-pub fn render_trainer_ui(frame: &mut Frame<'_>, app: &mut App, area: Rect) {
+pub fn render_trainer_ui(
+    frame: &mut Frame<'_>,
+    app: &mut App,
+    area: Rect,
+    regions: &mut ClickRegions,
+) {
     let main_rows = Layout::default()
         .direction(Direction::Vertical)
         .constraints(
@@ -72,7 +80,7 @@ pub fn render_trainer_ui(frame: &mut Frame<'_>, app: &mut App, area: Rect) {
 
     app.trainer
         .ui
-        .board_render(board_inner, frame, &app.trainer.board, skin);
+        .board_render(board_inner, frame, &app.trainer.board, skin, regions);
 
     if has_labels {
         app.trainer

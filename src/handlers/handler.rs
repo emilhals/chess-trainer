@@ -38,7 +38,7 @@ pub fn handle_chess_input(app: &mut App, key_event: KeyEvent) {
         KeyCode::Down | KeyCode::Char('j') => app.trainer.go_down(),
         KeyCode::Left | KeyCode::Char('h') => app.trainer.go_left(),
         KeyCode::Right | KeyCode::Char('l') => app.trainer.go_right(),
-        KeyCode::Char(' ') | KeyCode::Enter => app.trainer.process_cell_click(&app.settings),
+        KeyCode::Char(' ') | KeyCode::Enter => app.trainer.handle_cell_click(&app.settings),
         KeyCode::Esc => app.trainer.ui.unselect_cell(),
         _ => fallback_key_handler(app, key_event),
     }

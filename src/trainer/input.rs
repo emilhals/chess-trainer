@@ -21,7 +21,6 @@ impl Trainer {
         self.ui.cursor_right();
     }
 
-    pub fn process_cell_click(&mut self, settings: &Settings) {
     pub fn select_cell(&mut self) {
         let square: Square = self.ui.cursor_coords.into();
         let square: Square = Coord::from(square).into();
@@ -81,6 +80,39 @@ impl Trainer {
             self.select_cell();
         }
     }
+
+    pub fn press_square(&mut self, coord: Coord, settings: &Settings) {
+        if self.ui.selected_coord() != Some(coord) {
+            self.click_square(coord, settings);
+        }
+
+        if self.ui.selected_coord() == Some(coord) {
+            self.ui.drag_from = Some(coord);
+        } else {
+            self.ui.drag_from = None;
+        }
+    }
+
+    pub fn drop_on_square(&mut self, coord: Coord, settings: &Settings) {
+        let start = self.ui.drag_from.take();
+
+        if start.is_none() {
+            return;
+        }
+
+        if start == Some(coord) {
+            return;
+        }
+
+        self.click_square(coord, settings);
+    }
+
+    pub fn cancel_drag(&mut self) {
+        self.ui.drag_from = None;
+    }
+
+    fn click_square(&mut self, coord: Coord, settings: &Settings) {
+        self.ui.cursor_coords = coord;
         self.handle_cell_click(settings);
     }
 }
