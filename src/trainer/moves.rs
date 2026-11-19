@@ -5,7 +5,10 @@ use std::{
 
 use shakmaty::{Square, uci::UciMove};
 
-use crate::{settings::Settings, state::trainer_state::TrainerMode, trainer::Trainer};
+use crate::{
+    settings::Settings, state::trainer_state::TrainerMode, trainer::Trainer,
+    utils::get_coord_from_square,
+};
 
 impl Trainer {
     pub fn try_move(&mut self, from: Square, to: Square, settings: &Settings) {
@@ -43,7 +46,6 @@ impl Trainer {
         }
     }
 
-    // Apply bot move, returns true if success
     pub fn apply_bot_move(&mut self, settings: &Settings) -> bool {
         let bot_move_uci = self
             .openings
@@ -83,7 +85,6 @@ impl Trainer {
         true
     }
 
-    // Returns true if move is valid. Returns false with message if not valid.
     pub fn validate_move(&self, move_uci: String) -> (bool, Option<String>) {
         let Some(line) = self.current_line() else {
             return (false, None);
@@ -96,5 +97,63 @@ impl Trainer {
         } else {
             (false, Some("Wrong move!".to_string()))
         }
+    }
+
+    /// Places cursor to the correct next move
+    pub fn show_hint(&mut self) {
+        if self.is_input_blocked() {
+            return;
+        }
+
+        let (Some(from), _) = self.get_current_move_squares() else {
+            return;
+        };
+
+        let from_coords = get_coord_from_square(from, self.board.is_flipped);
+        self.ui.cursor_coords = from_coords;
+
+        self.state.mode.increment_hint_level();
+
+        // Showing a hint counts as a wrong move
+        self.state.made_wrong_move = true;
+    }
+
+    pub fn apply_solution_move(&mut self, bot_move_delay: u64) {
+        if self.is_input_blocked() {
+            return;
+        }
+
+        let (Some(from), Some(to)) = self.get_current_move_squares() else {
+            return;
+        };
+
+        if self.board.execute_move(from, to).is_some() {
+            self.state.bot_move_at = Some(Instant::now() + Duration::from_millis(bot_move_delay));
+
+            self.state.current_move_index += 1;
+
+            if !self.is_completed() {
+                self.state.bot_should_move = true;
+            }
+        };
+
+        // Incrementing the hint level here, will set it back to HintLevel::Low
+        self.state.mode.increment_hint_level();
+    }
+
+    fn get_current_move_squares(&self) -> (Option<Square>, Option<Square>) {
+        let Some(line) = self.current_line() else {
+            return (None, None);
+        };
+
+        let Some(move_uci_str) = line.moves.get(self.state.current_move_index) else {
+            return (None, None);
+        };
+
+        let Some(uci_move) = UciMove::from_str(move_uci_str).ok() else {
+            return (None, None);
+        };
+
+        (uci_move.from(), uci_move.to())
     }
 }

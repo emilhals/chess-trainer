@@ -8,7 +8,7 @@ mod tests {
     fn test_opening_lines_have_legal_moves() {
         let openings = Openings::from_file("data/openings.json").unwrap();
 
-        for (opening_name, opening) in &openings.get_openings() {
+        for (opening_name, opening) in openings.get_openings() {
             for line in &opening.lines {
                 let mut position = Chess::default();
 

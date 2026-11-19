@@ -1,36 +1,36 @@
 use crate::state::{
+    click_regions::{ClickRegions, ClickTarget},
     menu_state::MenuState,
     popup_state::{ConfirmationAction, PopupState, Popups},
 };
 
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, Default, PartialEq)]
 pub enum Views {
+    #[default]
     Menu,
     Trainer,
 }
 
+#[derive(Default)]
 pub struct UIState {
     pub current_view: Views,
 
     pub menu: MenuState,
     pub popup: PopupState,
     pub confirmation_action: Option<ConfirmationAction>,
-}
 
-impl Default for UIState {
-    fn default() -> Self {
-        Self {
-            current_view: Views::Menu,
-            menu: MenuState::default(),
-            popup: PopupState::default(),
-            confirmation_action: None,
-        }
-    }
+    pub regions: ClickRegions,
+    pub hovered: Option<ClickTarget>,
+    pub mouse_disabled: bool,
 }
 
 impl UIState {
     pub fn go_to_home_view(&mut self) {
         self.current_view = Views::Menu;
+    }
+
+    pub fn go_to_trainer_view(&mut self) {
+        self.current_view = Views::Trainer;
     }
 
     pub fn toggle_settings_view(&mut self) {

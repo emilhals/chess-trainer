@@ -3,7 +3,7 @@ use std::time::Instant;
 
 use shakmaty::Color;
 
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, PartialEq, Eq)]
 pub enum TrainerMode {
     Learn,
     Drill,
@@ -66,6 +66,10 @@ impl TrainerModeState {
             HintLevel::Low => self.hint_level = HintLevel::Solve,
             HintLevel::Solve => self.hint_level = HintLevel::Low,
         }
+    }
+
+    pub fn set_mode(&mut self, mode: TrainerMode) {
+        self.selected_mode = mode;
     }
 
     pub fn toggle_mode(&mut self) {

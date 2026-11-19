@@ -11,7 +11,10 @@ use crate::{
     app::coord::Coord,
     settings::Settings,
     skin::Skin,
-    state::trainer_state::TrainerMode,
+    state::{
+        click_regions::{ClickRegions, ClickTarget},
+        trainer_state::TrainerMode,
+    },
     trainer::{Trainer, UI, board::Board, openings::Openings, ui::CellRenderContext},
     ui::{
         components::{cell::render_cell, divider::render_divider},
@@ -286,12 +289,19 @@ impl UI {
         frame.render_widget(paragraph, piece_area);
     }
 
-    pub fn board_render(&mut self, area: Rect, frame: &mut Frame<'_>, board: &Board, skin: &Skin) {
+    pub fn board_render(
+        &mut self,
+        area: Rect,
+        frame: &mut Frame<'_>,
+        board: &Board,
+        skin: &Skin,
+        regions: &mut ClickRegions,
+    ) {
         let actual_square = self
             .selected_square
             .map(|s| flip_square_if_needed(s, board.is_flipped));
 
-        self.render_board_grid(area, frame, board, skin, actual_square);
+        self.render_board_grid(area, frame, board, skin, actual_square, regions);
     }
 
     fn render_board_grid(
@@ -301,6 +311,7 @@ impl UI {
         board: &Board,
         skin: &Skin,
         actual_square: Option<Square>,
+        regions: &mut ClickRegions,
     ) {
         let width = area.width / 8;
         let height = area.height / 8;
@@ -369,6 +380,7 @@ impl UI {
                     legal_moves: &legal_moves,
                 };
 
+                regions.push(square, ClickTarget::Square(Coord::new(i, j)));
                 self.render_single_cell(frame, &ctx, skin);
             }
         }

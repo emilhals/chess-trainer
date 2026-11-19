@@ -1,6 +1,7 @@
 use std::{collections::BTreeMap, fs::File, io::BufReader};
 
 use serde::{Deserialize, Serialize};
+use shakmaty::Color;
 
 use crate::app::AppResult;
 
@@ -50,6 +51,16 @@ pub struct Opening {
     pub lines: Vec<Line>,
 }
 
+impl Opening {
+    pub fn player_color(&self) -> Color {
+        if self.player.eq_ignore_ascii_case("black") {
+            Color::Black
+        } else {
+            Color::White
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Openings(BTreeMap<String, Opening>);
 
@@ -68,17 +79,23 @@ impl Openings {
         Ok(serde_json::from_reader(reader)?)
     }
 
-    pub fn get_openings(&self) -> Vec<(String, Opening)> {
-        let openings: Vec<(String, Opening)> = self.0.clone().into_iter().collect();
-        openings
+    pub fn get_openings(&self) -> impl Iterator<Item = (&str, &Opening)> {
+        self.0
+            .iter()
+            .map(|(name, opening)| (name.as_str(), opening))
     }
 
-    // Returns an Opening from opening name
     pub fn get_opening(&self, opening_name: &str) -> Option<&Opening> {
         self.0.get(opening_name)
     }
 
-    // Returns a Line from opening name and line index
+    pub fn get_opening_by_index(&self, index: usize) -> Option<(&str, &Opening)> {
+        self.0
+            .iter()
+            .nth(index)
+            .map(|(name, opening)| (name.as_str(), opening))
+    }
+
     pub fn get_line(&self, opening_name: &str, line_index: usize) -> Option<&Line> {
         let opening = self.get_opening(opening_name).unwrap();
 
