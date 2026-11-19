@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0](https://github.com/emilhals/chess-trainer/compare/v0.5.0...v0.6.0) - 2026-11-19
+
+### Other
+
+- use app-level input types instead of crossterm events
+- *(event)* remove unused sender and handler
+- move terminal-specific code to native module
+
 ## [0.5.0](https://github.com/emilhals/chess-trainer/compare/v0.4.1...v0.5.0) - 2026-11-19
 
 ### Added
