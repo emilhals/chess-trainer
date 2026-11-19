@@ -1,46 +1,37 @@
-use ratatui::crossterm::event::{KeyCode, KeyEvent};
+use crate::{
+    app::App, handlers::handler::fallback_key_handler, input::Key, state::menu_state::MenuFocus,
+};
 
-use crate::{app::App, handlers::handler::fallback_key_handler, state::menu_state::MenuFocus};
-
-pub fn handle_menu_view_events(app: &mut App, key_event: KeyEvent) {
+pub fn handle_menu_key(app: &mut App, key: Key) {
     let num_openings = app.trainer.openings.get_openings().count();
 
-    match (app.ui_state.menu.focus, key_event.code) {
-        (
-            MenuFocus::ModeSelector,
-            KeyCode::Left | KeyCode::Right | KeyCode::Char('l') | KeyCode::Char('h'),
-        ) => {
+    match (app.ui_state.menu.focus, key) {
+        (MenuFocus::ModeSelector, Key::Left | Key::Right | Key::Char('l') | Key::Char('h')) => {
             app.trainer.state.mode.toggle_mode();
         }
-        (
-            MenuFocus::ModeSelector,
-            KeyCode::Up | KeyCode::Down | KeyCode::Char('k') | KeyCode::Char('j'),
-        ) => {
+        (MenuFocus::ModeSelector, Key::Up | Key::Down | Key::Char('k') | Key::Char('j')) => {
             app.ui_state.menu.focus.toggle();
         }
 
-        (
-            MenuFocus::Openings,
-            KeyCode::Up | KeyCode::Down | KeyCode::Char('k') | KeyCode::Char('j'),
-        ) => {
+        (MenuFocus::Openings, Key::Up | Key::Down | Key::Char('k') | Key::Char('j')) => {
             app.ui_state.menu.focus.toggle();
         }
 
-        (MenuFocus::Openings, KeyCode::Right | KeyCode::Char('l')) => {
+        (MenuFocus::Openings, Key::Right | Key::Char('l')) => {
             app.ui_state.menu.select_next_opening(num_openings);
         }
 
-        (MenuFocus::Openings, KeyCode::Left | KeyCode::Char('h')) => {
+        (MenuFocus::Openings, Key::Left | Key::Char('h')) => {
             app.ui_state.menu.select_previous_opening(num_openings);
         }
 
-        (MenuFocus::Openings, KeyCode::Enter | KeyCode::Char(' ')) => {
+        (MenuFocus::Openings, Key::Enter | Key::Char(' ')) => {
             app.start_trainer(app.ui_state.menu.selected_opening_index);
         }
 
-        (_, KeyCode::Char('m')) => {
+        (_, Key::Char('m')) => {
             app.trainer.state.mode.toggle_mode();
         }
-        _ => fallback_key_handler(app, key_event),
+        _ => fallback_key_handler(app, key),
     }
 }

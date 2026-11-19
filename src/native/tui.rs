@@ -1,5 +1,5 @@
 use crate::app::{App, AppResult};
-use crate::event::EventHandler;
+use crate::native::event::EventHandler;
 use crate::state::click_regions::ClickRegions;
 use ratatui::Terminal;
 use ratatui::backend::Backend;

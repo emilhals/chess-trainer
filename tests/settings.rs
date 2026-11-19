@@ -3,6 +3,7 @@ mod tests {
     use chess_trainer::{
         app::{App, AppResult, player::PlayerData},
         handlers::handler::handle_key_events,
+        input::Key,
         settings::Settings,
         skin::Skins,
         state::popup_state::{
@@ -11,20 +12,9 @@ mod tests {
         trainer::{Trainer, openings::Openings},
     };
 
-    use ratatui::crossterm::event::{KeyCode, KeyEvent, KeyEventKind, KeyModifiers};
-
-    fn key(code: KeyCode) -> KeyEvent {
-        KeyEvent {
-            code,
-            modifiers: KeyModifiers::empty(),
-            kind: KeyEventKind::Press,
-            state: ratatui::crossterm::event::KeyEventState::empty(),
-        }
-    }
-
-    fn send(app: &mut App, keys: &[KeyCode]) -> AppResult<()> {
+    fn send(app: &mut App, keys: &[Key]) -> AppResult<()> {
         for &k in keys {
-            handle_key_events(key(k), app)?;
+            handle_key_events(k, app)?;
         }
         Ok(())
     }
@@ -50,7 +40,7 @@ mod tests {
         app.ui_state.popup.open_confirmation(ResetProgress);
         app.ui_state.popup.selected_button = Cancel;
 
-        send(&mut app, &[KeyCode::Enter])?;
+        send(&mut app, &[Key::Enter])?;
 
         assert_eq!(app.player_data.highest_streak, 10);
         assert_eq!(app.ui_state.popup.active_popup, Some(SettingPopup));
