@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0](https://github.com/emilhals/chess-trainer/compare/v0.4.1...v0.5.0) - 2026-11-19
+
+### Added
+
+- add mouse support for moving pieces
+- add mouse support to main menu
+
+### Other
+
+- *(trainer)* split click handling and add input guard
+- *(ui)* show mode options in fixed positions
+- borrow openings and add start_trainer
+- update demo.tape
+
 ## [0.4.1](https://github.com/emilhals/chess-trainer/compare/v0.4.0...v0.4.1) - 2026-11-01
 
 ### Fixed
