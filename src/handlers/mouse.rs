@@ -1,12 +1,11 @@
-use ratatui::crossterm::event::{MouseButton, MouseEvent, MouseEventKind};
-
 use crate::{
     app::{App, AppResult},
     handlers::trainer::handle_trainer_mouse,
+    input::{MouseInput, MouseInputKind},
     state::{click_regions::ClickTarget, menu_state::MenuFocus, ui_state::Views},
 };
 
-pub fn handle_mouse_events(mouse: MouseEvent, app: &mut App) -> AppResult<()> {
+pub fn handle_mouse_events(mouse: MouseInput, app: &mut App) -> AppResult<()> {
     if app.ui_state.mouse_disabled {
         return Ok(());
     }
@@ -17,26 +16,22 @@ pub fn handle_mouse_events(mouse: MouseEvent, app: &mut App) -> AppResult<()> {
 
     let target = app.ui_state.regions.target_at(mouse.column, mouse.row);
 
-    if mouse.kind == MouseEventKind::Moved {
+    if mouse.kind == MouseInputKind::Move {
         if app.ui_state.hovered != target {
             app.ui_state.hovered = target;
         }
         return Ok(());
     }
 
-    match &app.ui_state.current_view {
-        Views::Menu => handle_menu_mouse(mouse, app, target),
+    match app.ui_state.current_view {
+        Views::Menu => handle_menu_mouse(app, target),
         Views::Trainer => handle_trainer_mouse(app, mouse, target),
     }
 
     Ok(())
 }
 
-fn handle_menu_mouse(mouse: MouseEvent, app: &mut App, target: Option<ClickTarget>) {
-    let MouseEventKind::Down(MouseButton::Left) = mouse.kind else {
-        return;
-    };
-
+fn handle_menu_mouse(app: &mut App, target: Option<ClickTarget>) {
     match target {
         Some(ClickTarget::OpeningCard(i)) => {
             let num_openings = app.trainer.openings.get_openings().count();

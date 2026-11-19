@@ -1,15 +1,14 @@
-use ratatui::crossterm::event::{KeyCode, KeyEvent};
-
 use crate::{
     app::{App, AppResult},
     handlers::{handler::fallback_key_handler, settings::handle_settings_view_events},
+    input::Key,
     state::popup_state::{Button, ConfirmationAction, Popups},
 };
 
-pub fn handle_popup_events(app: &mut App, key_event: KeyEvent) -> AppResult<()> {
+pub fn handle_popup_events(app: &mut App, key: Key) -> AppResult<()> {
     match app.ui_state.popup.active_popup {
-        Some(Popups::Settings) => handle_settings_view_events(app, key_event)?,
-        Some(Popups::Confirmation(action)) => handle_confirmation_input(app, key_event, action)?,
+        Some(Popups::Settings) => handle_settings_view_events(app, key)?,
+        Some(Popups::Confirmation(action)) => handle_confirmation_input(app, key, action)?,
         _ => {}
     }
 
@@ -18,25 +17,25 @@ pub fn handle_popup_events(app: &mut App, key_event: KeyEvent) -> AppResult<()> 
 
 pub fn handle_confirmation_input(
     app: &mut App,
-    key_event: KeyEvent,
+    key: Key,
     action: ConfirmationAction,
 ) -> AppResult<()> {
-    match key_event.code {
-        KeyCode::Left | KeyCode::Char('h') => {
+    match key {
+        Key::Left | Key::Char('h') => {
             app.ui_state.popup.toggle_button();
         }
-        KeyCode::Right | KeyCode::Char('l') => {
+        Key::Right | Key::Char('l') => {
             app.ui_state.popup.toggle_button();
         }
-        KeyCode::Enter | KeyCode::Char(' ') => {
+        Key::Enter | Key::Char(' ') => {
             if app.ui_state.popup.selected_button == Button::Confirm {
                 app.execute_confirmation(action)?
             } else {
                 app.ui_state.popup.open_settings();
             }
         }
-        KeyCode::Esc | KeyCode::Char('b') => app.ui_state.toggle_settings_view(),
-        _ => fallback_key_handler(app, key_event),
+        Key::Esc | Key::Char('b') => app.ui_state.toggle_settings_view(),
+        _ => fallback_key_handler(app, key),
     }
 
     Ok(())

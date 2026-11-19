@@ -1,6 +1,7 @@
 pub mod app;
 pub mod constants;
 pub mod handlers;
+pub mod input;
 pub mod native;
 pub mod settings;
 pub mod skin;
