@@ -1,12 +1,15 @@
 pub mod coord;
 pub mod menu;
+mod persistence;
 pub mod player;
 pub mod popup;
 
 use std::{error, time::Instant};
 
+use crate::app::persistence::{load_player_data, load_settings};
 use crate::settings::Settings;
 use crate::skin::Skins;
+use crate::storage::Storage;
 use crate::{
     app::player::PlayerData,
     state::{trainer_state::TrainerMode, ui_state::UIState},
@@ -20,17 +23,17 @@ pub struct App {
     pub trainer: Trainer,
     pub ui_state: UIState,
     pub player_data: PlayerData,
+    player_data_read_only: bool,
     pub settings: Settings,
     pub skins: Skins,
+    storage: Box<dyn Storage>,
 }
 
 impl App {
-    pub fn new(
-        trainer: Trainer,
-        player_data: PlayerData,
-        settings: Settings,
-        skins: Skins,
-    ) -> Self {
+    pub fn new(trainer: Trainer, skins: Skins, storage: Box<dyn Storage>) -> Self {
+        let (player_data, player_data_read_only) = load_player_data(&*storage);
+        let settings = load_settings(&*storage);
+
         Self {
             running: true,
             trainer,
@@ -38,6 +41,8 @@ impl App {
             player_data,
             settings,
             skins,
+            storage,
+            player_data_read_only,
         }
     }
 
