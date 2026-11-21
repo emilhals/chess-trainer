@@ -1,14 +1,14 @@
 #[cfg(test)]
 mod tests {
     use chess_trainer::{
-        app::{App, AppResult, player::PlayerData},
+        app::{App, AppResult},
         handlers::handler::handle_key_events,
         input::Key,
-        settings::Settings,
         skin::Skins,
         state::popup_state::{
             Button::Cancel, ConfirmationAction::ResetProgress, Popups::Settings as SettingPopup,
         },
+        storage::MemoryStorage,
         trainer::{Trainer, openings::Openings},
     };
 
@@ -23,12 +23,11 @@ mod tests {
         let openings = Openings::bundled().unwrap();
         let trainer = Trainer::new(openings);
 
-        let player_data = PlayerData::default();
-        let settings = Settings::default();
-
         let skins = Skins::bundled().unwrap();
 
-        App::new(trainer, player_data, settings, skins)
+        let storage = Box::new(MemoryStorage::default());
+
+        App::new(trainer, skins, storage)
     }
 
     #[test]
