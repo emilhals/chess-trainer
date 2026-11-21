@@ -6,6 +6,7 @@ pub mod native;
 pub mod settings;
 pub mod skin;
 pub mod state;
+pub mod storage;
 pub mod trainer;
 pub mod ui;
 pub mod utils;
