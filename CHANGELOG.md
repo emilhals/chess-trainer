@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0](https://github.com/emilhals/chess-trainer/compare/chess-trainer-v0.6.0...chess-trainer-v0.7.0) - 2026-11-22
+
+### Other
+
+- *(handlers)* take the app before the key or mouse
+- add native feature and workspace
+- replace std::time with web_time
+- remove file handling from PlayerData and Settings
+- *(storage)* load and save application data through the storage abstraction
+- *(storage)* add file storage backend
+- *(storage)* add storage trait, in-memory backend and JSON helpers
+
 ## [0.6.0](https://github.com/emilhals/chess-trainer/compare/v0.5.0...v0.6.0) - 2026-11-19
 
 ### Other
