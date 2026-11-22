@@ -4,7 +4,8 @@ mod persistence;
 pub mod player;
 pub mod popup;
 
-use std::{error, time::Instant};
+use std::error;
+use web_time::Instant;
 
 use crate::app::persistence::{load_player_data, load_settings};
 use crate::settings::Settings;
