@@ -5,7 +5,7 @@ use crate::{
     state::ui_state::Views,
 };
 
-pub fn handle_key_events(key: Key, app: &mut App) -> AppResult<()> {
+pub fn handle_key_events(app: &mut App, key: Key) -> AppResult<()> {
     if app.ui_state.popup.active_popup.is_some() {
         handle_popup_events(app, key)?;
         return Ok(());

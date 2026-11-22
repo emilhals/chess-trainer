@@ -50,8 +50,8 @@ fn main() -> AppResult<()> {
 
         match tui.events.next()? {
             Event::Tick => app.tick(),
-            Event::Key(key_event) => handle_key_events(key_event, &mut app)?,
-            Event::Mouse(key_event) => handle_mouse_events(key_event, &mut app)?,
+            Event::Key(key_event) => handle_key_events(&mut app, key_event)?,
+            Event::Mouse(mouse_event) => handle_mouse_events(&mut app, mouse_event)?,
         }
     }
 

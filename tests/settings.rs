@@ -14,7 +14,7 @@ mod tests {
 
     fn send(app: &mut App, keys: &[Key]) -> AppResult<()> {
         for &k in keys {
-            handle_key_events(k, app)?;
+            handle_key_events(app, k)?;
         }
         Ok(())
     }

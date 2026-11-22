@@ -5,7 +5,7 @@ use crate::{
     state::{click_regions::ClickTarget, menu_state::MenuFocus, ui_state::Views},
 };
 
-pub fn handle_mouse_events(mouse: MouseInput, app: &mut App) -> AppResult<()> {
+pub fn handle_mouse_events(app: &mut App, mouse: MouseInput) -> AppResult<()> {
     if app.ui_state.mouse_disabled {
         return Ok(());
     }
