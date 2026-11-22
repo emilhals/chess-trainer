@@ -10,7 +10,7 @@ impl App {
     pub fn execute_confirmation(&mut self, action: ConfirmationAction) -> AppResult<()> {
         match action {
             ConfirmationAction::ResetProgress => {
-                self.player_data.reset_progress()?;
+                self.reset_player_data();
                 self.trainer.state.reset();
 
                 self.ui_state.popup.open_settings();

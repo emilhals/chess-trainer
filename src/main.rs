@@ -1,15 +1,13 @@
 use chess_trainer::{
-    app::{
-        App, AppResult,
-        player::{PlayerData, player_data_path},
-    },
+    app::{App, AppResult},
     handlers::{handler::handle_key_events, mouse::handle_mouse_events},
     native::{
         event::{Event, EventHandler},
+        file_storage::FileStorage,
         tui::Tui,
     },
-    settings::{Settings, settings_path},
     skin::Skins,
+    storage::{MemoryStorage, Storage},
     trainer::{Trainer, openings::Openings},
 };
 
@@ -28,20 +26,19 @@ fn main() -> AppResult<()> {
     let openings: Openings = Openings::bundled()?;
     let skins: Skins = Skins::bundled()?;
 
-    let player_path = player_data_path()?;
-    let settings_path = settings_path()?;
-
-    // Load player data, or create default data if none exists yet
-    let player_data = PlayerData::from_file(&player_path).unwrap_or_default();
-
-    // Load or create settings.json
-    let settings = Settings::load_or_create(&settings_path)?;
+    let storage: Box<dyn Storage> = match FileStorage::with_default_location() {
+        Ok(storage) => Box::new(storage),
+        Err(err) => {
+            log::warn!("could not open file storage: {err}");
+            Box::new(MemoryStorage::default())
+        }
+    };
 
     // Create a trainer
     let trainer = Trainer::new(openings);
 
     // Create an application
-    let mut app = App::new(trainer, player_data, settings, skins);
+    let mut app = App::new(trainer, skins, storage);
 
     // Initialize the terminal user interface
     let terminal = ratatui::try_init()?;
@@ -53,10 +50,13 @@ fn main() -> AppResult<()> {
 
         match tui.events.next()? {
             Event::Tick => app.tick(),
-            Event::Key(key_event) => handle_key_events(key_event, &mut app)?,
-            Event::Mouse(key_event) => handle_mouse_events(key_event, &mut app)?,
+            Event::Key(key_event) => handle_key_events(&mut app, key_event)?,
+            Event::Mouse(mouse_event) => handle_mouse_events(&mut app, mouse_event)?,
         }
     }
+
+    app.save_player_data();
+    app.save_settings();
 
     // Exit the user interface.
     ratatui::try_restore()?;
@@ -65,16 +65,6 @@ fn main() -> AppResult<()> {
         std::io::stdout(),
         ratatui::crossterm::event::DisableMouseCapture
     )?;
-
-    // Save the player data
-    if let Err(err) = app.player_data.save(&player_path) {
-        log::error!("Failed to save player data: {err}");
-    }
-
-    // Save settings
-    if let Err(err) = app.settings.save(&settings_path) {
-        log::error!("Failed to save settings: {err}");
-    }
 
     Ok(())
 }

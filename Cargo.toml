@@ -7,21 +7,52 @@ repository = "https://github.com/emilhals/chess-trainer"
 readme = "README.md"
 license = "MIT"
 
+[workspace]
+members = [".", "web"]
+
+[features]
+default = ["native"]
+native = [
+    "ratatui/crossterm",
+    "dep:directories",
+    "dep:better-panic",
+    "dep:human-panic",
+    "dep:color-eyre",
+    "dep:strip-ansi-escapes",
+    "dep:libc",
+]
+
+[[bin]]
+name = "chess-trainer"
+path = "src/main.rs"
+required-features = ["native"]
+
 [dependencies]
-better-panic = "0.3.0"
-color-eyre = "0.6.5"
-derive_setters = "0.1.9"
-directories = "6.0.0"
-human-panic = "2.0.8"
-libc = "0.2.189"
 log = "0.4.34"
 rand = "0.10.2"
-ratatui = { version = "0.30.2", features = ["unstable-rendered-line-info", "serde"]}
-serde = { version = "1.0.229", features = ["derive"]}
+serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.151"
 shakmaty = "0.30.1"
-strip-ansi-escapes = "0.2.1"
 unicode-width = "0.2.3"
+derive_setters = "0.1.9"
+ratatui = { version = "0.30.2", default-features = false, features = [
+    "std",
+    "all-widgets",
+    "layout-cache",
+    "macros",
+    "underline-color",
+    "widget-calendar",
+    "serde",
+    "unstable-rendered-line-info",
+] }
+
+directories = { version = "6.0.0", optional = true }
+better-panic = { version = "0.3.0", optional = true }
+human-panic = { version = "2.0.8", optional = true }
+color-eyre = { version = "0.6.5", optional = true }
+strip-ansi-escapes = { version = "0.2.1", optional = true }
+libc = { version = "0.2.189", optional = true }
+web-time = "1.1.0"
 
 [profile.release]
 codegen-units = 1

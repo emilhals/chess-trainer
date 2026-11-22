@@ -2,10 +2,12 @@ pub mod app;
 pub mod constants;
 pub mod handlers;
 pub mod input;
+#[cfg(feature = "native")]
 pub mod native;
 pub mod settings;
 pub mod skin;
 pub mod state;
+pub mod storage;
 pub mod trainer;
 pub mod ui;
 pub mod utils;

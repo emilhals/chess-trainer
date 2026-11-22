@@ -1,20 +1,20 @@
 #[cfg(test)]
 mod tests {
     use chess_trainer::{
-        app::{App, AppResult, player::PlayerData},
+        app::{App, AppResult},
         handlers::handler::handle_key_events,
         input::Key,
-        settings::Settings,
         skin::Skins,
         state::popup_state::{
             Button::Cancel, ConfirmationAction::ResetProgress, Popups::Settings as SettingPopup,
         },
+        storage::MemoryStorage,
         trainer::{Trainer, openings::Openings},
     };
 
     fn send(app: &mut App, keys: &[Key]) -> AppResult<()> {
         for &k in keys {
-            handle_key_events(k, app)?;
+            handle_key_events(app, k)?;
         }
         Ok(())
     }
@@ -23,12 +23,11 @@ mod tests {
         let openings = Openings::bundled().unwrap();
         let trainer = Trainer::new(openings);
 
-        let player_data = PlayerData::default();
-        let settings = Settings::default();
-
         let skins = Skins::bundled().unwrap();
 
-        App::new(trainer, player_data, settings, skins)
+        let storage = Box::new(MemoryStorage::default());
+
+        App::new(trainer, skins, storage)
     }
 
     #[test]

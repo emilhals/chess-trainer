@@ -1,7 +1,5 @@
-use std::{
-    str::FromStr,
-    time::{Duration, Instant},
-};
+use std::str::FromStr;
+use web_time::{Duration, Instant};
 
 use shakmaty::{Square, uci::UciMove};
 

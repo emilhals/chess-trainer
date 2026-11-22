@@ -1,0 +1,13 @@
+[package]
+name = "chess-trainer-web"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "MIT"
+
+[dependencies]
+chess-trainer = { path = "..", default-features = false }
+ratzilla = "0.3.1"
+web-sys = "0.3.107"
+getrandom = { version = "0.4.3", features = ["wasm_js"] }
+log = "0.4.34"

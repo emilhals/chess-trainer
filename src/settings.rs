@@ -1,13 +1,7 @@
-use directories::ProjectDirs;
 use serde::{Deserialize, Serialize};
 
-use crate::{app::AppResult, skin::Skins};
-use std::{
-    cmp::{max, min},
-    fs::{self, File},
-    io::{self, BufReader},
-    path::{Path, PathBuf},
-};
+use crate::skin::Skins;
+use std::cmp::{max, min};
 
 #[derive(Serialize, Deserialize)]
 #[serde(default)]
@@ -37,45 +31,7 @@ impl Default for Settings {
     }
 }
 
-pub fn settings_path() -> io::Result<PathBuf> {
-    let project_dirs = ProjectDirs::from("com", "emilhals", "chess-trainer")
-        .ok_or_else(|| io::Error::other("Could not determine application data directory"))?;
-
-    let config_dir = project_dirs.config_dir();
-
-    fs::create_dir_all(config_dir)?;
-
-    Ok(config_dir.join("settings.json"))
-}
-
 impl Settings {
-    pub fn load_or_create(path: impl AsRef<Path>) -> AppResult<Self> {
-        let path = path.as_ref();
-
-        match File::open(path) {
-            Ok(file) => {
-                let reader = BufReader::new(file);
-                Ok(serde_json::from_reader(reader)?)
-            }
-            Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
-                let settings = Settings::default();
-                settings.save(path)?;
-                Ok(settings)
-            }
-            Err(error) => {
-                log::warn!("Failed to open settings at {}: {}", path.display(), error);
-                Err(error.into())
-            }
-        }
-    }
-
-    pub fn save(&self, path: impl AsRef<Path>) -> AppResult<()> {
-        let json = serde_json::to_string_pretty(self)?;
-        fs::write(path, json)?;
-
-        Ok(())
-    }
-
     pub fn cycle_skin(&mut self, skins: Skins, forward: bool) {
         let names = skins.names();
 
