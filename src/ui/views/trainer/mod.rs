@@ -124,7 +124,7 @@ pub fn render_trainer_ui(
 
     let cell_height = board_area.height / 8;
     let board_top_padding = board_area.height / 2 - (4 * cell_height);
-    let board_bottom = app.trainer.ui.top_y + app.trainer.ui.height * 8;
+    let board_bottom = board_area.bottom();
     let streak_height = 5;
 
     let streak_area = Rect::new(

@@ -28,13 +28,8 @@ pub struct UI {
     pub selected_square: Option<Square>,
     /// The selected piece cursor when we already selected a piece
     pub selected_piece_cursor: i8,
-
+    /// The start position if a piece is dragged.
     pub drag_from: Option<Coord>,
-
-    pub width: u16,
-    pub height: u16,
-    pub top_x: u16,
-    pub top_y: u16,
 }
 
 impl UI {

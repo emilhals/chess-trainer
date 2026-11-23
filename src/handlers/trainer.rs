@@ -35,21 +35,6 @@ pub fn handle_trainer_key(app: &mut App, key: Key) {
 }
 
 pub fn handle_trainer_mouse(app: &mut App, mouse: MouseInput, target: Option<ClickTarget>) {
-    if mouse.column < app.trainer.ui.top_x || mouse.row < app.trainer.ui.top_y {
-        return;
-    }
-
-    if app.trainer.ui.width == 0 || app.trainer.ui.height == 0 {
-        return;
-    }
-
-    let x = (mouse.column - app.trainer.ui.top_x) / app.trainer.ui.width;
-    let y = (mouse.row - app.trainer.ui.top_y) / app.trainer.ui.height;
-
-    if x > 7 || y > 7 {
-        return;
-    }
-
     let settings = &app.settings;
     match (mouse.kind, target) {
         (MouseInputKind::Release(MouseButton::Left), Some(ClickTarget::Square(coord))) => {
