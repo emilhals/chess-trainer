@@ -13,6 +13,10 @@ use ratatui::{
 use crate::{
     app::App,
     state::{click_regions::ClickRegions, trainer_state::TrainerMode},
+    ui::views::trainer::{
+        header::top_panel_render, instructions::instruction_render,
+        progress::progress_gauge_render, streak::streak_render,
+    },
 };
 
 pub fn render_trainer_ui(
@@ -34,9 +38,7 @@ pub fn render_trainer_ui(
         )
         .split(area);
 
-    app.trainer
-        .ui
-        .top_panel_render(main_rows[0], frame, &app.trainer);
+    top_panel_render(main_rows[0], frame, &app.trainer);
 
     let content_columns = Layout::default()
         .direction(Direction::Horizontal)
@@ -99,11 +101,7 @@ pub fn render_trainer_ui(
         );
     }
 
-    app.trainer.ui.progress_gauge_render(
-        board_block.inner(board_with_labels[0]),
-        frame,
-        &app.trainer,
-    );
+    progress_gauge_render(board_block.inner(board_with_labels[0]), frame, &app.trainer);
 
     let trainer_sidebar = Layout::default()
         .direction(Direction::Vertical)
@@ -154,18 +152,12 @@ pub fn render_trainer_ui(
     .areas(top);
 
     if drill_mode {
-        app.trainer
-            .ui
-            .instruction_render(instruction_area, frame, &app.trainer, &app.settings);
+        instruction_render(instruction_area, frame, &app.trainer, &app.settings);
 
         let highest_streak = app.player_data.best_streak(opening_name);
 
-        app.trainer
-            .ui
-            .streak_render(streak_area, frame, &app.trainer, highest_streak);
+        streak_render(streak_area, frame, &app.trainer, highest_streak);
     } else {
-        app.trainer
-            .ui
-            .instruction_render(instruction_area, frame, &app.trainer, &app.settings);
+        instruction_render(instruction_area, frame, &app.trainer, &app.settings);
     }
 }
