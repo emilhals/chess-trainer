@@ -40,10 +40,6 @@ pub fn render_single_cell(
 
     let is_cursor_cell = cursor_coord == current_rendering_coord;
 
-    if is_cursor_cell | is_selected_cell {
-        render_cell(frame, square, Color::Cyan, None);
-    }
-
     let cell_color: Color = if (i + j).is_multiple_of(2) {
         skin.light_square
     } else {
