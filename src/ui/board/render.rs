@@ -144,7 +144,7 @@ impl UI {
             )
             .split(area);
 
-        let (last_move_from, last_move_to) = Self::get_last_move_squares(board);
+        let (last_move_from, last_move_to) = board.last_move();
         let legal_moves = self.get_valid_moves_for_render(board, actual_square);
 
         for i in 0..8u8 {

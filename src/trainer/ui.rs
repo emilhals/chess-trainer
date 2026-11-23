@@ -69,22 +69,6 @@ impl UI {
             self.drag_from = None;
         }
     }
-
-    pub(crate) fn get_last_move_squares(board: &Board) -> (Option<Square>, Option<Square>) {
-        if board.move_history.is_empty() {
-            return (None, None);
-        }
-
-        let Some(last_move) = board.move_history.last() else {
-            return (None, None);
-        };
-
-        let last_move_from = last_move.from();
-        let last_move_to = Some(last_move.to());
-
-        (last_move_from, last_move_to)
-    }
-
     pub(crate) fn get_valid_moves_for_render(
         &self,
         board: &Board,

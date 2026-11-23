@@ -123,6 +123,22 @@ impl Board {
             .collect()
     }
 
+    /// Returns the from and to squares of the last move played, or `None` if no move has been made.
+    pub fn last_move(&self) -> (Option<Square>, Option<Square>) {
+        if self.move_history.is_empty() {
+            return (None, None);
+        }
+
+        let Some(last_move) = self.move_history.last() else {
+            return (None, None);
+        };
+
+        let last_move_from = last_move.from();
+        let last_move_to = Some(last_move.to());
+
+        (last_move_from, last_move_to)
+    }
+
     pub fn move_to_san(&self, move_index: usize) -> String {
         if move_index >= self.move_history.len() || move_index >= self.position_history.len() {
             return String::new();
