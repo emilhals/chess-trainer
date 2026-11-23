@@ -13,9 +13,15 @@ use ratatui::{
 use crate::{
     app::App,
     state::{click_regions::ClickRegions, trainer_state::TrainerMode},
-    ui::views::trainer::{
-        header::top_panel_render, instructions::instruction_render,
-        progress::progress_gauge_render, streak::streak_render,
+    ui::{
+        board::{
+            helper::instruction_height,
+            render::{board_render, render_file_labels, render_rank_labels},
+        },
+        views::trainer::{
+            header::top_panel_render, instructions::instruction_render,
+            progress::progress_gauge_render, streak::streak_render,
+        },
     },
 };
 
@@ -85,20 +91,20 @@ pub fn render_trainer_ui(
         return;
     };
 
-    app.trainer
-        .ui
-        .board_render(board_inner, frame, &app.trainer.board, skin, regions);
+    board_render(
+        frame,
+        board_inner,
+        &app.trainer.board,
+        skin,
+        app.trainer.ui.selected_square,
+        app.trainer.ui.cursor_coords,
+        regions,
+    );
 
     if has_labels {
-        app.trainer
-            .ui
-            .render_rank_labels(frame, rank_label_area[1], app.trainer.board.is_flipped);
+        render_rank_labels(frame, rank_label_area[1], app.trainer.board.is_flipped);
 
-        app.trainer.ui.render_file_labels(
-            frame,
-            board_with_labels[2],
-            app.trainer.board.is_flipped,
-        );
+        render_file_labels(frame, board_with_labels[2], app.trainer.board.is_flipped);
     }
 
     progress_gauge_render(board_block.inner(board_with_labels[0]), frame, &app.trainer);
@@ -132,10 +138,7 @@ pub fn render_trainer_ui(
         return;
     };
 
-    let instruction_height =
-        app.trainer
-            .ui
-            .instruction_height(sidebar_content_area.width, &app.trainer) as u16;
+    let instruction_height = instruction_height(sidebar_content_area.width, &app.trainer) as u16;
 
     let [top, _streak_area, _bottom_padding] = Layout::vertical([
         Constraint::Length(board_top_padding + instruction_height),

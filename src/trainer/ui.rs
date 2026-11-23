@@ -69,35 +69,4 @@ impl UI {
             self.drag_from = None;
         }
     }
-    pub(crate) fn get_valid_moves_for_render(
-        &self,
-        board: &Board,
-        actual_square: Option<Square>,
-    ) -> Vec<Coord> {
-        let Some(square) = actual_square else {
-            return vec![];
-        };
-
-        if !self.is_cell_selected() {
-            return vec![];
-        }
-
-        let selected_piece_color = board.get_piece_color_at_square(&square);
-
-        if let Some(color) = selected_piece_color
-            && color == board.player_turn
-        {
-            let mut legal_moves: Vec<Coord> = board
-                .get_legal_moves(&square)
-                .iter()
-                .map(|&s| Coord::from(s))
-                .collect();
-
-            if board.is_flipped {
-                legal_moves = legal_moves.iter().map(Coord::reverse).collect();
-            }
-            return legal_moves;
-        }
-        vec![]
-    }
 }
