@@ -8,7 +8,7 @@ use ratatui::{
 use crate::{
     app::App,
     skin::Skins,
-    ui::settings::{board_preview::render_board_preview, render_checkable_row, render_row},
+    ui::popup::settings::{board_preview::render_board_preview, render_checkable_row, render_row},
 };
 
 pub fn render_appearence_content(frame: &mut Frame, area: Rect, app: &App) {

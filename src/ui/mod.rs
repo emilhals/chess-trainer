@@ -1,8 +1,7 @@
 pub mod board;
-pub mod components;
 pub mod footer;
+pub mod layout;
 pub mod popup;
-pub mod settings;
 pub mod views;
 pub mod widgets;
 
@@ -12,8 +11,7 @@ use crate::{
     app::App,
     state::{click_regions::ClickRegions, popup_state::Popups, ui_state::Views},
     ui::{
-        popup::confirmation::render_confirmation_popup,
-        settings::render_settings_menu,
+        popup::{confirmation::render_confirmation_popup, settings::render_settings_menu},
         views::{menu::main_menu::render_menu_ui, trainer::trainer_ui::render_trainer_ui},
     },
 };
@@ -26,7 +24,7 @@ pub fn render(app: &mut App, frame: &mut Frame<'_>, regions: &mut ClickRegions) 
     }
 
     match app.ui_state.popup.active_popup {
-        Some(Popups::Settings) => render_settings_menu(frame, app, area),
+        Some(Popups::Settings) => render_settings_menu(app, frame, area),
         Some(Popups::Confirmation(action)) => {
             render_confirmation_popup(
                 frame,

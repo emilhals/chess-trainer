@@ -14,11 +14,11 @@ use crate::{
         trainer_state::TrainerMode,
     },
     ui::{
-        components::divider::render_divider,
         views::menu::{
             mode_selector::render_mode_selector,
             opening_card::{CardState, render_opening_card},
         },
+        widgets::divider::render_divider,
         widgets::kbd::Kbd,
     },
 };

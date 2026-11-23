@@ -21,10 +21,7 @@ use crate::{
         openings::Openings,
         ui::{CellRenderContext, UI},
     },
-    ui::{
-        components::{cell::render_cell, divider::render_divider},
-        widgets::kbd::Kbd,
-    },
+    ui::{board::cell::render_cell, widgets::divider::render_divider, widgets::kbd::Kbd},
     utils::{flip_square_if_needed, get_coord_from_square, get_square_from_coord},
 };
 

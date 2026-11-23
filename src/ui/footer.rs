@@ -3,7 +3,7 @@ use ratatui::{
     layout::{Constraint, Direction, Layout, Rect},
 };
 
-use crate::ui::{components::divider::render_divider, widgets::kbd::Kbd};
+use crate::ui::{widgets::divider::render_divider, widgets::kbd::Kbd};
 
 pub fn render_footer(frame: &mut Frame<'_>, area: Rect) {
     let layout_horizontal = Layout::default()

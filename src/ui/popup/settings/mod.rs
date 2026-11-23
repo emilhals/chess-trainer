@@ -1,7 +1,7 @@
-pub mod appearance;
-pub mod board_preview;
-pub mod general;
-pub mod trainer;
+mod appearance;
+mod board_preview;
+mod general;
+mod trainer;
 
 use ratatui::{
     Frame,
@@ -16,15 +16,15 @@ use crate::{
     app::App,
     state::popup_state::SettingsTabs,
     ui::{
-        components::centered_rect::centered_rect,
-        settings::{
+        layout::centered_rect,
+        popup::settings::{
             appearance::render_appearence_content, general::render_general_content,
             trainer::render_trainer_content,
         },
     },
 };
 
-pub fn render_settings_menu(frame: &mut Frame, app: &App, area: Rect) {
+pub fn render_settings_menu(app: &App, frame: &mut Frame, area: Rect) {
     let area = centered_rect(60, 60, area);
     frame.render_widget(Clear, area);
 

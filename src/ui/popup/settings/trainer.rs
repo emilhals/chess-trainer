@@ -8,7 +8,10 @@ use ratatui::{
 use crate::{
     app::App,
     settings::Settings,
-    ui::settings::{render_adjustable_row, render_checkable_row, render_divider, render_row},
+    ui::{
+        popup::settings::{render_adjustable_row, render_checkable_row, render_row},
+        widgets::divider::render_divider,
+    },
 };
 
 pub fn render_trainer_content(frame: &mut Frame, area: Rect, app: &App) {
