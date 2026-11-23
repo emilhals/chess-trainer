@@ -1,5 +1,4 @@
 pub mod board;
-pub mod footer;
 pub mod layout;
 pub mod popup;
 pub mod views;
