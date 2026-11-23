@@ -11,7 +11,7 @@ use crate::{
     state::{click_regions::ClickRegions, popup_state::Popups, ui_state::Views},
     ui::{
         popup::{confirmation::render_confirmation_popup, settings::render_settings_menu},
-        views::{menu::main_menu::render_menu_ui, trainer::trainer_ui::render_trainer_ui},
+        views::{menu::main_menu::render_menu_ui, trainer::render_trainer_ui},
     },
 };
 pub fn render(app: &mut App, frame: &mut Frame<'_>, regions: &mut ClickRegions) {
