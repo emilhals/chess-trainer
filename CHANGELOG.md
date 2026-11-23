@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0](https://github.com/emilhals/chess-trainer/compare/chess-trainer-v0.7.0...chess-trainer-v0.8.0) - 2026-11-23
+
+### Fixed
+
+- *(native)* add Tab key to TryFrom function
+- *(ui)* remove old cell color setting
+- *(trainer)* remove stored board geometry from UI
+
+### Other
+
+- *(ui)* move board rendering entry point to ui/board/mod.rs
+- *(ui)* move cell render function to cell.rs
+- *(ui)* make helper functions free
+- *(trainer)* move last-move lookup to Board
+- *(ui)* make trainer panels free functions
+- *(ui)* move trainer panels into ui/views/trainer
+- *(ui)* make trainer_ui the trainer view's mod.rs
+- *(gitignore)* add .DS_STORE and .trunk-lock
+- *(ui)* remove unused footer module
+- *(ui)* move settings to popup/settings
+- *(ui)* move trainer_ui.rs into ui/views
+- *(ui)* move menu rendering into ui/views
+- *(ui)* move main rendering function into ui/mod.rs
+- *(ui)* move board rendering and piece art into ui/board
+
 ## [0.7.0](https://github.com/emilhals/chess-trainer/compare/chess-trainer-v0.6.0...chess-trainer-v0.7.0) - 2026-11-22
 
 ### Other
