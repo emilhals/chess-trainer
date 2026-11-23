@@ -11,8 +11,8 @@ use crate::{
 };
 
 pub fn render_trainer_ui(
-    frame: &mut Frame<'_>,
     app: &mut App,
+    frame: &mut Frame<'_>,
     area: Rect,
     regions: &mut ClickRegions,
 ) {

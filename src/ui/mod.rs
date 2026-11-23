@@ -3,7 +3,6 @@ pub mod components;
 pub mod footer;
 pub mod popup;
 pub mod settings;
-pub mod trainer_ui;
 pub mod views;
 pub mod widgets;
 
@@ -13,8 +12,9 @@ use crate::{
     app::App,
     state::{click_regions::ClickRegions, popup_state::Popups, ui_state::Views},
     ui::{
-        popup::confirmation::render_confirmation_popup, settings::render_settings_menu,
-        trainer_ui::render_trainer_ui, views::menu::main_menu::render_menu_ui,
+        popup::confirmation::render_confirmation_popup,
+        settings::render_settings_menu,
+        views::{menu::main_menu::render_menu_ui, trainer::trainer_ui::render_trainer_ui},
     },
 };
 pub fn render(app: &mut App, frame: &mut Frame<'_>, regions: &mut ClickRegions) {
@@ -22,7 +22,7 @@ pub fn render(app: &mut App, frame: &mut Frame<'_>, regions: &mut ClickRegions) 
 
     match app.ui_state.current_view {
         Views::Menu => render_menu_ui(app, frame, area, regions),
-        Views::Trainer => render_trainer_ui(frame, app, area, regions),
+        Views::Trainer => render_trainer_ui(app, frame, area, regions),
     }
 
     match app.ui_state.popup.active_popup {
