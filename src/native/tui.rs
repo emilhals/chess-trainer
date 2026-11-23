@@ -1,10 +1,9 @@
 use crate::app::{App, AppResult};
 use crate::native::event::EventHandler;
 use crate::state::click_regions::ClickRegions;
+use crate::ui::render;
 use ratatui::Terminal;
 use ratatui::backend::Backend;
-
-use crate::ui::main_ui;
 
 #[derive(Debug)]
 pub struct Tui<B: Backend> {
@@ -26,7 +25,7 @@ impl<B: Backend> Tui<B> {
         let mut regions = ClickRegions::default();
 
         self.terminal
-            .draw(|frame| main_ui::render(app, frame, &mut regions))?;
+            .draw(|frame| render(app, frame, &mut regions))?;
         app.ui_state.regions = regions;
 
         Ok(())
