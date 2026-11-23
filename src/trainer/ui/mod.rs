@@ -1,6 +1,3 @@
-pub mod helper;
-pub mod render;
-
 use ratatui::layout::Rect;
 use shakmaty::Square;
 
@@ -11,14 +8,14 @@ use crate::{
 
 // Context for rendering a single cell of the board.
 pub struct CellRenderContext<'a> {
-    board: &'a Board,
-    i: u8,
-    j: u8,
-    square: Rect,
-    actual_square: Option<Square>,
-    last_move_from: Option<Square>,
-    last_move_to: Option<Square>,
-    legal_moves: &'a [Coord],
+    pub(crate) board: &'a Board,
+    pub(crate) i: u8,
+    pub(crate) j: u8,
+    pub(crate) square: Rect,
+    pub(crate) actual_square: Option<Square>,
+    pub(crate) last_move_from: Option<Square>,
+    pub(crate) last_move_to: Option<Square>,
+    pub(crate) legal_moves: &'a [Coord],
 }
 
 #[derive(Default)]
@@ -73,7 +70,7 @@ impl UI {
         }
     }
 
-    fn get_last_move_squares(board: &Board) -> (Option<Square>, Option<Square>) {
+    pub(crate) fn get_last_move_squares(board: &Board) -> (Option<Square>, Option<Square>) {
         if board.move_history.is_empty() {
             return (None, None);
         }
@@ -88,7 +85,7 @@ impl UI {
         (last_move_from, last_move_to)
     }
 
-    fn get_valid_moves_for_render(
+    pub(crate) fn get_valid_moves_for_render(
         &self,
         board: &Board,
         actual_square: Option<Square>,

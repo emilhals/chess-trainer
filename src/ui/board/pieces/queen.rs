@@ -1,4 +1,4 @@
-use crate::ui::pieces::PieceSize;
+use crate::ui::board::pieces::PieceSize;
 use shakmaty::Color;
 
 #[allow(dead_code)]

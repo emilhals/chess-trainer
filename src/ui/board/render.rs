@@ -15,7 +15,12 @@ use crate::{
         click_regions::{ClickRegions, ClickTarget},
         trainer_state::TrainerMode,
     },
-    trainer::{Trainer, UI, board::Board, openings::Openings, ui::CellRenderContext},
+    trainer::{
+        Trainer,
+        board::Board,
+        openings::Openings,
+        ui::{CellRenderContext, UI},
+    },
     ui::{
         components::{cell::render_cell, divider::render_divider},
         widgets::kbd::Kbd,

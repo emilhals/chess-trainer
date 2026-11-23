@@ -9,7 +9,7 @@ use shakmaty::Role;
 use crate::{
     state::trainer_state::TrainerMode,
     trainer::{Trainer, ui::UI},
-    ui::pieces::PieceSize,
+    ui::board::pieces::PieceSize,
 };
 
 impl UI {
@@ -20,7 +20,7 @@ impl UI {
         piece_color: Option<shakmaty::Color>,
         square: Rect,
     ) -> (Paragraph<'static>, u16) {
-        use crate::ui::pieces::{
+        use crate::ui::board::pieces::{
             bishop::Bishop, king::King, knight::Knight, pawn::Pawn, queen::Queen, rook::Rook,
         };
 
