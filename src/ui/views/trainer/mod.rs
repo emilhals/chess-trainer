@@ -15,8 +15,9 @@ use crate::{
     state::{click_regions::ClickRegions, trainer_state::TrainerMode},
     ui::{
         board::{
+            self,
             helper::instruction_height,
-            render::{board_render, render_file_labels, render_rank_labels},
+            render::{render_file_labels, render_rank_labels},
         },
         views::trainer::{
             header::top_panel_render, instructions::instruction_render,
@@ -91,7 +92,7 @@ pub fn render_trainer_ui(
         return;
     };
 
-    board_render(
+    board::render(
         frame,
         board_inner,
         &app.trainer.board,

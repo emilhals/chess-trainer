@@ -13,32 +13,8 @@ use crate::{
     state::click_regions::{ClickRegions, ClickTarget},
     trainer::{board::Board, ui::CellRenderContext},
     ui::board::{cell::render_single_cell, helper::legal_moves},
-    utils::flip_square_if_needed,
 };
-
-pub fn board_render(
-    frame: &mut Frame<'_>,
-    area: Rect,
-    board: &Board,
-    skin: &Skin,
-    selected_square: Option<Square>,
-    cursor_coord: Coord,
-    regions: &mut ClickRegions,
-) {
-    let actual_square = selected_square.map(|s| flip_square_if_needed(s, board.is_flipped));
-
-    render_board_grid(
-        area,
-        frame,
-        board,
-        skin,
-        actual_square,
-        cursor_coord,
-        regions,
-    );
-}
-
-fn render_board_grid(
+pub(super) fn render_grid(
     area: Rect,
     frame: &mut Frame<'_>,
     board: &Board,
