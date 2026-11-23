@@ -14,16 +14,16 @@ use crate::{
         trainer_state::TrainerMode,
     },
     ui::{
-        components::divider::render_divider,
-        menu::{
+        views::menu::{
             mode_selector::render_mode_selector,
             opening_card::{CardState, render_opening_card},
         },
+        widgets::divider::render_divider,
         widgets::kbd::Kbd,
     },
 };
 
-pub fn render_menu_ui(frame: &mut Frame, app: &App, area: Rect, regions: &mut ClickRegions) {
+pub fn render_menu_ui(app: &App, frame: &mut Frame, area: Rect, regions: &mut ClickRegions) {
     let layout = Layout::default().constraints([
         Constraint::Length(4), // Title
         Constraint::Length(1), // Spacing

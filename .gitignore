@@ -1,3 +1,5 @@
+.DS_STORE
 /target
 /data/player.json
+.trunk-lock
 *.gif

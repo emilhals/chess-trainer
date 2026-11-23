@@ -1,3 +1,8 @@
+pub mod header;
+pub mod instructions;
+pub mod progress;
+pub mod streak;
+
 use ratatui::{
     Frame,
     layout::{Constraint, Direction, Flex, Layout, Rect},
@@ -8,11 +13,22 @@ use ratatui::{
 use crate::{
     app::App,
     state::{click_regions::ClickRegions, trainer_state::TrainerMode},
+    ui::{
+        board::{
+            self,
+            helper::instruction_height,
+            render::{render_file_labels, render_rank_labels},
+        },
+        views::trainer::{
+            header::top_panel_render, instructions::instruction_render,
+            progress::progress_gauge_render, streak::streak_render,
+        },
+    },
 };
 
 pub fn render_trainer_ui(
-    frame: &mut Frame<'_>,
     app: &mut App,
+    frame: &mut Frame<'_>,
     area: Rect,
     regions: &mut ClickRegions,
 ) {
@@ -29,9 +45,7 @@ pub fn render_trainer_ui(
         )
         .split(area);
 
-    app.trainer
-        .ui
-        .top_panel_render(main_rows[0], frame, &app.trainer);
+    top_panel_render(main_rows[0], frame, &app.trainer);
 
     let content_columns = Layout::default()
         .direction(Direction::Horizontal)
@@ -78,27 +92,23 @@ pub fn render_trainer_ui(
         return;
     };
 
-    app.trainer
-        .ui
-        .board_render(board_inner, frame, &app.trainer.board, skin, regions);
+    board::render(
+        frame,
+        board_inner,
+        &app.trainer.board,
+        skin,
+        app.trainer.ui.selected_square,
+        app.trainer.ui.cursor_coords,
+        regions,
+    );
 
     if has_labels {
-        app.trainer
-            .ui
-            .render_rank_labels(frame, rank_label_area[1], app.trainer.board.is_flipped);
+        render_rank_labels(frame, rank_label_area[1], app.trainer.board.is_flipped);
 
-        app.trainer.ui.render_file_labels(
-            frame,
-            board_with_labels[2],
-            app.trainer.board.is_flipped,
-        );
+        render_file_labels(frame, board_with_labels[2], app.trainer.board.is_flipped);
     }
 
-    app.trainer.ui.progress_gauge_render(
-        board_block.inner(board_with_labels[0]),
-        frame,
-        &app.trainer,
-    );
+    progress_gauge_render(board_block.inner(board_with_labels[0]), frame, &app.trainer);
 
     let trainer_sidebar = Layout::default()
         .direction(Direction::Vertical)
@@ -114,7 +124,7 @@ pub fn render_trainer_ui(
 
     let cell_height = board_area.height / 8;
     let board_top_padding = board_area.height / 2 - (4 * cell_height);
-    let board_bottom = app.trainer.ui.top_y + app.trainer.ui.height * 8;
+    let board_bottom = board_area.bottom();
     let streak_height = 5;
 
     let streak_area = Rect::new(
@@ -129,10 +139,7 @@ pub fn render_trainer_ui(
         return;
     };
 
-    let instruction_height =
-        app.trainer
-            .ui
-            .instruction_height(sidebar_content_area.width, &app.trainer) as u16;
+    let instruction_height = instruction_height(sidebar_content_area.width, &app.trainer) as u16;
 
     let [top, _streak_area, _bottom_padding] = Layout::vertical([
         Constraint::Length(board_top_padding + instruction_height),
@@ -149,18 +156,12 @@ pub fn render_trainer_ui(
     .areas(top);
 
     if drill_mode {
-        app.trainer
-            .ui
-            .instruction_render(instruction_area, frame, &app.trainer, &app.settings);
+        instruction_render(instruction_area, frame, &app.trainer, &app.settings);
 
         let highest_streak = app.player_data.best_streak(opening_name);
 
-        app.trainer
-            .ui
-            .streak_render(streak_area, frame, &app.trainer, highest_streak);
+        streak_render(streak_area, frame, &app.trainer, highest_streak);
     } else {
-        app.trainer
-            .ui
-            .instruction_render(instruction_area, frame, &app.trainer, &app.settings);
+        instruction_render(instruction_area, frame, &app.trainer, &app.settings);
     }
 }

@@ -1,5 +1,6 @@
 use std::io;
 
+use chess_trainer::ui::render;
 use ratzilla::ratatui::Terminal;
 
 use ratzilla::{WebGl2Backend, WebRenderer};
@@ -15,7 +16,6 @@ use chess_trainer::{
     state::click_regions::ClickRegions,
     storage::{MemoryStorage, Storage},
     trainer::{Trainer, openings::Openings},
-    ui::main_ui,
 };
 use ratzilla::{FontAtlasConfig, backend::webgl2::WebGl2BackendOptions};
 
@@ -47,7 +47,7 @@ fn main() -> io::Result<()> {
             if let Some(key) = key_from_ratzilla_event(key_event) {
                 let mut app = app_cloned.borrow_mut();
 
-                if let Err(err) = handle_key_events(key, &mut app) {
+                if let Err(err) = handle_key_events(&mut app, key) {
                     log::warn!("{err}");
                 }
             };
@@ -58,7 +58,7 @@ fn main() -> io::Result<()> {
         app.borrow_mut().tick();
 
         let mut regions = ClickRegions::default();
-        main_ui::render(&mut app.borrow_mut(), f, &mut regions);
+        render(&mut app.borrow_mut(), f, &mut regions);
     });
 
     Ok(())

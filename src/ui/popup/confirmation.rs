@@ -6,7 +6,7 @@ use ratatui::{
     widgets::{Block, BorderType, Borders, Clear, Paragraph, Wrap},
 };
 
-use crate::{state::popup_state::Button, ui::components::centered_rect::centered_rect};
+use crate::{state::popup_state::Button, ui::layout::centered_rect};
 
 pub fn render_confirmation_popup(
     frame: &mut Frame,
