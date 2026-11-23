@@ -1,3 +1,8 @@
+pub mod header;
+pub mod instructions;
+pub mod progress;
+pub mod streak;
+
 use ratatui::{
     Frame,
     layout::{Constraint, Direction, Flex, Layout, Rect},

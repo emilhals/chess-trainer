@@ -1,227 +1,25 @@
 use ratatui::{
     Frame,
-    layout::{Alignment, Constraint, Direction, Flex, Layout, Rect},
-    style::{Color, Modifier, Style, Stylize},
-    text::{Line, Span, Text},
-    widgets::{Block, BorderType, Borders, Gauge, Paragraph, Wrap},
+    layout::{Alignment, Constraint, Direction, Layout, Rect},
+    style::{Color, Style, Stylize},
+    text::Line,
+    widgets::{Block, Paragraph},
 };
 use shakmaty::Square;
 
 use crate::{
     app::coord::Coord,
-    settings::Settings,
     skin::Skin,
-    state::{
-        click_regions::{ClickRegions, ClickTarget},
-        trainer_state::TrainerMode,
-    },
+    state::click_regions::{ClickRegions, ClickTarget},
     trainer::{
-        Trainer,
         board::Board,
-        openings::Openings,
         ui::{CellRenderContext, UI},
     },
-    ui::{board::cell::render_cell, widgets::divider::render_divider, widgets::kbd::Kbd},
+    ui::board::cell::render_cell,
     utils::{flip_square_if_needed, get_coord_from_square, get_square_from_coord},
 };
 
 impl UI {
-    pub fn streak_render(
-        &self,
-        area: Rect,
-        frame: &mut Frame,
-        trainer: &Trainer,
-        highest_streak: u32,
-    ) {
-        let info_block = Block::default()
-            .borders(Borders::ALL)
-            .border_style(Style::default().fg(Color::White))
-            .border_type(BorderType::Rounded)
-            .title_top(format!("Streak: {}", trainer.state.current_streak))
-            .title_alignment(Alignment::Center);
-
-        let inner_block = info_block.inner(area);
-        frame.render_widget(info_block, area);
-
-        let content_area = Layout::default()
-            .direction(Direction::Vertical)
-            .constraints([Constraint::Length(1), Constraint::Length(1)])
-            .split(inner_block);
-
-        let best_streak =
-            Paragraph::new(format!("Best: {}", highest_streak)).alignment(Alignment::Center);
-        frame.render_widget(best_streak, content_area[1]);
-    }
-
-    pub fn progress_gauge_render(&self, area: Rect, frame: &mut Frame, trainer: &Trainer) {
-        let gauge = Gauge::default()
-            .gauge_style(Style::new().light_magenta().on_dark_gray())
-            .style(Modifier::BOLD)
-            .label("")
-            .percent(trainer.move_progression() as u16);
-
-        frame.render_widget(gauge, area);
-    }
-
-    pub fn top_panel_render(&self, area: Rect, frame: &mut Frame<'_>, trainer: &Trainer) {
-        let layout = Layout::default()
-            .direction(Direction::Vertical)
-            .constraints([
-                Constraint::Length(1), // Padding
-                Constraint::Length(1), // Kbd and paragraphs
-                Constraint::Length(1), // Divider
-            ])
-            .split(area);
-
-        let panel = Layout::default()
-            .direction(Direction::Horizontal)
-            .constraints([
-                Constraint::Length(1),  // Left padding
-                Constraint::Length(10), // Back Kbd
-                Constraint::Min(0),     // Opening name & current line index
-                Constraint::Length(10), // Trainer mode paragraph
-                Constraint::Length(1),  // Right padding
-            ])
-            .split(layout[1]);
-
-        let back_kbd = Kbd::default()
-            .key("b".to_string())
-            .content("Back".to_string());
-
-        frame.render_widget(back_kbd, panel[1]);
-
-        let title = trainer
-            .state
-            .current_opening_name
-            .as_deref()
-            .unwrap_or("No opening");
-        let formatted_title = Openings::format_name(title);
-
-        let line_index = trainer.state.current_line_index.to_string();
-
-        let mut lines = vec![];
-        lines.push(Line::from(vec![
-            Span::styled(formatted_title, Style::default().bold()),
-            Span::styled(" ", Style::default()),
-            Span::styled(format!("⚬ Line {}", line_index), Style::default()),
-        ]));
-        let text = Text::from(lines).centered();
-
-        frame.render_widget(text, panel[2]);
-
-        let mode_symbol = match trainer.state.mode.selected_mode {
-            TrainerMode::Drill => "⚡",
-            TrainerMode::Learn => "📚",
-        };
-
-        let mode_str = format!("{} {}", mode_symbol, trainer.state.mode.selected_mode);
-        let mode_paragraph = Paragraph::new(mode_str).right_aligned();
-        frame.render_widget(mode_paragraph, panel[3]);
-
-        render_divider(frame, layout[2]);
-    }
-
-    pub fn instruction_render(
-        &self,
-        area: Rect,
-        frame: &mut Frame<'_>,
-        trainer: &Trainer,
-        settings: &Settings,
-    ) {
-        let [content, kbd] =
-            Layout::vertical([Constraint::Min(0), Constraint::Length(1)]).areas(area);
-
-        if trainer.is_completed() {
-            let lines = vec![
-                Line::from(Span::styled(
-                    "Line complete!",
-                    Style::default().bold().light_green(),
-                )),
-                Line::from(Span::styled("Ready for the next line?", Style::default())),
-            ];
-            let text = Text::from(lines);
-
-            let response_paragraph = Paragraph::new(text).alignment(Alignment::Center);
-            frame.render_widget(response_paragraph, content);
-
-            // If auto advance is enabled in Drill mode, don't show any Kbds
-            if trainer.state.mode.selected_mode == TrainerMode::Drill && settings.auto_advance {
-                return;
-            }
-
-            let kbd_next = Kbd::default()
-                .key("n".to_string())
-                .content("Next line".to_string());
-            let kbd_replay = Kbd::default()
-                .key("r".to_string())
-                .content("Replay".to_string());
-
-            let mut kbd_area_constraints = vec![];
-            if trainer.state.mode.selected_mode == TrainerMode::Drill {
-                kbd_area_constraints.extend([Constraint::Length(kbd_next.desired_width())]);
-            } else {
-                kbd_area_constraints.extend([
-                    Constraint::Length(kbd_next.desired_width()),
-                    Constraint::Length(2),
-                    Constraint::Length(kbd_replay.desired_width()),
-                ]);
-            }
-
-            let kbd_area = Layout::default()
-                .direction(Direction::Horizontal)
-                .flex(Flex::Center)
-                .constraints(kbd_area_constraints)
-                .split(kbd);
-
-            frame.render_widget(kbd_next, kbd_area[0]);
-
-            // Only show replay in Learn mode
-            if trainer.state.mode.selected_mode == TrainerMode::Learn {
-                frame.render_widget(kbd_replay, kbd_area[2]);
-            }
-        } else {
-            // If we don't have a validation response, render the instruction
-            if trainer.state.validate_move_response.is_none() {
-                // In Drill mode, we don't show the instruction unless a wrong move has been made
-                if trainer.state.mode.selected_mode == TrainerMode::Drill
-                    && !trainer.state.made_wrong_move
-                {
-                    let paragraph = Paragraph::new("What's the correct move?");
-                    frame.render_widget(paragraph, content);
-
-                    let hint_level = trainer.state.mode.hint_level.to_string();
-
-                    let kbd_hint = Kbd::default()
-                        .key("t".to_string())
-                        .content(hint_level.to_string());
-                    frame.render_widget(kbd_hint, kbd);
-
-                    return;
-                }
-
-                let (info, play) = trainer.current_instruction();
-
-                let lines = vec![
-                    Line::from(Span::styled(info, Style::new().italic().dark_gray())),
-                    Line::from(Span::styled(" ", Style::new())),
-                    Line::from(Span::styled(play, Style::new().bold())),
-                ];
-
-                let text = Text::from(lines);
-                let paragraph = Paragraph::new(text).wrap(Wrap { trim: true });
-                frame.render_widget(paragraph, content);
-            } else {
-                // We have a validation response, so we render it
-                let response = trainer.state.validate_move_response.clone().unwrap();
-
-                let response_paragraph = Paragraph::new(Line::from(response).bold())
-                    .wrap(Wrap { trim: true })
-                    .fg(Color::White);
-                frame.render_widget(response_paragraph, content);
-            }
-        }
-    }
-
     // Renders a single cell of the board.
     pub fn render_single_cell(
         &self,
