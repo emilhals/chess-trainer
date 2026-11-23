@@ -25,6 +25,7 @@ impl TryFrom<CtKeyEvent> for Key {
             CtKeyCode::Enter => Ok(Key::Enter),
             CtKeyCode::Esc => Ok(Key::Esc),
             CtKeyCode::Backspace => Ok(Key::Backspace),
+            CtKeyCode::Tab => Ok(Key::Tab),
             CtKeyCode::Char(c) => Ok(Key::Char(c)),
             _ => Err(Unsupported),
         }
