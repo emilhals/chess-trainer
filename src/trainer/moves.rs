@@ -4,7 +4,9 @@ use web_time::{Duration, Instant};
 use shakmaty::{Square, uci::UciMove};
 
 use crate::{
-    settings::Settings, state::trainer_state::TrainerMode, trainer::Trainer,
+    settings::Settings,
+    state::trainer_state::{MoveFeedback, TrainerMode},
+    trainer::Trainer,
     utils::get_coord_from_square,
 };
 
@@ -21,6 +23,8 @@ impl Trainer {
                 self.state.bot_move_at =
                     Some(Instant::now() + Duration::from_millis(settings.bot_move_delay));
 
+                self.state.move_feedback = Some(MoveFeedback::Correct);
+
                 self.state.current_move_index += 1;
 
                 if !self.is_completed() {
@@ -35,6 +39,8 @@ impl Trainer {
             } else {
                 self.state.bot_should_move = false;
                 self.state.made_wrong_move = true;
+
+                self.state.move_feedback = Some(MoveFeedback::Incorrect);
 
                 self.state.validate_move_response = response;
 

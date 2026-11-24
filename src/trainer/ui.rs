@@ -57,6 +57,12 @@ impl UI {
         self.cursor_coords.move_to(MoveDirection::Right);
     }
 
+    pub fn undo_cursor(&mut self) {
+        if let Some(coords) = self.old_cursor_coords {
+            self.cursor_coords = coords;
+        }
+    }
+
     pub fn unselect_cell(&mut self) {
         if self.is_cell_selected() {
             self.selected_square = None;

@@ -1,29 +1,38 @@
 use ratatui::{
     Frame,
-    layout::{Alignment, Constraint, Direction, Layout, Rect},
+    layout::{Alignment, Constraint, Layout, Rect},
     style::{Color, Style},
-    widgets::{Block, BorderType, Borders, Paragraph},
+    text::Line,
 };
 
-use crate::trainer::Trainer;
+use crate::{skin::Skin, ui::widgets::big_number::BigNumber};
 
-pub fn streak_render(area: Rect, frame: &mut Frame, trainer: &Trainer, highest_streak: u32) {
-    let info_block = Block::default()
-        .borders(Borders::ALL)
-        .border_style(Style::default().fg(Color::White))
-        .border_type(BorderType::Rounded)
-        .title_top(format!("Streak: {}", trainer.state.current_streak))
-        .title_alignment(Alignment::Center);
+pub fn streak_render(
+    area: Rect,
+    frame: &mut Frame,
+    current_streak: u32,
+    highest_streak: u32,
+    skin: &Skin,
+) {
+    let label = Line::styled(
+        format!("Streak · Best:{highest_streak}"),
+        Style::default().fg(Color::DarkGray),
+    );
 
-    let inner_block = info_block.inner(area);
-    frame.render_widget(info_block, area);
+    let current_streak = BigNumber::default()
+        .value(current_streak)
+        .style(Style::default().fg(skin.streak))
+        .alignment(Alignment::Center);
 
-    let content_area = Layout::default()
-        .direction(Direction::Vertical)
-        .constraints([Constraint::Length(1), Constraint::Length(1)])
-        .split(inner_block);
+    let block_width = label.width().max(current_streak.desired_width() as usize) as u16;
+    let block = area.centered_horizontally(Constraint::Length(block_width));
 
-    let best_streak =
-        Paragraph::new(format!("Best: {}", highest_streak)).alignment(Alignment::Center);
-    frame.render_widget(best_streak, content_area[1]);
+    let [label_area, streak_area] =
+        Layout::vertical([Constraint::Length(1), Constraint::Length(3)])
+            .spacing(1)
+            .areas(block);
+
+    frame.render_widget(label, label_area);
+
+    frame.render_widget(current_streak, streak_area);
 }

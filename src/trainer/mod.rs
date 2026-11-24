@@ -131,6 +131,11 @@ impl Trainer {
         self.state.reset_line_progress();
     }
 
+    pub fn undo_move(&mut self) {
+        self.board.undo_move();
+        self.ui.undo_cursor();
+    }
+
     pub fn is_completed(&self) -> bool {
         let Some(line) = self.current_line() else {
             return false;

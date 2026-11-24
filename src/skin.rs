@@ -11,6 +11,9 @@ pub struct Skin {
     pub legal_move: Color,
     pub last_move: Color,
     pub cursor: Color,
+    pub feedback_correct: Color,
+    pub feedback_incorrect: Color,
+    pub streak: Color,
 }
 
 impl Default for Skin {
@@ -22,6 +25,9 @@ impl Default for Skin {
             legal_move: Color::Yellow,
             last_move: Color::Yellow,
             cursor: Color::Cyan,
+            feedback_correct: Color::Green,
+            feedback_incorrect: Color::Red,
+            streak: Color::Magenta,
         }
     }
 }
