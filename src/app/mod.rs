@@ -68,7 +68,7 @@ impl App {
             };
 
             self.player_data
-                .set_best_streak(opening_name, self.trainer.state.current_streak as u32);
+                .set_best_streak(opening_name, self.trainer.state.current_streak);
         }
     }
 

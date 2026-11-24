@@ -13,6 +13,7 @@ pub struct Skin {
     pub cursor: Color,
     pub feedback_correct: Color,
     pub feedback_incorrect: Color,
+    pub streak: Color,
 }
 
 impl Default for Skin {
@@ -26,6 +27,7 @@ impl Default for Skin {
             cursor: Color::Cyan,
             feedback_correct: Color::Green,
             feedback_incorrect: Color::Red,
+            streak: Color::Magenta,
         }
     }
 }

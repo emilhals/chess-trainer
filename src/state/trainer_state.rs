@@ -110,7 +110,7 @@ pub struct TrainerState {
     pub wrong_moves: usize,
     /// Resets every move
     pub move_feedback: Option<MoveFeedback>,
-    pub current_streak: usize,
+    pub current_streak: u32,
 
     pub bot_should_move: bool,
     pub bot_move_at: Option<Instant>,

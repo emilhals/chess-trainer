@@ -156,6 +156,12 @@ pub fn render_trainer_ui(
     if drill_mode {
         let highest_streak = app.player_data.best_streak(opening_name);
 
-        streak_render(streak_area, frame, &app.trainer, highest_streak);
+        streak_render(
+            streak_area,
+            frame,
+            app.trainer.state.current_streak,
+            highest_streak,
+            skin,
+        );
     }
 }
