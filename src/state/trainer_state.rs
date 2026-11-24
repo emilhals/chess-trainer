@@ -80,6 +80,12 @@ impl TrainerModeState {
     }
 }
 
+#[derive(Debug, Copy, Clone)]
+pub enum MoveFeedback {
+    Correct,
+    Incorrect,
+}
+
 #[derive(Default)]
 pub struct TrainerState {
     pub mode: TrainerModeState,
@@ -89,11 +95,21 @@ pub struct TrainerState {
     pub current_move_index: usize,
     pub current_instruction_index: usize,
 
+    /// Whether the player has made a mistake in the current line, either wrong move or using a hint.
+    ///
+    /// Stays `true` until the next line starts.
     pub correct_move: Option<bool>,
     pub validate_move_response: Option<String>,
+
+    /// Feedback on the player's most recent move.
+    ///
+    /// Set when a move is validated. Cleared when a wrong move is undone, when the bot replies, and
+    /// when a new line starts.
     pub made_wrong_move: bool,
 
     pub wrong_moves: usize,
+    /// Resets every move
+    pub move_feedback: Option<MoveFeedback>,
     pub current_streak: usize,
 
     pub bot_should_move: bool,
@@ -118,6 +134,7 @@ impl Clone for TrainerState {
             validate_move_response: self.validate_move_response.clone(),
             made_wrong_move: false,
 
+            move_feedback: None,
             wrong_moves: 0,
             current_streak: 0,
 

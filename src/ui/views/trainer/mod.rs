@@ -15,7 +15,7 @@ use crate::{
     state::{click_regions::ClickRegions, trainer_state::TrainerMode},
     ui::{
         board::{
-            self,
+            self, BoardState,
             helper::instruction_height,
             render::{render_file_labels, render_rank_labels},
         },
@@ -92,13 +92,18 @@ pub fn render_trainer_ui(
         return;
     };
 
+    let board_state = BoardState {
+        selected_square: app.trainer.ui.selected_square,
+        cursor_coords: app.trainer.ui.cursor_coords,
+        move_feedback: app.trainer.state.move_feedback,
+    };
+
     board::render(
         frame,
         board_inner,
         &app.trainer.board,
         skin,
-        app.trainer.ui.selected_square,
-        app.trainer.ui.cursor_coords,
+        board_state,
         regions,
     );
 

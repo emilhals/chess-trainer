@@ -12,15 +12,16 @@ use crate::{
     skin::Skin,
     state::click_regions::{ClickRegions, ClickTarget},
     trainer::{board::Board, ui::CellRenderContext},
-    ui::board::{cell::render_single_cell, helper::legal_moves},
+    ui::board::{BoardState, cell::render_single_cell, helper::legal_moves},
 };
+
 pub(super) fn render_grid(
     area: Rect,
     frame: &mut Frame<'_>,
     board: &Board,
     skin: &Skin,
+    state: BoardState,
     actual_square: Option<Square>,
-    cursor_coord: Coord,
     regions: &mut ClickRegions,
 ) {
     let width = area.width / 8;
@@ -86,7 +87,7 @@ pub(super) fn render_grid(
             };
 
             regions.push(square, ClickTarget::Square(Coord::new(i, j)));
-            render_single_cell(frame, &ctx, skin, cursor_coord);
+            render_single_cell(frame, &ctx, skin, state);
         }
     }
 }

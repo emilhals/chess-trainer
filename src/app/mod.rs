@@ -83,6 +83,7 @@ impl App {
                 return;
             }
 
+            self.trainer.state.move_feedback = None;
             self.trainer.apply_bot_move(&self.settings);
         }
 
@@ -92,6 +93,7 @@ impl App {
         {
             self.trainer.undo_move();
 
+            self.trainer.state.move_feedback = None;
             self.trainer.state.validate_move_response = None;
             self.trainer.state.undo_move_at = None;
         }

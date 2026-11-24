@@ -1,15 +1,20 @@
 use ratatui::{
     Frame,
     layout::Rect,
-    style::{Color, Modifier, Stylize},
+    style::{Color, Modifier, Style, Stylize},
+    text::Span,
     widgets::Block,
 };
 
 use crate::{
     app::coord::Coord,
     skin::Skin,
+    state::trainer_state::MoveFeedback,
     trainer::ui::CellRenderContext,
-    ui::board::helper::{piece_centered_rect, render_piece_paragraph},
+    ui::board::{
+        BoardState,
+        helper::{piece_centered_rect, render_piece_paragraph},
+    },
     utils::{get_coord_from_square, get_square_from_coord},
 };
 
@@ -18,7 +23,7 @@ pub fn render_single_cell(
     frame: &mut Frame<'_>,
     ctx: &CellRenderContext<'_>,
     skin: &Skin,
-    cursor_coord: Coord,
+    board_state: BoardState,
 ) {
     let CellRenderContext {
         board,
@@ -38,7 +43,7 @@ pub fn render_single_cell(
     let is_selected_cell = actual_square
         .is_some_and(|s| get_coord_from_square(s, board.is_flipped) == current_rendering_coord);
 
-    let is_cursor_cell = cursor_coord == current_rendering_coord;
+    let is_cursor_cell = board_state.cursor_coords == current_rendering_coord;
 
     let cell_color: Color = if (i + j).is_multiple_of(2) {
         skin.light_square
@@ -75,6 +80,12 @@ pub fn render_single_cell(
     let (paragraph, line_count) = render_piece_paragraph(piece_role, piece_color, square);
     let piece_area = piece_centered_rect(square, line_count);
     frame.render_widget(paragraph, piece_area);
+
+    if last_move_to == Some(current_rendering_square)
+        && let Some(marker) = board_state.move_feedback
+    {
+        render_marker(frame, square, marker, skin);
+    }
 }
 
 // Renders a single board cell as a colored 'Block' with optional style modifier
@@ -84,4 +95,29 @@ fn render_cell(frame: &mut Frame, square: Rect, color: Color, modifier: Option<M
         cell = cell.add_modifier(modifier);
     }
     frame.render_widget(cell, square);
+}
+
+fn render_marker(frame: &mut Frame, area: Rect, feedback: MoveFeedback, skin: &Skin) {
+    const BADGE_WIDTH: u16 = 3;
+    const PADDING: u16 = 1;
+
+    if area.width < BADGE_WIDTH + PADDING || area.height == 0 {
+        return;
+    }
+
+    let (symbol, background) = match feedback {
+        MoveFeedback::Correct => ("✓", skin.feedback_correct),
+        MoveFeedback::Incorrect => ("✕", skin.feedback_incorrect),
+    };
+
+    let badge = Rect {
+        x: area.right() - BADGE_WIDTH - PADDING,
+        y: area.y,
+        width: BADGE_WIDTH,
+        height: 1,
+    };
+
+    let style = Style::default().fg(Color::White).bg(background);
+
+    frame.render_widget(Span::styled(format!(" {symbol} "), style), badge);
 }
