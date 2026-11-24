@@ -7,7 +7,8 @@
     "last_move": "#FFFF00",
     "cursor": "#00FFFF",
     "feedback_correct": "#4F8A3B",
-    "feedback_incorrect": "#CA3431"
+    "feedback_incorrect": "#CA3431",
+    "streak": "#81B64C"
   },
   "cherry-blossom": {
     "light_square": "#FCE8EE",
@@ -17,7 +18,8 @@
     "last_move": "#F4B4C6",
     "cursor": "#6E2D55",
     "feedback_correct": "#5E8C61",
-    "feedback_incorrect": "#C8433E"
+    "feedback_incorrect": "#C8433E",
+    "streak": "#F29BB8"
   },
   "midnight-blue": {
     "light_square": "#B8C9DF",
@@ -27,7 +29,8 @@
     "last_move": "#849FC4",
     "cursor": "#FFFFFF",
     "feedback_correct": "#2F8A60",
-    "feedback_incorrect": "#D2574F"
+    "feedback_incorrect": "#D2574F",
+    "streak": "#F2C66D"
   },
   "walnut": {
     "light_square": "#EAD2B0",
@@ -37,7 +40,8 @@
     "last_move": "#C89A6E",
     "cursor": "#FFF1CE",
     "feedback_correct": "#5E7F34",
-    "feedback_incorrect": "#B4432F"
+    "feedback_incorrect": "#B4432F",
+    "streak": "#DFA858"
   },
   "nordic": {
     "light_square": "#D8DEE9",
@@ -47,6 +51,7 @@
     "last_move": "#B5C99A",
     "cursor": "#BF616A",
     "feedback_correct": "#5E8F5A",
-    "feedback_incorrect": "#A8434E"
+    "feedback_incorrect": "#A8434E",
+    "streak": "#88C0D0"
   }
 }
