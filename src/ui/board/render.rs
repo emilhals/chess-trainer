@@ -23,73 +23,49 @@ pub(super) fn render_grid(
     state: BoardState,
     actual_square: Option<Square>,
     regions: &mut ClickRegions,
-) {
+) -> Rect {
     let width = area.width / 8;
     let height = area.height / 8;
 
-    let border_height = area.height / 2 - (4 * height);
-    let border_width = area.width / 2 - (4 * width);
+    let centered_area = area.centered(
+        Constraint::Length(width * 8),
+        Constraint::Length(height * 8),
+    );
 
-    // There's 8 vertical lines.
-    let columns = Layout::default()
-        .direction(Direction::Vertical)
-        .constraints(
-            [
-                Constraint::Length(border_height),
-                Constraint::Length(height),
-                Constraint::Length(height),
-                Constraint::Length(height),
-                Constraint::Length(height),
-                Constraint::Length(height),
-                Constraint::Length(height),
-                Constraint::Length(height),
-                Constraint::Length(height),
-                Constraint::Length(border_height),
-            ]
-            .as_ref(),
-        )
-        .split(area);
+    let col_constraints = (0..8).map(|_| Constraint::Length(width));
+    let row_constraints = (0..8).map(|_| Constraint::Length(height));
+
+    let horizontal = Layout::horizontal(col_constraints);
+    let vertical = Layout::vertical(row_constraints);
+
+    let cells = centered_area
+        .layout_vec(&vertical)
+        .into_iter()
+        .flat_map(|row| row.layout_vec(&horizontal));
 
     let (last_move_from, last_move_to) = board.last_move();
     let legal_moves = legal_moves(board, actual_square);
 
-    for i in 0..8u8 {
-        let lines = Layout::default()
-            .direction(Direction::Horizontal)
-            .constraints(
-                [
-                    Constraint::Length(border_width),
-                    Constraint::Length(width),
-                    Constraint::Length(width),
-                    Constraint::Length(width),
-                    Constraint::Length(width),
-                    Constraint::Length(width),
-                    Constraint::Length(width),
-                    Constraint::Length(width),
-                    Constraint::Length(width),
-                    Constraint::Length(border_width),
-                ]
-                .as_ref(),
-            )
-            .split(columns[i as usize + 1]);
+    for (index, cell) in cells.enumerate() {
+        let i = (index / 8) as u8;
+        let j = (index % 8) as u8;
 
-        for j in 0..8u8 {
-            let square = lines[j as usize + 1];
-            let ctx = CellRenderContext {
-                board,
-                i,
-                j,
-                square,
-                actual_square,
-                last_move_from,
-                last_move_to,
-                legal_moves: &legal_moves,
-            };
+        let ctx = CellRenderContext {
+            board,
+            i,
+            j,
+            square: cell,
+            actual_square,
+            last_move_from,
+            last_move_to,
+            legal_moves: &legal_moves,
+        };
 
-            regions.push(square, ClickTarget::Square(Coord::new(i, j)));
-            render_single_cell(frame, &ctx, skin, state);
-        }
+        regions.push(cell, ClickTarget::Square(Coord::new(i, j)));
+        render_single_cell(frame, &ctx, skin, state);
     }
+
+    centered_area
 }
 
 pub fn render_rank_labels(frame: &mut Frame, area: Rect, is_flipped: bool) {

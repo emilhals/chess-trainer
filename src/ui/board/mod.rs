@@ -29,10 +29,10 @@ pub fn render(
     skin: &Skin,
     state: BoardState,
     regions: &mut ClickRegions,
-) {
+) -> Rect {
     let actual_square = state
         .selected_square
         .map(|s| flip_square_if_needed(s, board.is_flipped));
 
-    render_grid(area, frame, board, skin, state, actual_square, regions);
+    render_grid(area, frame, board, skin, state, actual_square, regions)
 }
