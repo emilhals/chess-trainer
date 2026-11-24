@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0](https://github.com/emilhals/chess-trainer/compare/chess-trainer-v0.8.0...chess-trainer-v0.9.0) - 2026-11-24
+
+### Added
+
+- *(skins)* add color for streak number
+- *(ui)* add BigNumber widget for current streak
+- *(board)* show feedback badge for the last move
+- *(trainer)* return the cursor when a wrong move is undone
+- *(skins)* add feedback badge colors
+
+### Fixed
+
+- *(ui)* use the streak_area from layout instead of making a new one
+
 ## [0.8.0](https://github.com/emilhals/chess-trainer/compare/chess-trainer-v0.7.0...chess-trainer-v0.8.0) - 2026-11-23
 
 ### Fixed
