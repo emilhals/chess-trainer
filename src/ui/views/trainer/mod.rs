@@ -32,6 +32,14 @@ pub fn render_trainer_ui(
     area: Rect,
     regions: &mut ClickRegions,
 ) {
+    let Some(opening_name) = &app.trainer.state.current_opening_name else {
+        return;
+    };
+
+    let Some(skin) = app.skins.get(&app.settings.selected_skin) else {
+        return;
+    };
+
     let main_rows = Layout::default()
         .direction(Direction::Vertical)
         .constraints(
@@ -64,7 +72,7 @@ pub fn render_trainer_ui(
     let board_with_labels = Layout::default()
         .direction(Direction::Vertical)
         .constraints([
-            Constraint::Length(2), // Progress gayge
+            Constraint::Length(2), // Progress gauge
             Constraint::Min(0),    // Board
             Constraint::Length(1), // File labels
         ])
@@ -87,10 +95,6 @@ pub fn render_trainer_ui(
     let board_inner = board_block.inner(board_with_labels[1]);
 
     let has_labels = app.settings.show_coords;
-
-    let Some(skin) = app.skins.get(&app.settings.selected_skin) else {
-        return;
-    };
 
     let board_state = BoardState {
         selected_square: app.trainer.ui.selected_square,
@@ -129,24 +133,10 @@ pub fn render_trainer_ui(
 
     let cell_height = board_area.height / 8;
     let board_top_padding = board_area.height / 2 - (4 * cell_height);
-    let board_bottom = board_area.bottom();
-    let streak_height = 5;
-
-    let streak_area = Rect::new(
-        sidebar_content_area.x,
-        board_bottom.saturating_sub(streak_height),
-        sidebar_content_area.width,
-        streak_height,
-    );
-
-    let drill_mode = app.trainer.state.mode.selected_mode == TrainerMode::Drill;
-    let Some(opening_name) = &app.trainer.state.current_opening_name else {
-        return;
-    };
 
     let instruction_height = instruction_height(sidebar_content_area.width, &app.trainer) as u16;
 
-    let [top, _streak_area, _bottom_padding] = Layout::vertical([
+    let [top, streak_area, _bottom_padding] = Layout::vertical([
         Constraint::Length(board_top_padding + instruction_height),
         Constraint::Length(5),
         Constraint::Length(1),
@@ -160,13 +150,12 @@ pub fn render_trainer_ui(
     ])
     .areas(top);
 
-    if drill_mode {
-        instruction_render(instruction_area, frame, &app.trainer, &app.settings);
+    instruction_render(instruction_area, frame, &app.trainer, &app.settings);
 
+    let drill_mode = app.trainer.state.mode.selected_mode == TrainerMode::Drill;
+    if drill_mode {
         let highest_streak = app.player_data.best_streak(opening_name);
 
         streak_render(streak_area, frame, &app.trainer, highest_streak);
-    } else {
-        instruction_render(instruction_area, frame, &app.trainer, &app.settings);
     }
 }
