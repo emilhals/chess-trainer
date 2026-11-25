@@ -1,3 +1,5 @@
+use std::cmp;
+
 use ratatui::{
     Frame,
     layout::{Alignment, Constraint, Direction, Layout, Rect},
@@ -24,16 +26,19 @@ pub(super) fn render_grid(
     actual_square: Option<Square>,
     regions: &mut ClickRegions,
 ) -> Rect {
-    let width = area.width / 8;
-    let height = area.height / 8;
+    let max_width = area.width / 8;
+    let max_height = area.height / 8;
+
+    let cell_height = cmp::min(max_width / 2, max_height);
+    let cell_width = cell_height * 5 / 2;
 
     let centered_area = area.centered(
-        Constraint::Length(width * 8),
-        Constraint::Length(height * 8),
+        Constraint::Length(cell_width * 8),
+        Constraint::Length(cell_height * 8),
     );
 
-    let col_constraints = (0..8).map(|_| Constraint::Length(width));
-    let row_constraints = (0..8).map(|_| Constraint::Length(height));
+    let col_constraints = (0..8).map(|_| Constraint::Length(cell_width));
+    let row_constraints = (0..8).map(|_| Constraint::Length(cell_height));
 
     let horizontal = Layout::horizontal(col_constraints);
     let vertical = Layout::vertical(row_constraints);
