@@ -5,9 +5,7 @@ pub mod streak;
 
 use ratatui::{
     Frame,
-    layout::{Constraint, Direction, Flex, Layout, Rect},
-    style::Style,
-    widgets::Block,
+    layout::{Constraint, Layout, Rect},
 };
 
 use crate::{
@@ -16,7 +14,6 @@ use crate::{
     ui::{
         board::{
             self, BoardState,
-            helper::instruction_height,
             render::{render_file_labels, render_rank_labels},
         },
         views::trainer::{
@@ -40,124 +37,75 @@ pub fn render_trainer_ui(
         return;
     };
 
-    let main_rows = Layout::default()
-        .direction(Direction::Vertical)
-        .constraints(
-            [
-                Constraint::Length(3),     // Top panel
-                Constraint::Ratio(1, 20),  // Top padding
-                Constraint::Ratio(18, 20), // Board
-                Constraint::Min(0),        // Bottom padding
-            ]
-            .as_ref(),
-        )
-        .split(area);
+    let [top_panel, _reserved_progress, main, _file_labels] = Layout::vertical([
+        Constraint::Length(3), // Top panel
+        Constraint::Length(2), // (Reserved) Progress gauge
+        Constraint::Min(1),    // Board + Instructions + Streak
+        Constraint::Length(2), // (Reserved) File labels
+    ])
+    .areas(area);
 
-    top_panel_render(main_rows[0], frame, &app.trainer);
+    top_panel_render(top_panel, frame, &app.trainer);
 
-    let content_columns = Layout::default()
-        .direction(Direction::Horizontal)
-        .constraints(
-            [
-                Constraint::Ratio(1, 18),  // Left padding
-                Constraint::Ratio(1, 18),  // Rank labels
-                Constraint::Ratio(11, 18), // Board
-                Constraint::Ratio(4, 18),  // Instruction block
-            ]
-            .as_ref(),
-        )
-        .spacing(1)
-        .split(main_rows[2]);
-
-    let board_with_labels = Layout::default()
-        .direction(Direction::Vertical)
-        .constraints([
-            Constraint::Length(2), // Progress gauge
-            Constraint::Min(0),    // Board
-            Constraint::Length(1), // File labels
-        ])
-        .split(content_columns[2]);
-
-    let rank_label_area = Layout::default()
-        .constraints(
-            [
-                Constraint::Length(2),
-                Constraint::Min(0),
-                Constraint::Length(1),
-            ]
-            .as_ref(),
-        )
-        .split(content_columns[1]);
-
-    let board_block = Block::default().style(Style::default());
-
-    // Get the inner area of the board (accounting for any block padding)
-    let board_inner = board_block.inner(board_with_labels[1]);
-
-    let has_labels = app.settings.show_coords;
+    let [_, board, _] = Layout::horizontal([
+        Constraint::Length(2),  // (Reserved) Rank labels
+        Constraint::Min(1),     // Board
+        Constraint::Length(20), // (Reserved) Sidebar
+    ])
+    .areas(main);
 
     let board_state = BoardState {
         selected_square: app.trainer.ui.selected_square,
         cursor_coords: app.trainer.ui.cursor_coords,
         move_feedback: app.trainer.state.move_feedback,
     };
+    let grid_area = board::render(frame, board, &app.trainer.board, skin, board_state, regions);
 
-    board::render(
-        frame,
-        board_inner,
-        &app.trainer.board,
-        skin,
-        board_state,
-        regions,
-    );
+    let progress_area = Rect {
+        x: grid_area.x,
+        y: grid_area.top().saturating_sub(3),
+        height: 2,
+        width: grid_area.width,
+    };
+    progress_gauge_render(progress_area, frame, &app.trainer);
 
-    if has_labels {
-        render_rank_labels(frame, rank_label_area[1], app.trainer.board.is_flipped);
+    if app.settings.show_coords {
+        let rank_area = Rect {
+            x: grid_area.left().saturating_sub(3),
+            y: grid_area.y,
+            height: grid_area.height,
+            width: 2,
+        };
 
-        render_file_labels(frame, board_with_labels[2], app.trainer.board.is_flipped);
+        let file_area = Rect {
+            x: grid_area.x,
+            y: grid_area.bottom().saturating_add(1),
+            height: 2,
+            width: grid_area.width,
+        };
+
+        render_rank_labels(frame, rank_area, app.trainer.board.is_flipped);
+        render_file_labels(frame, file_area, app.trainer.board.is_flipped);
     }
 
-    progress_gauge_render(board_block.inner(board_with_labels[0]), frame, &app.trainer);
+    let sidebar = Rect {
+        x: grid_area.right().saturating_add(1),
+        y: grid_area.y,
+        height: grid_area.height,
+        width: main.right().saturating_sub(grid_area.right()),
+    };
 
-    let trainer_sidebar = Layout::default()
-        .direction(Direction::Vertical)
-        .constraints([
-            Constraint::Length(2), // Same height as progress gauge
-            Constraint::Min(0),    // Align with board
-            Constraint::Length(1), // Same height as file labels
-        ])
-        .split(content_columns[3]);
+    let [instructions, streak] =
+        Layout::vertical([Constraint::Min(0), Constraint::Length(5)]).areas(sidebar);
 
-    let sidebar_content_area = trainer_sidebar[1];
-    let board_area = board_with_labels[1];
-
-    let cell_height = board_area.height / 8;
-    let board_top_padding = board_area.height / 2 - (4 * cell_height);
-
-    let instruction_height = instruction_height(sidebar_content_area.width, &app.trainer) as u16;
-
-    let [top, streak_area, _bottom_padding] = Layout::vertical([
-        Constraint::Length(board_top_padding + instruction_height),
-        Constraint::Length(5),
-        Constraint::Length(1),
-    ])
-    .flex(Flex::SpaceBetween)
-    .areas(sidebar_content_area);
-
-    let [_, instruction_area] = Layout::vertical([
-        Constraint::Length(board_top_padding),
-        Constraint::Length(instruction_height),
-    ])
-    .areas(top);
-
-    instruction_render(instruction_area, frame, &app.trainer, &app.settings);
+    instruction_render(instructions, frame, &app.trainer, &app.settings);
 
     let drill_mode = app.trainer.state.mode.selected_mode == TrainerMode::Drill;
     if drill_mode {
         let highest_streak = app.player_data.best_streak(opening_name);
 
         streak_render(
-            streak_area,
+            streak,
             frame,
             app.trainer.state.current_streak,
             highest_streak,
