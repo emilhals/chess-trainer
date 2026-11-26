@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.1](https://github.com/emilhals/chess-trainer/compare/chess-trainer-v0.9.0...chess-trainer-v0.9.1) - 2026-11-26
+
+### Fixed
+
+- *(ui)* make board squares actually squares
+
+### Other
+
+- *(ui)* use board grid to position sidebar, rank/file labels
+- *(ui)* create grid from centered area and return the grid rect
+
 ## [0.9.0](https://github.com/emilhals/chess-trainer/compare/chess-trainer-v0.8.0...chess-trainer-v0.9.0) - 2026-11-24
 
 ### Added
