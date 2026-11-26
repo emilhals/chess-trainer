@@ -1,3 +1,5 @@
+use std::cmp;
+
 use ratatui::{
     Frame,
     layout::{Alignment, Constraint, Direction, Flex, Layout, Rect},
@@ -7,9 +9,51 @@ use ratatui::{
 };
 
 use crate::{
-    settings::Settings, state::trainer_state::TrainerMode, trainer::Trainer, ui::widgets::kbd::Kbd,
+    settings::Settings,
+    skin::Skin,
+    state::trainer_state::TrainerMode,
+    trainer::Trainer,
+    ui::widgets::{big_number::BigNumber, kbd::Kbd},
 };
 
+pub fn render_stats(
+    frame: &mut Frame,
+    area: Rect,
+    current_mode: TrainerMode,
+    current_streak: u32,
+    highest_streak: u32,
+    skin: &Skin,
+) {
+    match current_mode {
+        TrainerMode::Learn => {}
+        TrainerMode::Drill => {
+            let label = Line::styled("streak", Style::default().fg(Color::DarkGray));
+            let best_streak = cmp::max(current_streak, highest_streak);
+
+            let current_streak = BigNumber::default()
+                .value(current_streak)
+                .style(Style::default().fg(skin.streak))
+                .alignment(Alignment::Center);
+
+            let block_width = label.width().max(current_streak.desired_width() as usize) as u16;
+            let block = area.centered_horizontally(Constraint::Length(block_width));
+
+            let [label_area, streak_area, best_area] = Layout::vertical([
+                Constraint::Length(2),
+                Constraint::Length(3),
+                Constraint::Length(1),
+            ])
+            .areas(block);
+
+            frame.render_widget(label, label_area);
+            frame.render_widget(current_streak, streak_area);
+            frame.render_widget(
+                Paragraph::new(format!("best {best_streak}")).centered(),
+                best_area,
+            );
+        }
+    }
+}
 pub fn instruction_render(
     area: Rect,
     frame: &mut Frame<'_>,

@@ -1,7 +1,6 @@
-pub mod header;
+pub mod panel;
 pub mod progress;
 pub mod sidebar;
-pub mod streak;
 
 use ratatui::{
     Frame,
@@ -17,8 +16,8 @@ use crate::{
             render::{render_file_labels, render_rank_labels},
         },
         views::trainer::{
-            header::top_panel_render, progress::progress_gauge_render, sidebar::instruction_render,
-            streak::streak_render,
+            panel::top_panel_render, progress::progress_gauge_render, sidebar::instruction_render,
+            sidebar::render_stats,
         },
     },
 };
@@ -104,9 +103,10 @@ pub fn render_trainer_ui(
     if drill_mode {
         let highest_streak = app.player_data.best_streak(opening_name);
 
-        streak_render(
-            streak,
+        render_stats(
             frame,
+            streak,
+            app.trainer.state.mode.selected_mode,
             app.trainer.state.current_streak,
             highest_streak,
             skin,
