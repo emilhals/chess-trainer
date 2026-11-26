@@ -1,6 +1,6 @@
 pub mod header;
-pub mod instructions;
 pub mod progress;
+pub mod sidebar;
 pub mod streak;
 
 use ratatui::{
@@ -17,8 +17,8 @@ use crate::{
             render::{render_file_labels, render_rank_labels},
         },
         views::trainer::{
-            header::top_panel_render, instructions::instruction_render,
-            progress::progress_gauge_render, streak::streak_render,
+            header::top_panel_render, progress::progress_gauge_render, sidebar::instruction_render,
+            streak::streak_render,
         },
     },
 };
