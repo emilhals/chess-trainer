@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.1](https://github.com/emilhals/chess-trainer/compare/chess-trainer-v0.10.0...chess-trainer-v0.10.1) - 2026-11-27
+
+### Other
+
+- add web/dist and *.log to .gitignore
+
 ## [0.10.0](https://github.com/emilhals/chess-trainer/compare/chess-trainer-v0.9.1...chess-trainer-v0.10.0) - 2026-11-27
 
 ### Added
