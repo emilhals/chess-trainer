@@ -7,6 +7,13 @@ use crate::{
 
 pub fn handle_trainer_key(app: &mut App, key: Key) {
     match key {
+        Key::Char('m') => {
+            app.trainer.state.mode.toggle_mode();
+        }
+        Key::Char('c') => {
+            app.settings.cycle_skin(app.skins.clone(), true);
+        }
+
         Key::Char('b') => {
             // Return to home menu - reset all game state
             app.reset_home();

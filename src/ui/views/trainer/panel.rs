@@ -1,46 +1,51 @@
 use ratatui::{
     Frame,
-    layout::{Constraint, Direction, Layout, Rect},
-    widgets::Paragraph,
+    layout::{Constraint, Layout, Rect},
+    style::{Color, Modifier, Style},
+    text::{Line, Span},
 };
 
-use crate::{state::trainer_state::TrainerMode, trainer::Trainer, ui::widgets::kbd::Kbd};
+use crate::trainer::openings::Openings;
 
-pub fn top_panel_render(area: Rect, frame: &mut Frame<'_>, trainer: &Trainer) {
-    let layout = Layout::default()
-        .direction(Direction::Vertical)
-        .constraints([
-            Constraint::Length(1), // Padding
-            Constraint::Length(1), // Kbd and paragraphs
-            Constraint::Length(1), // Divider
-        ])
-        .split(area);
+pub fn render_top(
+    frame: &mut Frame,
+    area: Rect,
+    opening_name: &str,
+    current_line: usize,
+    current_mode: &str,
+) {
+    let [left, right, _] = Layout::horizontal([
+        Constraint::Min(0),
+        Constraint::Length(5),
+        Constraint::Length(1),
+    ])
+    .areas(area);
 
-    let panel = Layout::default()
-        .direction(Direction::Horizontal)
-        .constraints([
-            Constraint::Length(1),  // Left padding
-            Constraint::Length(10), // Back Kbd
-            Constraint::Min(0),     // Opening name & current line index
-            Constraint::Length(10), // Trainer mode paragraph
-            Constraint::Length(1),  // Right padding
-        ])
-        .split(layout[1]);
+    let formatted_name = Openings::format_name(opening_name);
 
-    let back_kbd = Kbd::default()
-        .key("b".to_string())
-        .content("Back".to_string());
+    let line = Line::from(vec![
+        Span::styled(" Chess Trainer", Style::default().fg(Color::Magenta)),
+        Span::styled("  •  ", Style::default().add_modifier(Modifier::DIM)),
+        Span::styled(formatted_name, Style::default()),
+        Span::styled("  •  ", Style::default().add_modifier(Modifier::DIM)),
+        Span::styled(format!("Line #{current_line}"), Style::default()),
+    ]);
 
-    frame.render_widget(back_kbd, panel[1]);
+    frame.render_widget(line, left);
 
-    let mode_symbol = match trainer.state.mode.selected_mode {
-        TrainerMode::Drill => "⚡",
-        TrainerMode::Learn => "📚",
-    };
+    frame.render_widget(current_mode, right);
+}
 
-    let mode_str = format!("{} {}", mode_symbol, trainer.state.mode.selected_mode);
-    let mode_paragraph = Paragraph::new(mode_str).right_aligned();
-    frame.render_widget(mode_paragraph, panel[3]);
+pub fn render_bottom(frame: &mut Frame, area: Rect) {
+    let line = Line::from(vec![
+        Span::styled(" m ", Style::default().fg(Color::Black).bg(Color::Magenta)),
+        Span::styled(
+            " toggle mode ",
+            Style::default().add_modifier(Modifier::DIM),
+        ),
+        Span::styled(" c ", Style::default().fg(Color::Black).bg(Color::Magenta)),
+        Span::styled(" cycle skin ", Style::default().add_modifier(Modifier::DIM)),
+    ]);
 
-    //render_divider(frame, layout[2]);
+    frame.render_widget(line, area);
 }
