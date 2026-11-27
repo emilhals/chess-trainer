@@ -1,17 +1,11 @@
 use ratatui::{
     layout::{Alignment, Rect},
-    style::{Color, Style, Stylize},
-    text::{Line, Span},
-    widgets::{Paragraph, Wrap},
+    style::{Color, Stylize},
+    widgets::Paragraph,
 };
 use shakmaty::{Role, Square};
 
-use crate::{
-    app::coord::Coord,
-    state::trainer_state::TrainerMode,
-    trainer::{Trainer, board::Board},
-    ui::board::pieces::PieceSize,
-};
+use crate::{app::coord::Coord, trainer::board::Board, ui::board::pieces::PieceSize};
 
 // Helper function to render a piece paragraph. Returns the paragraph and its line count.
 pub fn render_piece_paragraph(
@@ -62,40 +56,6 @@ pub fn piece_centered_rect(cell: Rect, content_lines: u16) -> Rect {
         width: cell.width,
         height: content_height,
     }
-}
-
-pub fn instruction_height(width: u16, trainer: &Trainer) -> usize {
-    let inner_width = width.saturating_sub(2);
-
-    if trainer.is_completed() {
-        return 5;
-    }
-
-    let text = if trainer.state.validate_move_response.is_some() {
-        let response = trainer
-            .state
-            .validate_move_response
-            .clone()
-            .unwrap_or_else(|| String::from(""));
-
-        vec![Line::from(response)]
-    } else {
-        if trainer.state.mode.selected_mode == TrainerMode::Drill && !trainer.state.made_wrong_move
-        {
-            return 4;
-        }
-
-        let (info, play) = trainer.current_instruction();
-
-        vec![
-            Line::from(Span::styled(info, Style::new())),
-            Line::from(Span::styled(play, Style::new().bold())),
-        ]
-    };
-
-    let paragraph = Paragraph::new(text).wrap(Wrap { trim: false });
-
-    paragraph.line_count(inner_width) + 3
 }
 
 pub fn legal_moves(board: &Board, actual_square: Option<Square>) -> Vec<Coord> {
