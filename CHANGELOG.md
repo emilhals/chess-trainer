@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0](https://github.com/emilhals/chess-trainer/compare/chess-trainer-v0.9.1...chess-trainer-v0.10.0) - 2026-11-27
+
+### Added
+
+- *(handlers)* add event for toggling mode and cycling skin
+
+### Other
+
+- *(ui)* remove instruction_height for board/helper.rs
+- *(ui)* rename header.rs to panel.rs
+- *(ui)* rename instructions.rs to sidebar.rs
+
 ## [0.9.1](https://github.com/emilhals/chess-trainer/compare/chess-trainer-v0.9.0...chess-trainer-v0.9.1) - 2026-11-26
 
 ### Fixed
